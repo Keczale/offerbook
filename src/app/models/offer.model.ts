@@ -4,6 +4,7 @@ export class Offer {
 		public userName: string, // сделать верификацию на уник
 		public title: string, // ???
 		public description: string, // registered or guest
+		public deliverConditions: string,
 		public price: number,
 		public special: string, // bonuses
 		public status: string, // accepted refused
