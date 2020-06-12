@@ -10,7 +10,7 @@ import { GoogleComponent } from './google/google.component';
 import { LastOffersComponent } from './last-offers/last-offers.component';
 import { RegisterComponent } from './register/register.component';
 import { RouterModule } from '@angular/router';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 
 
@@ -23,7 +23,8 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 	MatFormFieldModule,
 	MatInputModule,
 	RouterModule,
-	ReactiveFormsModule
+	ReactiveFormsModule,
+	FormsModule
   ],
   exports: [LoginComponent]
 })

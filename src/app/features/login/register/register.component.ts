@@ -1,7 +1,8 @@
 import { Component, OnInit, Inject} from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-//import { AngularFireAuth } from '@angular/fire/auth';
-//import { auth } from 'firebase/app';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { auth } from 'firebase/app';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -16,7 +17,8 @@ export class RegisterComponent implements OnInit {
 
   constructor(
 	  private _fb: FormBuilder,
-	 // public auth: AngularFireAuth
+	  private _auth: AngularFireAuth,
+	  private _router: Router
 	) { }
 
   ngOnInit(): void {
@@ -33,10 +35,12 @@ export class RegisterComponent implements OnInit {
   	const confirmPass: string = group.get('confirmPass').value;
   	return pass === confirmPass ? null : { notSame: true };
 }
-createUser(): void {
+public createUser(): void {
 	const{email, password}={email: this.registerForm.value.email, password: this.registerForm.value.password};
-	//this.auth.signInWithEmailAndPassword(email, password);
-		console.log(this.registerForm.value);
+	this._auth.createUserWithEmailAndPassword(email, password).then(
+		user=> {console.log(user);
+		this._router.navigate(['']);
+	});
 }
 
 }

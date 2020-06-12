@@ -5,7 +5,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
-//import { AngularFireModule } from '@angular/fire';
+import { AngularFireModule } from '@angular/fire';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -28,7 +28,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   EffectsModule.forRoot([]),
   StoreRouterConnectingModule.forRoot(),
   EffectsModule.forFeature([UserDataEffects]),
-  //AngularFireModule.initializeApp(environment.firebase),
+  AngularFireModule.initializeApp(environment.firebase),
   LoginModule,
   OfferbookModule,
   BrowserAnimationsModule
