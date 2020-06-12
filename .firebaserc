@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "offerbook-867c9": {
+      "hosting": {
+        "offerbook": [
+          "offerbook-867c9"
+        ]
+      }
+    }
+  }
+}

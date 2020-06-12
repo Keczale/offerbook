@@ -1,0 +1,19 @@
+$font-logo: 'Racing Sans One', cursive;
+
+a{
+    text-decoration: none;
+    color: black;
+}
+.container{
+    width: 80%;
+    margin:0 auto;
+}
+:host .head{
+    display: flex;
+    justify-content: space-between;
+    &__logo{
+        font-family: $font-logo;
+        font-weight: 500;
+        font-size: 1.5rem;
+    }
+}

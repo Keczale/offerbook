@@ -6,6 +6,7 @@ export class Order {
 		public fromUser: string,
 		public title: string,
 		public description: string,
+		public category: string,
 		public date: Date,
 		public viewed: number, // how much sellers open request , or boolean
 		public photos: string[], // src images
