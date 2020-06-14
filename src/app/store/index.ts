@@ -1,12 +1,12 @@
-import { userDataFeatureKey, UserState } from './userData';
-import { ActionReducerMap } from '@ngrx/store';
+import { userDataFeatureKey, UserState, userDataReducer } from './userData';
+import { ActionReducerMap, Action } from '@ngrx/store';
 
 export * from './userData';
 
-export interface AppState{
+export interface AppState {
 	[userDataFeatureKey]: UserState;
 }
 
-export const redusers: ActionReducerMap<UserState> = {
-	[userDataFeatureKey] : 'userStateReduser'
+export const redusers: ActionReducerMap<AppState, Action> = {
+	[userDataFeatureKey]: userDataReducer,
 };

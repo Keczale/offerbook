@@ -7,13 +7,26 @@ a{
 .container{
     width: 80%;
     margin:0 auto;
-}
-:host .head{
-    display: flex;
-    justify-content: space-between;
-    &__logo{
-        font-family: $font-logo;
-        font-weight: 500;
-        font-size: 1.5rem;
+
+    .head{
+        display: flex;
+        justify-content: space-between;
+
+        padding: 2rem 0;
+
+            &__logo{
+                font-family: $font-logo;
+                font-weight: 500;
+                font-size: 1.5rem;
+            }
+
+            &__photo{
+                width: 2rem;
+                height: 2rem;
+            }
+    }
+    .isLoading{
+        padding: .6rem 0;
+        text-align: center;
     }
 }

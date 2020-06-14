@@ -1,21 +1,28 @@
-import { Action, createReducer, on } from '@ngrx/store';
+import { createReducer, on } from '@ngrx/store';
 import { User } from 'src/app/models/user.model';
+import { inProgressAction } from './user-data.actions';
 
-export const userDataFeatureKey: string = 'userData';
+export const userDataFeatureKey = 'userData';
 
 export interface UserState {
-  user: User;
-  guest: boolean;
+  isLoading: boolean;
 }
 
 export const initialState: UserState = {
-user: null,
-guest: true,
+  isLoading: false
 };
 
 
-export const reducer = createReducer(
+const _userDataReducer = createReducer(
   initialState,
-
-);
-
+  on(inProgressAction,
+	state => {
+	return {
+		...state,
+		isLoading: !state.isLoading
+	};
+	}
+));
+export function userDataReducer(state, action) {
+	return _userDataReducer(state, action);
+}

@@ -1,7 +1,11 @@
 import { createAction, props } from '@ngrx/store';
 
-export const loadUserDatas = createAction(
-  '[UserData] Load UserDatas'
+// export enum dataActionType {
+//   loadFromLocalStorage = '[UserData] Activate/disactivate load bar',
+// }
+
+export const inProgressAction = createAction(
+  '[UserData] Activate/disactivate load bar'
 );
 
 export const loadUserDatasSuccess = createAction(
@@ -9,7 +13,3 @@ export const loadUserDatasSuccess = createAction(
   props<{ data: any }>()
 );
 
-export const loadUserDatasFailure = createAction(
-  '[UserData] Load UserDatas Failure',
-  props<{ error: any }>()
-);

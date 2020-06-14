@@ -1,13 +1,22 @@
 <main class="container">
 <header class="head">
   <div class="head__logo"><a href="">offerBook</a></div>
-  <div class="head__main-toggle">
-    <a class head__toggle-section>Купить</a>
-    <a class head__toggle-section>Продать</a>
-  </div>
-  <div class="head__login">
-    <button (click)="signOut()">Выйти</button>
+  
+  <mat-button-toggle-group appearance="legacy" name="fontStyle" aria-label="Font Style">
+    <mat-button-toggle value="buy">Купить</mat-button-toggle>
+    <mat-button-toggle value="sell">Продать</mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <div *ngIf="afAuth.authState| async as authUser">
+    <img class="head__photo" [src]="authUser.photoURL?authUser.photoURL: '../assets/img/smile.jpg'" alt="" title="authUser.displayName">
+    <button mat-button [matMenuTriggerFor]="menu">{{authUser.displayName?authUser.displayName:nameMask}}</button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item >В кабинет</button>
+        <button mat-menu-item (click)="signOut()">Выйти</button>
+      </mat-menu>
   </div>
 </header>
+<mat-progress-bar mode="query" *ngIf="dataService.isLoading"></mat-progress-bar>
+
 <router-outlet></router-outlet>
-</main> 
+</main>  

@@ -1,6 +1,9 @@
-<h1>Авторизация</h1>
-<p>Еще нет аккаунта? </p><a routerLink="/register">Зарегистрироваться</a>
+<section class="login">
+    <h1 class="login__title">Авторизация</h1>
+    <p class="login__to-register">Еще нет аккаунта? <a class="login__register-refer" routerLink="/register">Зарегистрироваться</a></p>
 
-
-<app-email></app-email>
-<app-google></app-google>
+    <div class="login-main">
+        <div class="login-main__email"><app-email></app-email></div>
+        <div class="login-main__google"><app-google></app-google></div>
+    </div>
+</section>

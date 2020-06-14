@@ -1,4 +1,4 @@
-<form [formGroup]='logInForm'>
+<form [formGroup]='logInForm' class="email-form">
     <mat-form-field>
         <mat-label >Введи Email</mat-label>
         <input matInput type="text" formControlName="email">
@@ -9,3 +9,4 @@
     </mat-form-field>
     <button mat-button type="submit" (click)="signIn()">Send</button>
 </form>
+<mat-icon aria-hidden="false" aria-label="Example home icon">home</mat-icon>

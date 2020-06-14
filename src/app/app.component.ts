@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
+import { DataService } from './services/data.service';
+import { UserState, inProgressAction, DataIsLoadingSelector } from './store';
 
 @Component({
   selector: 'app-root',
@@ -9,13 +11,21 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'offerbook';
+  public title: string = 'offerbook';
+  public nameMask: string = 'User' 
+
   constructor(
-	  private _auth: AngularFireAuth,
-	  private _router: Router
+	  public afAuth: AngularFireAuth,
+	  private _router: Router,
+	  public dataService: DataService,
+	  //private _store$: Store<UserState>
 	) {}
 
   public signOut(): void {
-	this._auth.signOut().then(data=> this._router.navigate(['/login']));
+	this.dataService.loading();
+	this.afAuth.signOut()
+	.then(() => this.dataService.loading())
+	.then(() => this._router.navigate(['/login']));
   }
+
 }
