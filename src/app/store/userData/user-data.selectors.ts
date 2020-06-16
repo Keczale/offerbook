@@ -16,3 +16,8 @@ export const DataIsLoadingSelector = createSelector(
 	// tslint:disable-next-line: typedef
 	state => state.isLoading
 );
+export const currentUserSelector = createSelector(
+	userDataFeatureSelector,
+	// tslint:disable-next-line: typedef
+	state => state.currentUser
+);

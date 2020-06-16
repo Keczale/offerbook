@@ -8,5 +8,5 @@ export interface AppState {
 }
 
 export const redusers: ActionReducerMap<AppState, Action> = {
-	[userDataFeatureKey]: userDataReducer,
+	[userDataFeatureKey]: userDataReducer
 };

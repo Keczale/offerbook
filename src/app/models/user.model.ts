@@ -1,20 +1,20 @@
+import { Order } from './order.model';
+import { Offer } from './offer.model';
+
 export class User {
 	constructor(
-		private _id: string,
-		private _userName: string, // сделать верификацию на уник
-		public password: string,
+		public id: string,
+		public userName: string, // сделать верификацию на уник
+		public email: string,
 		public location: Location,
 		public userData: UserData,
 		public userStatus: string, // registered or guest
 		public userType: string, // byer seller or universal
-		public userOrders: string[], // order id's
-		public iserOffers: string[], // offer id's
+		public userOrders: Order[], // order id's
+		public userOffers: Offer[], // offer id's
 		public sellersCategory: string[],
 		public userRating: UserRating
 	) {}
-	public set userName(name: string) {
-		this._userName = name; // надо реализовать проверку из массива юзеров на уникальность
-	}
 }
 
 interface UserData {

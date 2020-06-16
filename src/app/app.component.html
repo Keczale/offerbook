@@ -9,14 +9,15 @@
 
   <div *ngIf="afAuth.authState| async as authUser">
     <img class="head__photo" [src]="authUser.photoURL?authUser.photoURL: '../assets/img/smile.jpg'" alt="" title="authUser.displayName">
-    <button mat-button [matMenuTriggerFor]="menu">{{authUser.displayName?authUser.displayName:nameMask}}</button>
+    <button mat-button [matMenuTriggerFor]="menu">{{userDataService.userName}}</button>
       <mat-menu #menu="matMenu">
         <button mat-menu-item >В кабинет</button>
         <button mat-menu-item (click)="signOut()">Выйти</button>
       </mat-menu>
+    <mat-error *ngIf="userDataService.logOutError">{{userDataService.logOutError}}</mat-error>
   </div>
 </header>
-<mat-progress-bar mode="query" *ngIf="dataService.isLoading"></mat-progress-bar>
+<mat-progress-bar mode="query" *ngIf="userDataService.isLoading"></mat-progress-bar>
 
 <router-outlet></router-outlet>
 </main>  

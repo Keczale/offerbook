@@ -8,8 +8,16 @@ export const inProgressAction = createAction(
   '[UserData] Activate/disactivate load bar'
 );
 
-export const loadUserDatasSuccess = createAction(
-  '[UserData] Load UserDatas Success',
-  props<{ data: any }>()
+export const getCurrentUserAction = createAction(
+  '[UserData] Get current user',
+  props<{ id: string, name: string, email: string}>()
 );
 
+export const userSignOutAction = createAction(
+  '[UserData] User sign up'
+  );
+
+export const getCurrentUsderAction = createAction(
+    '[UserData] Get current user',
+    props<{ id: string, name: string, email: string}>()
+  );  

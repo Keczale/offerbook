@@ -1,1 +1,2 @@
 <button class="signInButton" mat-stroked-button (click)="signInGoogle()"><i class="material-icons">fingerprint</i>Войти через Google аккаунт</button>
+<mat-error *ngIf="userDataService.inGoogleError">{{userDataService.inGoogleError}}</mat-error>
