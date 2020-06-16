@@ -1,16 +1,18 @@
 import { createReducer, on } from '@ngrx/store';
 import { User } from 'src/app/models/user.model';
-import { inProgressAction, getCurrentUserAction, userSignOutAction } from './user-data.actions';
+import { inProgressAction, getCurrentUserAction, userSignOutAction, getEmailErrorLoginAction, cleanEmailErrorLoginAction } from './user-data.actions';
 
 export const userDataFeatureKey = 'userData';
 
 export interface UserState {
   isLoading: boolean;
+  emailError: string;
   currentUser: User;
 }
 
 export const initialState: UserState = {
   isLoading: false,
+  emailError: null,
   currentUser: {
 	id: null,
 	userName: null, // сделать верификацию на уник
@@ -54,6 +56,31 @@ on (userSignOutAction,
 	return {
 		...state,
 		currentUser: {...initialState.currentUser}
+	};
+}),
+// on (loadStateFromDataAction,
+// 	(state: UserState,{id, name, email}) => {
+// 	return {
+// 		...state,
+// 		currentUser: {
+// 			...state.currentUser,
+// 			id: id,
+// 			userName: name,
+// 			email: email}
+// 	};
+// }),
+on (getEmailErrorLoginAction,
+	(state: UserState, {emailError}) => {
+	return {
+		...state,
+		emailError: emailError
+	};
+}),
+on (cleanEmailErrorLoginAction,
+	(state: UserState) => {
+	return {
+		...state,
+		emailError: null
 	};
 })
 );

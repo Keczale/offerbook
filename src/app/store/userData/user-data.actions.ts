@@ -15,9 +15,17 @@ export const getCurrentUserAction = createAction(
 
 export const userSignOutAction = createAction(
   '[UserData] User sign up'
-  );
+);
 
-export const getCurrentUsderAction = createAction(
-    '[UserData] Get current user',
-    props<{ id: string, name: string, email: string}>()
-  );  
+// export const loadStateFromDataAction = createAction(
+//   '[UserData] Load state from database',
+//   props<{ id: string, name: string, email: string}>()
+// );
+
+export const getEmailErrorLoginAction = createAction(
+  '[UserData] Get error in email login',
+  props<{ emailError: string}>()
+);
+export const cleanEmailErrorLoginAction = createAction(
+  '[UserData] Clean error in email login'
+);

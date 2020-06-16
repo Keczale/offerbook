@@ -11,6 +11,6 @@
         <button  class="email-form__login-btn" mat-button type="submit" (click)="signIn()">Войти</button>
         <button class="email-form__forget" mat-button (click)="resetPassword()">Забыли пароль?</button>
     </div>
-    <mat-error *ngIf="userDataService.inEmailError">{{userDataService.inEmailError}}</mat-error>
+    <mat-error *ngIf="userDataService.inEmailError$ | async">{{userDataService.inEmailError$ | async}}</mat-error>
 </form>
 <mat-icon aria-hidden="false" aria-label="Example home icon">home</mat-icon>

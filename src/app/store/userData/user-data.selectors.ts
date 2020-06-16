@@ -21,3 +21,13 @@ export const currentUserSelector = createSelector(
 	// tslint:disable-next-line: typedef
 	state => state.currentUser
 );
+export const currentUserNameSelector = createSelector(
+	currentUserSelector,
+	// tslint:disable-next-line: typedef
+	state => state.userName
+);
+export const emailErrorSelector = createSelector(
+	userDataFeatureSelector,
+	// tslint:disable-next-line: typedef
+	state => state.emailError
+);

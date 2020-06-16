@@ -30,10 +30,10 @@ export class AppComponent implements OnInit, AfterContentInit {
 	}
 
 	ngOnInit(): void {
-		// this.store$.pipe(select(currentUserSelector)).subscribe(data=>data.userName ? this.userDataService.userName = data.userName : 'User');
+		this.afAuth.authState.subscribe((a: firebase.User) => a ? this.userDataService.loadCurrentUserFromData(a.uid) : null);
 	}
 	ngAfterContentInit(): void {
-		this.afAuth.authState.subscribe((a: firebase.User) => a ? this.userDataService.getUserName(a.uid) : null);
+		// this.afAuth.authState.subscribe((a: firebase.User) => a ? this.userDataService.getUserName(a.uid) : null);
 	}
 
   public signOut(): void {
