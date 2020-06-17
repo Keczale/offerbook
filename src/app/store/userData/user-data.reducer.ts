@@ -1,18 +1,20 @@
 import { createReducer, on } from '@ngrx/store';
 import { User } from 'src/app/models/user.model';
-import { inProgressAction, getCurrentUserAction, userSignOutAction, getEmailErrorLoginAction, cleanEmailErrorLoginAction } from './user-data.actions';
+import * as ActionsUser from './user-data.actions';
 
 export const userDataFeatureKey = 'userData';
 
 export interface UserState {
   isLoading: boolean;
   emailError: string;
+  logOutError:string;
   currentUser: User;
 }
 
 export const initialState: UserState = {
   isLoading: false,
   emailError: null,
+  logOutError: null,
   currentUser: {
 	id: null,
 	userName: null, // сделать верификацию на уник
@@ -32,14 +34,14 @@ export const initialState: UserState = {
 
 const _userDataReducer = createReducer(
 	initialState,
-	on(inProgressAction,
+	on(ActionsUser.inProgressAction,
 	(state: UserState) => {
 	return {
 		...state,
 		isLoading: !state.isLoading
 	};
 	}),
-	on(getCurrentUserAction,
+	on(ActionsUser.getCurrentUserAction,
 		(state: UserState, { id, name, email }) => {
 		return {
 			...state,
@@ -51,7 +53,7 @@ const _userDataReducer = createReducer(
 		};
 	}
 ),
-on (userSignOutAction,
+on (ActionsUser.userSignOutAction,
 	(state: UserState) => {
 	return {
 		...state,
@@ -69,18 +71,32 @@ on (userSignOutAction,
 // 			email: email}
 // 	};
 // }),
-on (getEmailErrorLoginAction,
+on (ActionsUser.getEmailErrorLoginAction,
 	(state: UserState, {emailError}) => {
 	return {
 		...state,
 		emailError: emailError
 	};
 }),
-on (cleanEmailErrorLoginAction,
+on (ActionsUser.cleanEmailErrorLoginAction,
 	(state: UserState) => {
 	return {
 		...state,
 		emailError: null
+	};
+}),
+on (ActionsUser.getLogOutErrorAction,
+	(state: UserState, {logOutError}) => {
+	return {
+		...state,
+		logOutError: logOutError
+	};
+}),
+on (ActionsUser.cleanLogOutErrorAction,
+	(state: UserState) => {
+	return {
+		...state,
+		logOutError: null
 	};
 })
 );

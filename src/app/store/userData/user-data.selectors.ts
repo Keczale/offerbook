@@ -31,3 +31,8 @@ export const emailErrorSelector = createSelector(
 	// tslint:disable-next-line: typedef
 	state => state.emailError
 );
+export const logOutErrorSelector = createSelector(
+	userDataFeatureSelector,
+	// tslint:disable-next-line: typedef
+	state => state.logOutError
+);

@@ -7,7 +7,7 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 // import { Store } from '@ngrx/store';
 // import { UserState, inProgressAction } from 'src/app/store';
 // import { delay } from 'rxjs/operators';
-import { UserDataService } from 'src/app/services/user-data.service';
+import { UserDataService } from '../services/user-data.service';
 
 
 @Component({

@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { UserState, inProgressAction } from 'src/app/store';
-import { UserDataService } from 'src/app/services/user-data.service';
+import { UserDataService } from '../services/user-data.service';
 
 
 @Component({

@@ -4,7 +4,7 @@ import { auth } from 'firebase/app';
 import 'firebase/auth';
 
 import { Router } from '@angular/router';
-import { UserDataService } from 'src/app/services/user-data.service';
+import { UserDataService } from '../services/user-data.service';
 import { Store } from '@ngrx/store';
 import { UserState, inProgressAction } from 'src/app/store';
 

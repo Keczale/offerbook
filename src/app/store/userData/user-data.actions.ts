@@ -9,7 +9,7 @@ export const inProgressAction = createAction(
 );
 
 export const getCurrentUserAction = createAction(
-  '[UserData] Get current user',
+  '[UserData] Get current user from database',
   props<{ id: string, name: string, email: string}>()
 );
 
@@ -26,6 +26,16 @@ export const getEmailErrorLoginAction = createAction(
   '[UserData] Get error in email login',
   props<{ emailError: string}>()
 );
+
 export const cleanEmailErrorLoginAction = createAction(
   '[UserData] Clean error in email login'
+);
+
+export const getLogOutErrorAction = createAction(
+  '[UserData] Get error in log out',
+  props<{ logOutError: string}>()
+);
+
+export const cleanLogOutErrorAction = createAction(
+  '[UserData] Clean error in log out'
 );

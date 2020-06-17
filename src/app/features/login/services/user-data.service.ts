@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store, select, } from '@ngrx/store';
-import { UserState, inProgressAction, DataIsLoadingSelector, getCurrentUserAction, currentUserSelector, userSignOutAction, currentUserNameSelector, cleanEmailErrorLoginAction, getEmailErrorLoginAction, emailErrorSelector } from '../store';
+import { UserState, inProgressAction, DataIsLoadingSelector, getCurrentUserAction, currentUserSelector, userSignOutAction, currentUserNameSelector, cleanEmailErrorLoginAction, getEmailErrorLoginAction, emailErrorSelector, getLogOutErrorAction } from 'src/app/store';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Router } from '@angular/router';
@@ -8,7 +8,8 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { auth, database } from 'firebase';
-import { User } from '../models/user.model';
+import { User } from 'src/app/models/user.model';
+import { UserDataFacade } from 'src/app/store/userData/user-data.facade';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class UserDataService {
   public users$: Observable<any[]>;
 
   //public userName = 'user';
-  public userName$: Observable<string> = this._store$.pipe(select(currentUserNameSelector));
+  // public userName$: Observable<string> = this._store$.pipe(select(currentUserNameSelector));
   public isLoading$: Observable<boolean> = this._store$.pipe(select(DataIsLoadingSelector));
 
   public inEmailError$: Observable<string> = this. _store$.pipe(select(emailErrorSelector));
@@ -30,7 +31,7 @@ constructor(
 	private _store$: Store<UserState>,
 	private _afAuth: AngularFireAuth,
 	private _router: Router,
-	public db: AngularFireDatabase
+	public db: AngularFireDatabase,
 	  // public dataService: DataService,
   ) {	}
 
@@ -109,7 +110,7 @@ constructor(
 	this._afAuth.signOut()
 	.then(() => {this.loading(); this.logOutError = null;
 	})
-	.catch((error: any) => this.logOutError = error.message)
+	.catch((error: any) => this._store$.dispatch(getLogOutErrorAction({logOutError: error.message})))
 	.then(() => this._router.navigate(['/login']));
 	this._store$.dispatch(userSignOutAction());
   }
@@ -118,5 +119,4 @@ constructor(
 	email,
 	{ url: 'http://localhost:4200/login' });
 	}
-	
-}
+};

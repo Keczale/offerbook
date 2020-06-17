@@ -7,36 +7,36 @@ import { AngularFireDatabase } from '@angular/fire/database';
 import { Store, select } from '@ngrx/store';
 import { UserState } from './store';
 // import { Observable } from 'rxjs';
-import { UserDataService } from './services/user-data.service';
+import { UserDataService } from './features/login/services/user-data.service';
+import { UserDataFacade } from './store/userData/user-data.facade';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit, AfterContentInit {
+export class AppComponent implements OnInit {
   public title: string = 'offerbook';
   public nameMask: string = 'User';
+
+  public isLoading: Observable<boolean> = this.userDataFacade.isLoading;
+
 
   constructor(
 	  public afAuth: AngularFireAuth,
 	  private _router: Router,
-	  public userDataService: UserDataService,
+	  public userDataFacade: UserDataFacade,
 	  public db: AngularFireDatabase,
 	  public store$: Store<UserState>,
-	  // private store$: Store<UserState>
 	) {
-		// this.users$ = db.list('users').valueChanges()
 	}
 
 	ngOnInit(): void {
-		this.afAuth.authState.subscribe((a: firebase.User) => a ? this.userDataService.loadCurrentUserFromData(a.uid) : null);
-	}
-	ngAfterContentInit(): void {
-		// this.afAuth.authState.subscribe((a: firebase.User) => a ? this.userDataService.getUserName(a.uid) : null);
+		this.afAuth.authState.subscribe((a: firebase.User) => a ? this.userDataFacade.loadCurrentUserFromDB(a.uid) : null);
 	}
 
   public signOut(): void {
-	this.userDataService.signOut();
+	this.userDataFacade.userSignOut();
   }
 }
