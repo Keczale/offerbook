@@ -36,3 +36,8 @@ export const logOutErrorSelector = createSelector(
 	// tslint:disable-next-line: typedef
 	state => state.logOutError
 );
+export const userTypeSelector = createSelector(
+	currentUserSelector,
+	// tslint:disable-next-line: typedef
+	state => state.userType
+);

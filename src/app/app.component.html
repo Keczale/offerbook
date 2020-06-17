@@ -1,17 +1,17 @@
 <main class="container">
 <header class="head">
-  <div class="head__logo"><a href="">offerBook</a></div>
+  <div class="head__logo"><a routerLink="">offerBook</a></div>
   
-  <mat-button-toggle-group appearance="legacy" name="fontStyle" aria-label="Font Style">
-    <mat-button-toggle value="buy">Купить</mat-button-toggle>
-    <mat-button-toggle value="sell">Продать</mat-button-toggle>
+  <mat-button-toggle-group appearance="legacy" *ngIf="(userDataFacade.userType | async) === 'seller' " name="fontStyle" aria-label="Font Style">
+    <mat-button-toggle value="buy">Продать</mat-button-toggle>
+    <mat-button-toggle value="sell">Купить</mat-button-toggle>
   </mat-button-toggle-group>
 
   <div *ngIf="afAuth.authState| async as authUser">
-    <img class="head__photo" [src]="authUser.photoURL?authUser.photoURL: '../assets/img/smile.jpg'" alt="" title="authUser.displayName">
-    <button mat-button [matMenuTriggerFor]="menu">{{userDataFacade.userName | async}}</button>
+    <img class="head__photo" [src]="authUser.photoURL ? authUser.photoURL: '../assets/img/smile.jpg'" alt="" title="authUser.displayName">
+    <button  mat-button [matMenuTriggerFor]="menu">{{userDataFacade.userName | async}}</button>
       <mat-menu #menu="matMenu">
-        <button mat-menu-item >В кабинет</button>
+        <button mat-menu-item routerLink="/myaccount" >В кабинет</button>
         <button mat-menu-item (click)="signOut()">Выйти</button>
       </mat-menu>
     <mat-error *ngIf="userDataFacade.logOutError | async">{{userDataFacade.logOutError | async}}</mat-error>

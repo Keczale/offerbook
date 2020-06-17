@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { UserState, DataIsLoadingSelector, currentUserNameSelector, logOutErrorSelector } from '.';
+import { UserState, DataIsLoadingSelector, currentUserNameSelector, logOutErrorSelector, userTypeSelector } from '.';
 import { Observable } from 'rxjs';
 import { UserDataService } from 'src/app/features/login/services/user-data.service';
 
@@ -23,6 +23,9 @@ export class UserDataFacade {
   public get logOutError(): Observable<string>{
 	return this._store$.pipe(select(logOutErrorSelector));
   }
+  public get userType(): Observable<string>{
+    return this._store$.pipe(select(userTypeSelector));
+    }
 
   public loadCurrentUserFromDB(uid: string): void {
 	this._userDataService.loadCurrentUserFromData(uid);
@@ -30,6 +33,5 @@ export class UserDataFacade {
   public userSignOut(): void {
 	this._userDataService.signOut();
 }
-
 
 }

@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Store, select, } from '@ngrx/store';
-import { UserState, inProgressAction, DataIsLoadingSelector, getCurrentUserAction, currentUserSelector, userSignOutAction, currentUserNameSelector, cleanEmailErrorLoginAction, getEmailErrorLoginAction, emailErrorSelector, getLogOutErrorAction } from 'src/app/store';
+import { UserState, inProgressAction, DataIsLoadingSelector, getCurrentUserAction, currentUserSelector, userSignOutAction, currentUserNameSelector, cleanEmailErrorLoginAction, getEmailErrorLoginAction, emailErrorSelector, getLogOutErrorAction, addSellerAction, userTypeSelector, removeSellerAction, loadCurrentUserAction } from 'src/app/store';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { auth, database } from 'firebase';
-import { User } from 'src/app/models/user.model';
+import { User, UserTypes } from 'src/app/models/user.model';
 import { UserDataFacade } from 'src/app/store/userData/user-data.facade';
 
 @Injectable({
@@ -22,6 +22,10 @@ export class UserDataService {
   //public userName = 'user';
   // public userName$: Observable<string> = this._store$.pipe(select(currentUserNameSelector));
   public isLoading$: Observable<boolean> = this._store$.pipe(select(DataIsLoadingSelector));
+
+  public userType$: Observable<string> = this._store$.pipe(select(userTypeSelector));
+
+  public onUserSubscription: Subscription;
 
   public inEmailError$: Observable<string> = this. _store$.pipe(select(emailErrorSelector));
   public inGoogleError: string;
@@ -48,12 +52,14 @@ constructor(
   public loadCurrentUserFromData(uid: any): void {
 	database().ref(`users/${uid}`).once('value')
 	.then((snapshot: database.DataSnapshot) => snapshot.val())
-	.then((user: any) => this._store$.dispatch(getCurrentUserAction({id: user.id, name: user.userName, email: user.email})));
+	.then((user: any) => this._store$
+	.dispatch(loadCurrentUserAction({id: user.id, name: user.userName, email: user.email, userType: user.userType})));
 
   }
 
   public userToDataBaseReg(): void {
-	this._store$.pipe(select(currentUserSelector)).subscribe((user: User) => database().ref(`users/${user.id}`).set(user));
+	this. onUserSubscription = this._store$.pipe(select(currentUserSelector))
+	.subscribe((user: User) => database().ref(`users/${user.id}`).set(user));
   }
 
   public userToStoreReg(name: any, userData: any): void {
@@ -71,7 +77,7 @@ constructor(
 
   public userToStoreLogInGoogle(): void {
 	const user: firebase.User = auth().currentUser;
-	this._store$.dispatch(getCurrentUserAction({id: user.uid, name: user.displayName, email: user.email}));
+	 this._store$.dispatch(getCurrentUserAction({id: user.uid, name: user.displayName, email: user.email}));
 	this._store$.pipe(select(currentUserSelector)).subscribe((user: User) => database().ref(`users/${user.id}`).set(user));
 	 }
 
@@ -80,9 +86,9 @@ constructor(
 	this._afAuth.createUserWithEmailAndPassword(email, password)
 	.then((userData: auth.UserCredential) => this.userToStoreReg(name, userData))
 	.then(() => this.userToDataBaseReg())
-	.then(() => this.loading())
+	.then(() => this.onUserSubscription.unsubscribe())
 	.then(() => this._router.navigate(['']), () => this.loading())
-	;
+	.then(() => this.loading());
   }
 
   public signInEmail(email: any, password: any): void {
@@ -98,6 +104,8 @@ constructor(
   public signInGoogle(): void {
 	this.loading();
 	this._afAuth.signInWithPopup(new auth.GoogleAuthProvider())
+	.then(() => this.userToDataBaseReg())
+	.then(() => this.onUserSubscription.unsubscribe())
 	.then(() => {this.userToStoreLogInGoogle(); this.inGoogleError = null;
 	})
 	.catch((error: any) => this.inGoogleError = error.message)
@@ -119,4 +127,17 @@ constructor(
 	email,
 	{ url: 'http://localhost:4200/login' });
 	}
-};
+
+	public addSeller(userType: string): void {
+		if (userType === UserTypes[0]) {
+			this._store$.dispatch(addSellerAction());
+			database().ref(`users/${auth().currentUser.uid}/userType`).set(UserTypes[1]);
+		}
+		else if (userType === UserTypes[1]) {
+			this._store$.dispatch(removeSellerAction());
+			database().ref(`users/${auth().currentUser.uid}/userType`).set(UserTypes[0]);
+		}
+
+	}
+
+}

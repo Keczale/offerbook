@@ -8,6 +8,10 @@ export const inProgressAction = createAction(
   '[UserData] Activate/disactivate load bar'
 );
 
+export const loadCurrentUserAction = createAction(
+  '[UserData] Load init current user from database',
+  props<{ id: string, name: string, email: string, userType: string}>()
+);
 export const getCurrentUserAction = createAction(
   '[UserData] Get current user from database',
   props<{ id: string, name: string, email: string}>()
@@ -38,4 +42,11 @@ export const getLogOutErrorAction = createAction(
 
 export const cleanLogOutErrorAction = createAction(
   '[UserData] Clean error in log out'
+);
+
+export const addSellerAction = createAction(
+  '[UserData] add status seller to current user'
+);
+export const removeSellerAction = createAction(
+  '[UserData] remove status seller to current user'
 );

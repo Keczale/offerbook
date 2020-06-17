@@ -5,6 +5,7 @@ import { RegisterComponent } from './features/login/register/register.component'
 import { AngularFireAuthGuard, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
 import { AppComponent } from './app.component';
 import { OfferbookComponent } from './features/offerbook/offerbook.component';
+import { OfficeComponent } from './features/login/office/office.component';
 
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['/login']);
 
@@ -25,7 +26,11 @@ const routes: Routes = [
   {
 	path: '',
 	component: OfferbookComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedToLogin }
-	},
+  },
+  {
+  path: 'myaccount',
+  component: OfficeComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedToLogin }
+  },
 
   ];
 

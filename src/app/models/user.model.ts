@@ -32,3 +32,8 @@ interface UserRating {
 	buyer: number;
 	seller: number;
 }
+
+export enum UserTypes {'buyer', 'seller'}
+
+export enum productCategories {'auto/moto', 'seller'}
+

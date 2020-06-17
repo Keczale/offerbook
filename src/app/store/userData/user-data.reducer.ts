@@ -7,7 +7,7 @@ export const userDataFeatureKey = 'userData';
 export interface UserState {
   isLoading: boolean;
   emailError: string;
-  logOutError:string;
+  logOutError: string;
   currentUser: User;
 }
 
@@ -41,17 +41,30 @@ const _userDataReducer = createReducer(
 		isLoading: !state.isLoading
 	};
 	}),
-	on(ActionsUser.getCurrentUserAction,
-		(state: UserState, { id, name, email }) => {
+	on(ActionsUser.loadCurrentUserAction,
+		(state: UserState, { id, name, email, userType }) => {
 		return {
 			...state,
 			currentUser: {
 				...state.currentUser,
 				id: id,
 				userName: name,
-				email: email}
+				email: email,
+				userType: userType}
 		};
 	}
+),
+on(ActionsUser.getCurrentUserAction,
+	(state: UserState, { id, name, email }) => {
+	return {
+		...state,
+		currentUser: {
+			...state.currentUser,
+			id: id,
+			userName: name,
+			email: email}
+	};
+}
 ),
 on (ActionsUser.userSignOutAction,
 	(state: UserState) => {
@@ -97,6 +110,24 @@ on (ActionsUser.cleanLogOutErrorAction,
 	return {
 		...state,
 		logOutError: null
+	};
+}),
+on (ActionsUser.addSellerAction,
+	(state: UserState) => {
+	return {
+		...state,
+		currentUser: {
+			...state.currentUser,
+			userType: 'seller'}
+	};
+}),
+on (ActionsUser.removeSellerAction,
+	(state: UserState) => {
+	return {
+		...state,
+		currentUser: {
+			...state.currentUser,
+			userType: 'buyer'}
 	};
 })
 );

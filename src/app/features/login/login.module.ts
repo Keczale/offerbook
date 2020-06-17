@@ -13,12 +13,13 @@ import { LastOffersComponent } from './last-offers/last-offers.component';
 import { RegisterComponent } from './register/register.component';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { OfficeComponent } from './office/office.component';
 
 
 
 
 @NgModule({
-  declarations: [LoginComponent, EmailComponent, GoogleComponent, LastOffersComponent, RegisterComponent],
+  declarations: [LoginComponent, EmailComponent, GoogleComponent, LastOffersComponent, RegisterComponent, OfficeComponent],
   imports: [
 	CommonModule,
 	MatButtonModule,
