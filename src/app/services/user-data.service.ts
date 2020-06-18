@@ -16,107 +16,107 @@ import { User } from '../models/user.model';
 export class UserDataService {
   // public isLoading: boolean;
 
-  public users$: Observable<any[]>;
+//   public users$: Observable<any[]>;
 
-  //public userName = 'user';
-  public userName$: Observable<string> = this._store$.pipe(select(currentUserNameSelector));
-  public isLoading$: Observable<boolean> = this._store$.pipe(select(DataIsLoadingSelector));
+//   //public userName = 'user';
+//   public userName$: Observable<string> = this._store$.pipe(select(currentUserNameSelector));
+//   public isLoading$: Observable<boolean> = this._store$.pipe(select(DataIsLoadingSelector));
 
-  public inEmailError$: Observable<string> = this. _store$.pipe(select(emailErrorSelector));
-  public inGoogleError: string;
-  public logOutError: string;
+//   public inEmailError$: Observable<string> = this. _store$.pipe(select(emailErrorSelector));
+//   public inGoogleError: string;
+//   public logOutError: string;
 
-constructor(
-	private _store$: Store<UserState>,
-	private _afAuth: AngularFireAuth,
-	private _router: Router,
-	public db: AngularFireDatabase
-	  // public dataService: DataService,
-  ) {	}
+// constructor(
+// 	private _store$: Store<UserState>,
+// 	private _afAuth: AngularFireAuth,
+// 	private _router: Router,
+// 	public db: AngularFireDatabase
+// 	  // public dataService: DataService,
+//   ) {	}
 
-  public loading(): void {
-	this._store$.dispatch(inProgressAction());
-	// this._store$.pipe(select(DataIsLoadingSelector)).subscribe((boo: boolean) => this.isLoading = boo);
-  }
-//   public getUserName(uid: any): void {
-// 	console.log(auth().currentUser.uid);
-// 	database().ref(`users/${uid}`).once('value').then(snapshot => {this.userName = snapshot.val().userName});
-// 	//this.db.list(`user/${auth().currentUser.uid}`).snapshotChanges()
-// 	//.subscribe(a => console.log(a)); //database().ref(`users/${auth().currentUser.uid}`).once:'unlogined';
-// }
-  public loadCurrentUserFromData(uid: any): void {
-	database().ref(`users/${uid}`).once('value')
-	.then((snapshot: database.DataSnapshot) => snapshot.val())
-	.then((user: any) => this._store$.dispatch(getCurrentUserAction({id: user.id, name: user.userName, email: user.email})));
-
-  }
-
-  public userToDataBaseReg(): void {
-	this._store$.pipe(select(currentUserSelector)).subscribe((user: User) => database().ref(`users/${user.id}`).set(user));
-  }
-
-  public userToStoreReg(name: any, userData: any): void {
-	const userName: string = userData.user.displayName ? userData.user.displayName : name;
-	this._store$.dispatch(getCurrentUserAction({id: userData.user.uid, name: userName, email: userData.user.email}));
-  }
-
-//   public userToStoreLogInEmail(): void {
-// 	const id: string = auth().currentUser.uid;
-// 	database().ref(`users/${id}`).once('value')
+//   public loading(): void {
+// 	this._store$.dispatch(inProgressAction());
+// 	// this._store$.pipe(select(DataIsLoadingSelector)).subscribe((boo: boolean) => this.isLoading = boo);
+//   }
+// //   public getUserName(uid: any): void {
+// // 	console.log(auth().currentUser.uid);
+// // 	database().ref(`users/${uid}`).once('value').then(snapshot => {this.userName = snapshot.val().userName});
+// // 	//this.db.list(`user/${auth().currentUser.uid}`).snapshotChanges()
+// // 	//.subscribe(a => console.log(a)); //database().ref(`users/${auth().currentUser.uid}`).once:'unlogined';
+// // }
+//   public loadCurrentUserFromData(uid: any): void {
+// 	database().ref(`users/${uid}`).once('value')
 // 	.then((snapshot: database.DataSnapshot) => snapshot.val())
-// 	// отдает массив всех юзеров const a = database().ref(`user/`).once('value').then(snapshot => {console.log(snapshot.val())});
 // 	.then((user: any) => this._store$.dispatch(getCurrentUserAction({id: user.id, name: user.userName, email: user.email})));
+
 //   }
 
-  public userToStoreLogInGoogle(): void {
-	const user: firebase.User = auth().currentUser;
-	this._store$.dispatch(getCurrentUserAction({id: user.uid, name: user.displayName, email: user.email}));
-	this._store$.pipe(select(currentUserSelector)).subscribe((user: User) => database().ref(`users/${user.id}`).set(user));
-	 }
+//   public userToDataBaseReg(): void {
+// 	this._store$.pipe(select(currentUserSelector)).subscribe((user: User) => database().ref(`users/${user.id}`).set(user));
+//   }
 
-  public createUser(name: any, email: any, password: any): void {
-	this.loading();
-	this._afAuth.createUserWithEmailAndPassword(email, password)
-	.then((userData: auth.UserCredential) => this.userToStoreReg(name, userData))
-	.then(() => this.userToDataBaseReg())
-	.then(() => this.loading())
-	.then(() => this._router.navigate(['']), () => this.loading())
-	;
-  }
+//   public userToStoreReg(name: any, userData: any): void {
+// 	const userName: string = userData.user.displayName ? userData.user.displayName : name;
+// 	this._store$.dispatch(getCurrentUserAction({id: userData.user.uid, name: userName, email: userData.user.email}));
+//   }
 
-  public signInEmail(email: any, password: any): void {
-	this.loading();
-	this._afAuth.signInWithEmailAndPassword(email, password)
-	.then(() => this._store$.dispatch(cleanEmailErrorLoginAction()))
-	.catch((error: any) => this._store$.dispatch(getEmailErrorLoginAction({emailError: error.message})))
-	.then(() => this.loading())
-	.then(() => this._router.navigate(['']))
-	;
-  }
+// //   public userToStoreLogInEmail(): void {
+// // 	const id: string = auth().currentUser.uid;
+// // 	database().ref(`users/${id}`).once('value')
+// // 	.then((snapshot: database.DataSnapshot) => snapshot.val())
+// // 	// отдает массив всех юзеров const a = database().ref(`user/`).once('value').then(snapshot => {console.log(snapshot.val())});
+// // 	.then((user: any) => this._store$.dispatch(getCurrentUserAction({id: user.id, name: user.userName, email: user.email})));
+// //   }
 
-  public signInGoogle(): void {
-	this.loading();
-	this._afAuth.signInWithPopup(new auth.GoogleAuthProvider())
-	.then(() => {this.userToStoreLogInGoogle(); this.inGoogleError = null;
-	})
-	.catch((error: any) => this.inGoogleError = error.message)
-	.then(() => this.loading())
-	.then(() => this._router.navigate(['']), () => this.loading())
-	;
-  }
-  public signOut(): void {
-	this.loading();
-	this._afAuth.signOut()
-	.then(() => {this.loading(); this.logOutError = null;
-	})
-	.catch((error: any) => this.logOutError = error.message)
-	.then(() => this._router.navigate(['/login']));
-	this._store$.dispatch(userSignOutAction());
-  }
-  public resetPasswordInit(email: string): Promise<void> {
-	return this._afAuth.sendPasswordResetEmail(
-	email,
-	{ url: 'http://localhost:4200/login' });
-	}
+//   public userToStoreLogInGoogle(): void {
+// 	const user: firebase.User = auth().currentUser;
+// 	this._store$.dispatch(getCurrentUserAction({id: user.uid, name: user.displayName, email: user.email}));
+// 	this._store$.pipe(select(currentUserSelector)).subscribe((user: User) => database().ref(`users/${user.id}`).set(user));
+// 	 }
+
+//   public createUser(name: any, email: any, password: any): void {
+// 	this.loading();
+// 	this._afAuth.createUserWithEmailAndPassword(email, password)
+// 	.then((userData: auth.UserCredential) => this.userToStoreReg(name, userData))
+// 	.then(() => this.userToDataBaseReg())
+// 	.then(() => this.loading())
+// 	.then(() => this._router.navigate(['']), () => this.loading())
+// 	;
+//   }
+
+//   public signInEmail(email: any, password: any): void {
+// 	this.loading();
+// 	this._afAuth.signInWithEmailAndPassword(email, password)
+// 	.then(() => this._store$.dispatch(cleanEmailErrorLoginAction()))
+// 	.catch((error: any) => this._store$.dispatch(getEmailErrorLoginAction({emailError: error.message})))
+// 	.then(() => this.loading())
+// 	.then(() => this._router.navigate(['']))
+// 	;
+//   }
+
+//   public signInGoogle(): void {
+// 	this.loading();
+// 	this._afAuth.signInWithPopup(new auth.GoogleAuthProvider())
+// 	.then(() => {this.userToStoreLogInGoogle(); this.inGoogleError = null;
+// 	})
+// 	.catch((error: any) => this.inGoogleError = error.message)
+// 	.then(() => this.loading())
+// 	.then(() => this._router.navigate(['']), () => this.loading())
+// 	;
+//   }
+//   public signOut(): void {
+// 	this.loading();
+// 	this._afAuth.signOut()
+// 	.then(() => {this.loading(); this.logOutError = null;
+// 	})
+// 	.catch((error: any) => this.logOutError = error.message)
+// 	.then(() => this._router.navigate(['/login']));
+// 	this._store$.dispatch(userSignOutAction());
+//   }
+//   public resetPasswordInit(email: string): Promise<void> {
+// 	return this._afAuth.sendPasswordResetEmail(
+// 	email,
+// 	{ url: 'http://localhost:4200/login' });
+// 	}
 	
 }

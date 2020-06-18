@@ -50,3 +50,7 @@ export const addSellerAction = createAction(
 export const removeSellerAction = createAction(
   '[UserData] remove status seller to current user'
 );
+export const setSellerCategoriesAction = createAction(
+  '[UserData] set seller categories  to current user',
+  props<{ sellerCategories: string[]}>()
+);

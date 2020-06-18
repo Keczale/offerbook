@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store, select, } from '@ngrx/store';
-import { UserState, inProgressAction, DataIsLoadingSelector, getCurrentUserAction, currentUserSelector, userSignOutAction, currentUserNameSelector, cleanEmailErrorLoginAction, getEmailErrorLoginAction, emailErrorSelector, getLogOutErrorAction, addSellerAction, userTypeSelector, removeSellerAction, loadCurrentUserAction } from 'src/app/store';
+import { UserState, inProgressAction, DataIsLoadingSelector, getCurrentUserAction, currentUserSelector, userSignOutAction, currentUserNameSelector, cleanEmailErrorLoginAction, getEmailErrorLoginAction, emailErrorSelector, getLogOutErrorAction, addSellerAction, userTypeSelector, removeSellerAction, loadCurrentUserAction, setSellerCategoriesAction, sellersCategorySelector } from 'src/app/store';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Router } from '@angular/router';
@@ -26,6 +26,7 @@ export class UserDataService {
   public userType$: Observable<string> = this._store$.pipe(select(userTypeSelector));
 
   public onUserSubscription: Subscription;
+  public sellerCategories$: Observable<string[]> = this._store$.pipe(select(sellersCategorySelector))
 
   public inEmailError$: Observable<string> = this. _store$.pipe(select(emailErrorSelector));
   public inGoogleError: string;
@@ -138,6 +139,10 @@ constructor(
 			database().ref(`users/${auth().currentUser.uid}/userType`).set(UserTypes[0]);
 		}
 
+	}
+
+	public setUserCategories(sellerCategories: string[]): void {
+		this._store$.dispatch(setSellerCategoriesAction({sellerCategories}))
 	}
 
 }

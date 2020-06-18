@@ -23,7 +23,7 @@ export const initialState: UserState = {
 	userData: {name: null, surname: null, birthDay: null},
 	userStatus: null, // registered or guest если гость,
 	userType: 'buyer', // byer seller or universal
-	userOrders: [], // order id's
+	userRequests: [], // order id's
 	userOffers: [], // offer id's
 	sellersCategory: [],
 	userRating: {buyer: null, seller: null}
@@ -128,6 +128,15 @@ on (ActionsUser.removeSellerAction,
 		currentUser: {
 			...state.currentUser,
 			userType: 'buyer'}
+	};
+}),
+on (ActionsUser.setSellerCategoriesAction,
+	(state: UserState, {sellerCategories}) => {
+	return {
+		...state,
+		currentUser: {
+			...state.currentUser,
+			sellersCategory: sellerCategories}
 	};
 })
 );

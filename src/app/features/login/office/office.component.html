@@ -1,3 +1,16 @@
-<button class="office__seller-button"
+<div>
+    <button class="office__seller-button"
     mat-button
     (click)="addSeller()">Буду продавать</button>
+</div>
+
+<div class="settings" *ngIf="userType==='seller'">
+    <h1 class="text">Выберите категории товаров и услуг</h1>
+    <p class="text">Вы будудете получать по ним уведомления о поступивших запросах покупателей</p>
+    <div class="settings__categories" >
+        <mat-checkbox class="settings__items" *ngFor="let category of selectCategoriesForm; let i = index"
+        [(ngModel)]="category.checked"
+        [checked]="category.checked">{{category.title}}</mat-checkbox>
+    </div>    
+    <button  class="email-form__login-btn" mat-button type="submit" (click)="sendCategories()">OK</button>
+</div>

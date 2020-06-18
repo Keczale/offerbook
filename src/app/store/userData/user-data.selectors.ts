@@ -41,3 +41,9 @@ export const userTypeSelector = createSelector(
 	// tslint:disable-next-line: typedef
 	state => state.userType
 );
+
+export const sellersCategorySelector = createSelector(
+	currentUserSelector,
+	// tslint:disable-next-line: typedef
+	state => state.sellersCategory
+);

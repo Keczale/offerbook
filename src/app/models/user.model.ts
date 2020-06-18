@@ -1,4 +1,4 @@
-import { Order } from './order.model';
+import { Request } from './request.model';
 import { Offer } from './offer.model';
 
 export class User {
@@ -10,7 +10,7 @@ export class User {
 		public userData: UserData,
 		public userStatus: string, // registered or guest
 		public userType: string, // byer seller or universal
-		public userOrders: Order[], // order id's
+		public userRequests: Request[], // order id's
 		public userOffers: Offer[], // offer id's
 		public sellersCategory: string[],
 		public userRating: UserRating

@@ -1,6 +1,6 @@
 import { Offer } from './offer.model';
 
-export class Order {
+export class Request {
 	constructor(
 		public id: string,
 		public fromUser: string,
