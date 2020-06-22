@@ -22,9 +22,15 @@ import { MatProgressBarModule} from '@angular/material/progress-bar';
 import { MatButtonToggleModule} from '@angular/material/button-toggle';
 
 import { UserDataEffects } from './store/userData/user-data.effects';
-import { LoginModule } from './features/login/login.module';
+import { UserModule } from './features/user/user.module';
 import { OfferbookModule } from './features/offerbook/offerbook.module';
-import { userDataReducer } from './store';
+import { userDataReducer, requestReducer } from './store';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { PopupComponent } from './testpopup/popup/popup.component';
+//  import { MatDialogModule } from '@angular/material/dialog';
+// import {MatCardModule} from '@angular/material/card';
+
+
 
 @NgModule({
   declarations: [
@@ -35,20 +41,24 @@ import { userDataReducer } from './store';
   AppRoutingModule,
   StoreModule.forRoot({ }),
   StoreModule.forFeature ('userData', userDataReducer),
+  StoreModule.forFeature ('request', requestReducer),
   StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
   EffectsModule.forRoot([]),
   StoreRouterConnectingModule.forRoot(),
   EffectsModule.forFeature([UserDataEffects]),
   AngularFireModule.initializeApp(environment.firebase),
   AngularFireDatabaseModule,
-  LoginModule,
+  UserModule,
   OfferbookModule,
   BrowserAnimationsModule,
   MatButtonModule,
   MatFormFieldModule,
   MatProgressBarModule,
   MatButtonToggleModule,
-  MatMenuModule
+  MatMenuModule,
+  MatSnackBarModule,
+  // MatDialogModule,
+  // MatCardModule
   ],
   providers: [],
   bootstrap: [AppComponent]

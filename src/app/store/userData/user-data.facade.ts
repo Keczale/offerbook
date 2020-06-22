@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { UserState, DataIsLoadingSelector, currentUserNameSelector, logOutErrorSelector, userTypeSelector } from '.';
 import { Observable } from 'rxjs';
-import { UserDataService } from 'src/app/features/login/services/user-data.service';
+import { UserDataService } from 'src/app/features/user/services/user-data.service';
 
 @Injectable({
   providedIn: 'root'

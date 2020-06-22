@@ -25,7 +25,7 @@ export const initialState: UserState = {
 	userType: 'buyer', // byer seller or universal
 	userRequests: [], // order id's
 	userOffers: [], // offer id's
-	sellersCategory: [],
+	sellerCategories: [],
 	userRating: {buyer: null, seller: null}
 
   }
@@ -42,7 +42,7 @@ const _userDataReducer = createReducer(
 	};
 	}),
 	on(ActionsUser.loadCurrentUserAction,
-		(state: UserState, { id, name, email, userType }) => {
+		(state: UserState, { id, name, email, userType, sellerCategories }) => {
 		return {
 			...state,
 			currentUser: {
@@ -50,7 +50,8 @@ const _userDataReducer = createReducer(
 				id: id,
 				userName: name,
 				email: email,
-				userType: userType}
+				userType: userType,
+				sellerCategories: sellerCategories}
 		};
 	}
 ),
@@ -136,7 +137,7 @@ on (ActionsUser.setSellerCategoriesAction,
 		...state,
 		currentUser: {
 			...state.currentUser,
-			sellersCategory: sellerCategories}
+			sellerCategories: sellerCategories}
 	};
 })
 );

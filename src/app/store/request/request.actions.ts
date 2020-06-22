@@ -1,15 +1,11 @@
 import { createAction, props } from '@ngrx/store';
+import { Request } from '../../models/request.model';
 
-export const loadRequests = createAction(
-  '[Request] Load Requests'
+export const requestInProgressAction = createAction(
+  '[Request] Activate/disactivate load bar'
 );
 
-export const loadRequestsSuccess = createAction(
-  '[Request] Load Requests Success',
-  props<{ data: any }>()
-);
-
-export const loadRequestsFailure = createAction(
-  '[Request] Load Requests Failure',
-  props<{ error: any }>()
-);
+export const createRequestAction = createAction(
+  '[Request] Create buyer request',
+  props<{ request: Request }>()
+); 

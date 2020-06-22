@@ -35,4 +35,4 @@ import { OfficeComponent } from './office/office.component';
   ],
   exports: [LoginComponent]
 })
-export class LoginModule { }
+export class UserModule { }

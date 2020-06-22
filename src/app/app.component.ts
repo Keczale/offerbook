@@ -7,9 +7,11 @@ import { AngularFireDatabase } from '@angular/fire/database';
 import { Store, select } from '@ngrx/store';
 import { UserState } from './store';
 // import { Observable } from 'rxjs';
-import { UserDataService } from './features/login/services/user-data.service';
+import { UserDataService } from './features/user/services/user-data.service';
 import { UserDataFacade } from './store/userData/user-data.facade';
 import { Observable } from 'rxjs';
+import { RequestFacade } from './store/request/request.facade';
+// import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-root',
@@ -20,15 +22,19 @@ export class AppComponent implements OnInit {
   public title: string = 'offerbook';
   public nameMask: string = 'User';
 
-  public isLoading: Observable<boolean> = this.userDataFacade.isLoading;
+  public userIsLoading: Observable<boolean> = this.userDataFacade.isLoading;
+  public requestIsLoading: Observable<boolean> = this.requestFacade.isLoading;
 
 
   constructor(
 	  public afAuth: AngularFireAuth,
 	  private _router: Router,
 	  public userDataFacade: UserDataFacade,
+	  public requestFacade: RequestFacade,
 	  public db: AngularFireDatabase,
 	  public store$: Store<UserState>,
+	//   public dialog: MatDialog,
+
 	) {
 	}
 
@@ -39,4 +45,8 @@ export class AppComponent implements OnInit {
   public signOut(): void {
 	this.userDataFacade.userSignOut();
   }
+
+//   public openDialog(): void {
+//     this.dialog.open(PopupComponent);
+//   }
 }

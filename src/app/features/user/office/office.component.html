@@ -11,6 +11,16 @@
         <mat-checkbox class="settings__items" *ngFor="let category of selectCategoriesForm; let i = index"
         [(ngModel)]="category.checked"
         [checked]="category.checked">{{category.title}}</mat-checkbox>
-    </div>    
-    <button  class="email-form__login-btn" mat-button type="submit" (click)="sendCategories()">OK</button>
+    </div>
+    <div>    
+    <button  class="email-form__login-btn"
+        mat-button type="submit" 
+        (click)="sendCategories()"
+        [title]="sendCategotiesTitle">OK</button>
+    <button  class="email-form__login-btn"
+        mat-stroked-button type="submit" 
+        (click)="clearsSelectedCategories()"
+        [title]="clearTitle">Очистить</button>
+
+    </div>
 </div>

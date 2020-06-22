@@ -12,7 +12,7 @@ export class User {
 		public userType: string, // byer seller or universal
 		public userRequests: Request[], // order id's
 		public userOffers: Offer[], // offer id's
-		public sellersCategory: string[],
+		public sellerCategories: string[],
 		public userRating: UserRating
 	) {}
 }

@@ -10,7 +10,7 @@ export const inProgressAction = createAction(
 
 export const loadCurrentUserAction = createAction(
   '[UserData] Load init current user from database',
-  props<{ id: string, name: string, email: string, userType: string}>()
+  props<{ id: string, name: string, email: string, userType: string, sellerCategories: string[]}>()
 );
 export const getCurrentUserAction = createAction(
   '[UserData] Get current user from database',

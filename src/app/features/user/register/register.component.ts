@@ -35,7 +35,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnDestroy(): void {
-		this.createUser();
 	}
 
   public checkPasswords(group: FormGroup): any { // here we have the 'passwords' group

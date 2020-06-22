@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Store, select, } from '@ngrx/store';
-import { UserState, inProgressAction, DataIsLoadingSelector, getCurrentUserAction, currentUserSelector, userSignOutAction, currentUserNameSelector, cleanEmailErrorLoginAction, getEmailErrorLoginAction, emailErrorSelector, getLogOutErrorAction, addSellerAction, userTypeSelector, removeSellerAction, loadCurrentUserAction, setSellerCategoriesAction, sellersCategorySelector } from 'src/app/store';
+import { UserState, inProgressAction, DataIsLoadingSelector, getCurrentUserAction, currentUserSelector, userSignOutAction, currentUserNameSelector, cleanEmailErrorLoginAction, getEmailErrorLoginAction, emailErrorSelector, getLogOutErrorAction, addSellerAction, userTypeSelector, removeSellerAction, loadCurrentUserAction, setSellerCategoriesAction, sellerCategoriesSelector } from 'src/app/store';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+// import { map } from 'rxjs/operators';
 
 import { auth, database } from 'firebase';
 import { User, UserTypes } from 'src/app/models/user.model';
-import { UserDataFacade } from 'src/app/store/userData/user-data.facade';
+// import { UserDataFacade } from 'src/app/store/userData/user-data.facade';
 
 @Injectable({
   providedIn: 'root'
@@ -24,9 +24,10 @@ export class UserDataService {
   public isLoading$: Observable<boolean> = this._store$.pipe(select(DataIsLoadingSelector));
 
   public userType$: Observable<string> = this._store$.pipe(select(userTypeSelector));
+  public currentUser$: Observable<User> = this._store$.pipe(select(currentUserSelector));
 
-  public onUserSubscription: Subscription;
-  public sellerCategories$: Observable<string[]> = this._store$.pipe(select(sellersCategorySelector))
+  public onUserSubscription: any;
+  public sellerCategories$: Observable<string[]> = this._store$.pipe(select(sellerCategoriesSelector))
 
   public inEmailError$: Observable<string> = this. _store$.pipe(select(emailErrorSelector));
   public inGoogleError: string;
@@ -51,17 +52,16 @@ constructor(
 // 	//.subscribe(a => console.log(a)); //database().ref(`users/${auth().currentUser.uid}`).once:'unlogined';
 // }
   public loadCurrentUserFromData(uid: any): void {
+	  console.log('loadgo')
 	database().ref(`users/${uid}`).once('value')
 	.then((snapshot: database.DataSnapshot) => snapshot.val())
-	.then((user: any) => this._store$
-	.dispatch(loadCurrentUserAction({id: user.id, name: user.userName, email: user.email, userType: user.userType})));
+	.then((user: User) => this._store$
+	.dispatch(loadCurrentUserAction({id: user.id, name: user.userName,
+		email: user.email, userType: user.userType, sellerCategories : user.sellerCategories})));
 
   }
 
-  public userToDataBaseReg(): void {
-	this. onUserSubscription = this._store$.pipe(select(currentUserSelector))
-	.subscribe((user: User) => database().ref(`users/${user.id}`).set(user));
-  }
+  
 
   public userToStoreReg(name: any, userData: any): void {
 	const userName: string = userData.user.displayName ? userData.user.displayName : name;
@@ -76,20 +76,46 @@ constructor(
 // 	.then((user: any) => this._store$.dispatch(getCurrentUserAction({id: user.id, name: user.userName, email: user.email})));
 //   }
 
-  public userToStoreLogInGoogle(): void {
+  public userToStoreAndBaseLogInGoogle(): void {
 	const user: firebase.User = auth().currentUser;
-	 this._store$.dispatch(getCurrentUserAction({id: user.uid, name: user.displayName, email: user.email}));
-	this._store$.pipe(select(currentUserSelector)).subscribe((user: User) => database().ref(`users/${user.id}`).set(user));
-	 }
+	database().ref(`users/${user.uid}`).once('value').then((snap: any) =>
+		{ if (snap.val()){
+			console.log(snap.val())
+		database().ref(`users/${user.uid}/userName`).set(user.displayName)
+	}
+		else {
+		console.log('no')
+		this._store$.dispatch(getCurrentUserAction({id: user.uid, name: user.displayName, email: user.email}));
+		this._store$.pipe(select(currentUserSelector))
+		.subscribe((currentUser: User) =>
+		database().ref(`users/${user.uid}`).set(currentUser)).
+		unsubscribe()} }
+	)}
+	
+	// this._store$.pipe(select(currentUserSelector))
+	// 	.subscribe((currentUser: User) =>
+	// 	database().ref(`users/${currentUser.id}`).once('value').then((snap: any) => 
+	// 	{ if (snap.val()){
+	// 		console.log(snap.val())
+	// 	//database().ref(`users/${user.id}/userName`).set(user.userName)
+	// }
+	// 	else {
+	// 	console.log('no')
+	// 	database().ref(`users/${currentUser.id}`).set(user)} } ) )
+	// 	.unsubscribe();
+	//  }
+	public userToDataBaseReg(): void {
+		this.onUserSubscription = this._store$.pipe(select(currentUserSelector))
+		.subscribe((user: User) => database().ref(`users/${user.id}`).set(user)).unsubscribe();
+	}
 
   public createUser(name: any, email: any, password: any): void {
 	this.loading();
 	this._afAuth.createUserWithEmailAndPassword(email, password)
 	.then((userData: auth.UserCredential) => this.userToStoreReg(name, userData))
 	.then(() => this.userToDataBaseReg())
-	.then(() => this.onUserSubscription.unsubscribe())
-	.then(() => this._router.navigate(['']), () => this.loading())
-	.then(() => this.loading());
+	.then(() => this.loading())
+	.then(() => this._router.navigate(['']))
   }
 
   public signInEmail(email: any, password: any): void {
@@ -105,9 +131,9 @@ constructor(
   public signInGoogle(): void {
 	this.loading();
 	this._afAuth.signInWithPopup(new auth.GoogleAuthProvider())
-	.then(() => this.userToDataBaseReg())
-	.then(() => this.onUserSubscription.unsubscribe())
-	.then(() => {this.userToStoreLogInGoogle(); this.inGoogleError = null;
+	// .then(() => this.userToDataBaseReg())
+	// .then(() => this.onUserSubscription.unsubscribe())
+	.then(() => {this.userToStoreAndBaseLogInGoogle(); this.inGoogleError = null;
 	})
 	.catch((error: any) => this.inGoogleError = error.message)
 	.then(() => this.loading())
@@ -142,7 +168,8 @@ constructor(
 	}
 
 	public setUserCategories(sellerCategories: string[]): void {
-		this._store$.dispatch(setSellerCategoriesAction({sellerCategories}))
+		this._store$.dispatch(setSellerCategoriesAction({sellerCategories}));
+		this.userToDataBaseReg()
 	}
 
 }
