@@ -1,8 +1,17 @@
 .example-card {
-    max-width: 400px;
+    max-width: 14rem;
+
+    &__image {
+      object-fit: contain; /*this makes de image in src fit to the size of specified below*/
+      //width: 100%; /* Here you can use wherever you want to specify the width and also the height of the <img>*/
+      height: 14rem;
+    }
+
   }
   
   .example-header-image {
     background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
     background-size: cover;
   }
+
+  

@@ -21,13 +21,14 @@ import { OfferbookDataService } from './services/offerbook-data.service';
 import { OfferbookService } from './services/offerbook.service';
 import { HttpClientModule} from '@angular/common/http';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { RequestChangePopupComponent } from './request/request-change-popup/request-change-popup.component';
 
 
 
 
 
 @NgModule({
-  declarations: [OfferbookComponent, RequestComponent, OfferComponent, RequestPopupComponent, RequestItemComponent, OfferPopupComponent],
+  declarations: [OfferbookComponent, RequestComponent, OfferComponent, RequestPopupComponent, RequestItemComponent, OfferPopupComponent, RequestChangePopupComponent],
   imports: [
     OfbRoutingModule,
     CommonModule,

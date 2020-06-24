@@ -6,11 +6,14 @@ export const requestFeatureKey = 'request';
 
 export interface RequestState {
 isLoading: boolean;
+changedRequest: Request;
 requestList: Request[];
 }
 
 export const initialStateRequest: RequestState = {
   isLoading: false,
+  changedRequest: null,
+
   requestList: []
 };
 
@@ -34,6 +37,29 @@ export const _requestReducer = createReducer(
         ]
       };
       }),
+      on(ActionsRequest.initChangeRequestAction,
+        (state: RequestState, { request }) => {
+        return {
+          ...state,
+          changedRequest: request
+        };
+        }),
+      on(ActionsRequest.loadRequestListFromDBAction,
+        (state: RequestState, { requests }) => {
+        return {
+          ...state,
+          requestList: [
+            ...requests
+          ]
+        };
+        }),
+        on(ActionsRequest.loadInitialStateAction,
+          (state: RequestState) => {
+          return {
+            ...state,
+            requestList: []
+          };
+          })
 );
 
 export function requestReducer(state, action) {

@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { RequestPopupComponent } from './request-popup/request-popup.component';
 import { OfferbookService } from '../services/offerbook.service';
-import { Store, select } from '@ngrx/store';
-import { Subscriber } from 'rxjs';
+// import { Store, select } from '@ngrx/store';
+// import { Subscriber } from 'rxjs';
 
 
 @Component({
@@ -20,13 +20,11 @@ export class RequestComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.offerbookService.loadActualList()
   }
   
   public openDialog(): void {
-    this.dialog.open(RequestPopupComponent, {
-      // height: '400px',
-      width: '50%',
-    });
+    this.offerbookService.openDialog(RequestPopupComponent)
   }
 
 }

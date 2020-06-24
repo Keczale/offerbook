@@ -1,0 +1,41 @@
+<h1 mat-dialog-title>Изменить запрос</h1>
+<div mat-dialog-content [formGroup]="requestChangeForm" (ngSubmit)="submitForm()" class="request-form">
+    <mat-form-field>
+        <mat-label>Изменить название</mat-label>
+        <input matInput
+        type="text"
+            placeholder="Название"
+            formControlName="title">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Изменить описание</mat-label>
+        <textarea matInput
+            placeholder="Описание"
+            formControlName="description">
+        </textarea>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Изменить категорию</mat-label>
+        <mat-select formControlName="category">
+            <mat-option *ngFor="let category of offerbookService.categories"[value]= "category">
+            {{category}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <ngx-mat-file-input formControlName="requestImage"
+        [accept]="'.png,.jpg,.jpeg'"
+       placeholder="Выберите фото" ></ngx-mat-file-input>
+      <mat-icon matSuffix>folder</mat-icon>
+      <mat-error *ngIf="requestChangeForm.get('requestImage').hasError('maxContentSize')">
+        Размер файла не должен превышать {{requestChangeForm.get('requestImage')?.getError('maxContentSize').maxSize | byteFormat}}
+         (Ваш файл {{requestChangeForm.get('requestImage')?.getError('maxContentSize').actualSize
+        | byteFormat}}).
+      </mat-error>
+    </mat-form-field>
+    
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button mat-dialog-close>Отменить</button>
+    <button mat-raised-button mat-dialog-close type="submit" (click)="submitForm()">Принять</button>
+  </div>

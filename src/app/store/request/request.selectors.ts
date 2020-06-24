@@ -19,3 +19,8 @@ export const requestListSelector = createSelector(
 	// tslint:disable-next-line: typedef
 	state => state.requestList
 );
+export const requestChangeSelector = createSelector(
+	requestStateSelector,
+	// tslint:disable-next-line: typedef
+	state => state.changedRequest
+);

@@ -7,14 +7,15 @@ export class Request {
 		public title: string = '',
 		public description: string = '',
 		public category: string = '',
-		public dateCreating: Date = null,
+		public dateCreating: number = null,
 		// public viewed: number, // how much sellers open request , or boolean
 		public photos: string[] = [], // src images
+		public photoNames: string[]=[],
 		public status: string = '', // active done
 		public deleted: boolean = false,
 		// public changed: Date, // when was las change
 		// public dealedOffers: DealedOffer,
-		public offers: Offer[] = [], //refers to offers
+		//public offers: Offer[] = [], //refers to offers
 		) {}
 }
 interface DealedOffer {

@@ -27,14 +27,15 @@ import { OfferbookModule } from './features/offerbook/offerbook.module';
 import { userDataReducer, requestReducer } from './store';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { PopupComponent } from './testpopup/popup/popup.component';
-//  import { MatDialogModule } from '@angular/material/dialog';
+import { RequestComponent } from './features/offerbook/request/request.component';
+import { MatDialogModule } from '@angular/material/dialog';
 // import {MatCardModule} from '@angular/material/card';
 
 
 
 @NgModule({
   declarations: [
-	AppComponent,
+  AppComponent,
   ],
   imports: [
 	BrowserModule,
@@ -57,7 +58,7 @@ import { PopupComponent } from './testpopup/popup/popup.component';
   MatButtonToggleModule,
   MatMenuModule,
   MatSnackBarModule,
-  // MatDialogModule,
+  MatDialogModule,
   // MatCardModule
   ],
   providers: [],

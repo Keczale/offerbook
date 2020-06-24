@@ -80,7 +80,6 @@ constructor(
 	const user: firebase.User = auth().currentUser;
 	database().ref(`users/${user.uid}`).once('value').then((snap: any) =>
 		{ if (snap.val()){
-			console.log(snap.val())
 		database().ref(`users/${user.uid}/userName`).set(user.displayName)
 	}
 		else {
