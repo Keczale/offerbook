@@ -10,14 +10,15 @@ import { AngularFireDatabase } from '@angular/fire/database';
 
 
 @Injectable()
-export class OfferbookDataService {
+export class RequestDataService {
 
 	private _uploadTask: firebase.storage.UploadTask;
   private _baseImageUrl: string = '/images';
-  private _baseRequestUrl: string = '/requests';
+  private _baseActiveRequestUrl: string = '/requests/active';
+  private _baseActiveRequestMapURL: string = '/requests/map';
 
   public photoBaseURL: string = `${this._baseImageUrl}/${firebase.auth().currentUser.uid}`;
-  public requestBaseURL: string = `${this._baseRequestUrl}/${firebase.auth().currentUser.uid}`;
+  public requestBaseURL: string = `${this._baseActiveRequestUrl}/${firebase.auth().currentUser.uid}`;
 
 
   public userUid: string = firebase.auth().currentUser.uid;
@@ -31,7 +32,7 @@ export class OfferbookDataService {
 
 	private _downloadPhotoURL: string;
 
-  public get downloadPhotoURL(): string{
+  public get downloadPhotoURL(): string {
 	return this._downloadPhotoURL;
   }
 
@@ -86,8 +87,15 @@ export class OfferbookDataService {
 	// )
   }
 
-  public sendRequestToDatabase(request): void {
-	  firebase.database().ref(`${this.requestBaseURL}/${request.id}`).set(request)
+  public addRequestToMap(requestId: string, category: string): void {
+	firebase.database().ref(`${this._baseActiveRequestMapURL}/${category}/${requestId}`).set(requestId);
+  }
+  public removeRequestFromMap(requestId: string, category: string): void {
+	this.db.list(`${this._baseActiveRequestMapURL}/${category}`).remove(`${requestId}`);
+  }
+
+  public sendRequestToDatabase(request: any): void {
+	  firebase.database().ref(`${this.requestBaseURL}/${request.id}`).set(request);
   }
 
   public loadActialListFromDB(): void {

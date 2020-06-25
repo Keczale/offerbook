@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { Request } from 'src/app/models/request.model';
-import { OfferbookService } from '../../services/offerbook.service';
+import { RequestService } from '../../services/request.service';
 import { RequestChangePopupComponent } from '../request-change-popup/request-change-popup.component';
 
 
@@ -18,7 +18,7 @@ export class RequestItemComponent implements OnInit {
   public userRequest: Request;
 
   constructor(
-    public offerbookService: OfferbookService,
+    public offerbookService: RequestService,
   ) { }
 
   ngOnInit(): void {

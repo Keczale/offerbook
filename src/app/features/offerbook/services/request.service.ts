@@ -2,15 +2,15 @@ import { Injectable } from '@angular/core';
 import { productCategories } from 'src/app/models/common';
 import { Store, select } from '@ngrx/store';
 // import { MatSnackBar } from '@angular/material/snack-bar';
-import { requestInProgressAction, requestListSelector, createRequestAction, initChangeRequestAction } from 'src/app/store';
-import { OfferbookDataService } from './offerbook-data.service';
+import { requestInProgressAction, requestListSelector, createRequestAction, initChangeRequestAction, endChangeRequestAction } from 'src/app/store';
+import { RequestDataService } from './request-data.service';
 import { Request } from 'src/app/models/request.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { RequestFacade } from 'src/app/store/request/request.facade';
 
 @Injectable()
-export class OfferbookService {
+export class RequestService {
 	private _idPrefficsEnd: number = 2;
 	private _idPrefficsStart: number = 5;
 	private _PhotoNamePrefficsStart: number = 6;
@@ -22,7 +22,7 @@ export class OfferbookService {
   constructor(
 	  private _store$: Store,
 	// private _snackBar: MatSnackBar,
-	private _offerbookDataService: OfferbookDataService,
+	private _offerbookDataService: RequestDataService,
 	private _snackBar: MatSnackBar,
 	public dialog: MatDialog,
 	private requestFasade: RequestFacade
@@ -49,6 +49,7 @@ export class OfferbookService {
 
   public submitForm(value: any): void {
 	const fileName: string = value.requestImage.files[0].name;
+	const requestId: string = this.autoKey;
 	const photoName: string = `${this.autoKey}${fileName.slice(fileName.length - 5, fileName.length) }`;
 	// let downloadPhotoURL: string;
 	let userRequest: Request = new Request();
@@ -61,7 +62,7 @@ export class OfferbookService {
 		const dateCreateStamp: number = Date.now();
 		userRequest = {
 		...userRequest,
-		id: this.autoKey,
+		id: requestId,
 		fromUser: this._offerbookDataService.userUid,
 		title: value.title,
 		description: value.description,
@@ -75,6 +76,7 @@ export class OfferbookService {
 		.then(() => this.loadActualList())
 		//.then(() => this._store$.dispatch(createRequestAction({request: userRequest})))
 		.then(() => this._store$.dispatch(requestInProgressAction()))
+		.then(() => this._offerbookDataService.addRequestToMap(requestId, value.category))
 		.catch((error: Error) => {
 			this._store$.dispatch(requestInProgressAction());
 			console.log(error);
@@ -98,6 +100,7 @@ export class OfferbookService {
 				duration: 2000,
 			  });
 		})
+		.then(() => this._offerbookDataService.removeRequestFromMap(userRequest.id, userRequest.category))
 		.catch((error: Error) => {
 			console.log(error);
 			this._store$.dispatch(requestInProgressAction());
@@ -105,7 +108,6 @@ export class OfferbookService {
 		});
 	}
 
-	
 
 	public initChangeRequestAction(changedRequest){
 		this._store$.dispatch(initChangeRequestAction ({request : changedRequest}))
@@ -122,16 +124,21 @@ export class OfferbookService {
 		let fileName: string = null;
 		let photoName: string = null;
 
-		if(value.requestImage) {
+		if (value.requestImage) {
 			 file = value.requestImage.files[0];
 			 fileName = file.name;
 			 photoName = `${this.autoKey}${fileName.slice(fileName.length - 5, fileName.length) }`;
 			}
 
 		if (value.requestImage) { this._offerbookDataService.deleteImageRequest(changedRequest.photoNames[0])}
-	
+
+		if (value.category) {
+			this._offerbookDataService.addRequestToMap(changedRequest.id, value.category);
+			this._offerbookDataService.removeRequestFromMap(changedRequest.id, changedRequest.category);
+		}
+
 		this._offerbookDataService.uploadRequestImage(file, photoName)
-		.then((downloadPhotoURL) => {
+		.then((downloadPhotoURL: string) => {
 			const dateChangeStamp: number = Date.now();
 			 changedRequest = {
 			...changedRequest,
@@ -146,10 +153,11 @@ export class OfferbookService {
 			.then(() => this.loadActualList())
 			//.then(() => this._store$.dispatch(createRequestAction({request: userRequest})))
 			.then(() => this._store$.dispatch(requestInProgressAction()))
+			.then(() => this._store$.dispatch(endChangeRequestAction()))
 			.catch((error) => {
 				this._store$.dispatch(requestInProgressAction());
 				console.log(error);
 				});
-				}   // еще диспатч добавить на изменение в сторе изменяемого объекта в ноль
+				}   
 
 }

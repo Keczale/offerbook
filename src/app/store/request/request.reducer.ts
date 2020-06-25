@@ -44,6 +44,13 @@ export const _requestReducer = createReducer(
           changedRequest: request
         };
         }),
+        on(ActionsRequest.endChangeRequestAction,
+          (state: RequestState) => {
+          return {
+            ...state,
+            changedRequest: null
+          };
+          }),
       on(ActionsRequest.loadRequestListFromDBAction,
         (state: RequestState, { requests }) => {
         return {

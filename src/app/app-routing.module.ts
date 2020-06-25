@@ -20,10 +20,12 @@ const routes: Routes = [
 	path: 'register',
 	component: RegisterComponent
   },
-  {
-	path: '',
-  component: OfferbookComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedToLogin },
-  },
+  // {
+	// path: '',
+  // component: OfferbookComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedToLogin },
+  // redirectTo: 'myrequests',
+  // pathMatch: 'full'
+  // },
   {
 	path: '',
   component: OfferbookComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedToLogin },
@@ -35,7 +37,7 @@ const routes: Routes = [
 	path: 'myoffers',
 	component: OfferComponent,
   },
-  ]
+  ],
   },
   {
   path: 'myaccount',

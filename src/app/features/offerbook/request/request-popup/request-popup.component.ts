@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { OfferbookService } from '../../services/offerbook.service';
+import { RequestService } from '../../services/request.service';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import { OfferbookDataService } from '../../services/offerbook-data.service';
+import { RequestDataService } from '../../services/request-data.service';
 // import { HttpClient } from '@angular/common/http';
 import { FileValidator } from 'ngx-material-file-input';
 
@@ -16,8 +16,8 @@ export class RequestPopupComponent implements OnInit {
   public requestForm: FormGroup;
 
   constructor(
-    public offerbookService: OfferbookService,
-    public offerbookDataService: OfferbookDataService,
+    public offerbookService: RequestService,
+    public offerbookDataService: RequestDataService,
 
     private _fb: FormBuilder,
     // private _httpClient: HttpClient

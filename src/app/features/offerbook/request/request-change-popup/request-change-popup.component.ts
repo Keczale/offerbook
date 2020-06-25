@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { OfferbookService } from '../../services/offerbook.service';
-import { OfferbookDataService } from '../../services/offerbook-data.service';
+import { RequestService } from '../../services/request.service';
+import { RequestDataService } from '../../services/request-data.service';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { FileValidator } from 'ngx-material-file-input';
 
@@ -15,9 +15,9 @@ export class RequestChangePopupComponent implements OnInit {
   public requestChangeForm: FormGroup;
 
   constructor(
-    public offerbookService: OfferbookService,
-    public offerbookDataService: OfferbookDataService,
-    private _fb: FormBuilder,) { }
+    public offerbookService: RequestService,
+    public offerbookDataService: RequestDataService,
+    private _fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.requestChangeForm = this._fb.group({

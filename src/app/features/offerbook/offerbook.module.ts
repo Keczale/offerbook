@@ -17,8 +17,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialFileInputModule } from 'ngx-material-file-input';
 import { MatIconModule } from '@angular/material/icon';
-import { OfferbookDataService } from './services/offerbook-data.service';
-import { OfferbookService } from './services/offerbook.service';
+import { RequestDataService } from './services/request-data.service';
+import { RequestService } from './services/request.service';
 import { HttpClientModule} from '@angular/common/http';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { RequestChangePopupComponent } from './request/request-change-popup/request-change-popup.component';
@@ -44,7 +44,7 @@ import { RequestChangePopupComponent } from './request/request-change-popup/requ
     MatIconModule,
     HttpClientModule
   ],
-  providers: [OfferbookDataService, OfferbookService],
+  providers: [RequestDataService, RequestService],
   entryComponents:[RequestPopupComponent, OfferPopupComponent]
 })
 export class OfferbookModule { }

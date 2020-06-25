@@ -12,11 +12,14 @@ export const loadInitialStateAction = createAction(
 export const createRequestAction = createAction(
   '[Request] Create buyer request',
   props<{ request: Request }>()
-); 
+);
 export const initChangeRequestAction = createAction(
   '[Request] Init changging request',
   props<{ request: Request }>()
-); 
+);
+export const endChangeRequestAction = createAction(
+  '[Request] End changging request',
+);
 
 export const loadRequestListFromDBAction = createAction(
   '[Request] Load buyer request from data base',
