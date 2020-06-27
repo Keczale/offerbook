@@ -1,4 +1,4 @@
 <button mat-raised-button (click)="openDialog()">Создать запрос</button>
 <div class="request__list">
-    <app-request-item *ngFor="let request of offerbookService.requestList$ | async" [userRequest]="request"></app-request-item>
+    <app-request-item *ngFor="let request of requestService.requestList$ | async" [userRequest]="request"></app-request-item>
 </div>

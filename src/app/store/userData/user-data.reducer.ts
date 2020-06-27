@@ -19,18 +19,18 @@ export const initialState: UserState = {
 	id: null,
 	userName: null, // сделать верификацию на уник
 	email: null,
-	location: {country: null, city: null},
+	location: 'Вся Беларусь',
 	userData: {name: null, surname: null, birthDay: null},
 	userStatus: null, // registered or guest если гость,
 	userType: 'buyer', // byer seller or universal
 	userRequests: [], // order id's
 	userOffers: [], // offer id's
-	sellerCategories: [],
+	sellerCategories: [null],
+	sellerLocation: [null],
 	userRating: {buyer: null, seller: null}
 
   }
 };
-
 
 const _userDataReducer = createReducer(
 	initialState,
@@ -42,7 +42,7 @@ const _userDataReducer = createReducer(
 	};
 	}),
 	on(ActionsUser.loadCurrentUserAction,
-		(state: UserState, { id, name, email, userType, sellerCategories }) => {
+		(state: UserState, { id, name, email, userType, sellerCategories, userLocation }) => {
 		return {
 			...state,
 			currentUser: {
@@ -51,7 +51,9 @@ const _userDataReducer = createReducer(
 				userName: name,
 				email: email,
 				userType: userType,
-				sellerCategories: sellerCategories}
+				sellerCategories: sellerCategories,
+				location: userLocation
+			}
 		};
 	}
 ),
@@ -64,6 +66,17 @@ on(ActionsUser.getCurrentUserAction,
 			id: id,
 			userName: name,
 			email: email}
+	};
+}
+),
+on(ActionsUser.setUserLocationAction,
+	(state: UserState, { userLocation }) => {
+	return {
+		...state,
+		currentUser: {
+			...state.currentUser,
+			location: userLocation
+		}
 	};
 }
 ),

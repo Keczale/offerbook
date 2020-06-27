@@ -1,0 +1,16 @@
+<h1 mat-dialog-title>Ваша заявка</h1>
+<div mat-dialog-content [formGroup]="locationForm" (ngSubmit)="submitForm()" class="location-form">
+    <mat-form-field>
+        <mat-label>Выберите город</mat-label>
+            <mat-select formControlName="city">
+            <mat-option *ngFor="let city of cityList" [value]= "city">
+            {{city}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+        
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button mat-dialog-close>Отменить</button>
+    <button mat-raised-button mat-dialog-close type="submit" (click)="submitForm()">Принять</button>
+  </div>

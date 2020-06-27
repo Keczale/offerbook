@@ -10,11 +10,18 @@ export const inProgressAction = createAction(
 
 export const loadCurrentUserAction = createAction(
   '[UserData] Load init current user from database',
-  props<{ id: string, name: string, email: string, userType: string, sellerCategories: string[]}>()
+  props<{ id: string, name: string, email: string,
+     userType: string, sellerCategories: string[],
+     sellerLocation: string[], userLocation: string}>()
 );
 export const getCurrentUserAction = createAction(
   '[UserData] Get current user from database',
   props<{ id: string, name: string, email: string}>()
+);
+
+export const setUserLocationAction = createAction(
+  '[UserData] Set current user location',
+  props<{ userLocation: string}>()
 );
 
 export const userSignOutAction = createAction(

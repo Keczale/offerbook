@@ -7,6 +7,13 @@
     <mat-button-toggle value="sell" routerLink="/myrequests" routerLinkActive="mat-button-toggle-checked">Купить</mat-button-toggle>
   </mat-button-toggle-group>
 
+  <button class="head__city"
+    *ngIf="afAuth.authState| async"
+    mat-button (click)="openDialog()">
+    {{userDataFacade.userLocation$ | async}}
+ </button>
+
+
   <div *ngIf="afAuth.authState| async as authUser">
     <img class="head__photo" [src]="authUser.photoURL ? authUser.photoURL: '../assets/img/smile.jpg'" alt="" title="authUser.displayName">
     <button  mat-button [matMenuTriggerFor]="menu">{{userDataFacade.userName | async}}</button>

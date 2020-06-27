@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store, select, } from '@ngrx/store';
-import { UserState, inProgressAction, DataIsLoadingSelector, getCurrentUserAction, currentUserSelector, userSignOutAction, currentUserNameSelector, cleanEmailErrorLoginAction, getEmailErrorLoginAction, emailErrorSelector, getLogOutErrorAction, addSellerAction, userTypeSelector, removeSellerAction, loadCurrentUserAction, setSellerCategoriesAction, sellerCategoriesSelector } from 'src/app/store';
+import { UserState, inProgressAction, DataIsLoadingSelector, getCurrentUserAction, currentUserSelector, userSignOutAction, currentUserNameSelector, cleanEmailErrorLoginAction, getEmailErrorLoginAction, emailErrorSelector, getLogOutErrorAction, addSellerAction, userTypeSelector, removeSellerAction, loadCurrentUserAction, setSellerCategoriesAction, sellerCategoriesSelector, setUserLocationAction } from 'src/app/store';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Router } from '@angular/router';
@@ -52,16 +52,18 @@ constructor(
 // 	//.subscribe(a => console.log(a)); //database().ref(`users/${auth().currentUser.uid}`).once:'unlogined';
 // }
   public loadCurrentUserFromData(uid: any): void {
-	  console.log('loadgo')
 	database().ref(`users/${uid}`).once('value')
 	.then((snapshot: database.DataSnapshot) => snapshot.val())
-	.then((user: User) => this._store$
-	.dispatch(loadCurrentUserAction({id: user.id, name: user.userName,
-		email: user.email, userType: user.userType, sellerCategories : user.sellerCategories})));
-
+	.then((user: User) => {
+	if (user) {this._store$
+		.dispatch(loadCurrentUserAction({id: user.id, name: user.userName,
+			email: user.email, userType: user.userType, sellerCategories : user.sellerCategories,
+			sellerLocation : user.sellerLocation, userLocation: user.location}));
+	}
+	else {console.log('there are no such user in DB. Evidently its a first sign in')}
+	});
   }
 
-  
 
   public userToStoreReg(name: any, userData: any): void {
 	const userName: string = userData.user.displayName ? userData.user.displayName : name;
@@ -83,7 +85,6 @@ constructor(
 		database().ref(`users/${user.uid}/userName`).set(user.displayName)
 	}
 		else {
-		console.log('no')
 		this._store$.dispatch(getCurrentUserAction({id: user.uid, name: user.displayName, email: user.email}));
 		this._store$.pipe(select(currentUserSelector))
 		.subscribe((currentUser: User) =>
@@ -103,6 +104,12 @@ constructor(
 	// 	database().ref(`users/${currentUser.id}`).set(user)} } ) )
 	// 	.unsubscribe();
 	//  }
+
+	public setLocation(city): void{
+		this._store$.dispatch(setUserLocationAction({userLocation: city}));
+		this.userToDataBaseReg();
+	}
+
 	public userToDataBaseReg(): void {
 		this.onUserSubscription = this._store$.pipe(select(currentUserSelector))
 		.subscribe((user: User) => database().ref(`users/${user.id}`).set(user)).unsubscribe();

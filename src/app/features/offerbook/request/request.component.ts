@@ -16,15 +16,15 @@ export class RequestComponent implements OnInit {
 
   constructor(
     public dialog: MatDialog,
-    public offerbookService: RequestService,
+    public requestService: RequestService,
   ) { }
 
   ngOnInit(): void {
-    this.offerbookService.loadActualList()
+    this.requestService.loadActualList();
   }
   
   public openDialog(): void {
-    this.offerbookService.openDialog(RequestPopupComponent)
+    this.requestService.openDialog(RequestPopupComponent)
   }
 
 }

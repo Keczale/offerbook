@@ -17,11 +17,13 @@ import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialFileInputModule } from 'ngx-material-file-input';
 import { MatIconModule } from '@angular/material/icon';
-import { RequestDataService } from './services/request-data.service';
-import { RequestService } from './services/request.service';
+// import { RequestDataService } from './services/request-data.service';
+// import { RequestService } from './services/request.service';
 import { HttpClientModule} from '@angular/common/http';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { RequestChangePopupComponent } from './request/request-change-popup/request-change-popup.component';
+import { OfferEffects } from '../../store/offer/offer.effects';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 
 
@@ -32,7 +34,7 @@ import { RequestChangePopupComponent } from './request/request-change-popup/requ
   imports: [
     OfbRoutingModule,
     CommonModule,
-    EffectsModule.forFeature([RequestEffects]),
+    EffectsModule.forFeature([RequestEffects, OfferEffects]),
     MatDialogModule,
     MatButtonModule,
     ReactiveFormsModule,
@@ -42,9 +44,10 @@ import { RequestChangePopupComponent } from './request/request-change-popup/requ
     MatSelectModule,
     MaterialFileInputModule,
     MatIconModule,
-    HttpClientModule
+    HttpClientModule,
+    MatCheckboxModule
   ],
-  providers: [RequestDataService, RequestService],
-  entryComponents:[RequestPopupComponent, OfferPopupComponent]
+  providers: [],
+  entryComponents:[]
 })
 export class OfferbookModule { }

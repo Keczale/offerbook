@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import { OfferPopupComponent } from './offer-popup/offer-popup.component';
+import { OfferService } from '../services/offer.service';
 
 
 @Component({
@@ -10,9 +11,13 @@ import { OfferPopupComponent } from './offer-popup/offer-popup.component';
 })
 export class OfferComponent implements OnInit {
 
-  constructor(public dialog: MatDialog) { }
+  constructor(
+    public dialog: MatDialog,
+    public offerService: OfferService
+    ) { }
 
   ngOnInit(): void {
+    this.offerService.loadActualList()
   }
   openDialog() {
     this.dialog.open(OfferPopupComponent);

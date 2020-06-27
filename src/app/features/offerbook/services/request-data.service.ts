@@ -9,7 +9,9 @@ import { Request } from 'src/app/models/request.model';
 import { AngularFireDatabase } from '@angular/fire/database';
 
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+  })
 export class RequestDataService {
 
 	private _uploadTask: firebase.storage.UploadTask;
@@ -87,11 +89,13 @@ export class RequestDataService {
 	// )
   }
 
-  public addRequestToMap(requestId: string, category: string): void {
-	firebase.database().ref(`${this._baseActiveRequestMapURL}/${category}/${requestId}`).set(requestId);
+  public addRequestToMap(city: string, category: string, fromUser: string, id: string): void {
+	firebase.database().ref(`${this._baseActiveRequestMapURL}/${city}/${category}/${id}`)
+	.set(`${fromUser}/${id}`);
   }
-  public removeRequestFromMap(requestId: string, category: string): void {
-	this.db.list(`${this._baseActiveRequestMapURL}/${category}`).remove(`${requestId}`);
+  public removeRequestFromMap(userRequest): void {
+	this.db.list(`${this._baseActiveRequestMapURL}/${userRequest.city}/${userRequest.category}`)
+	.remove(`${userRequest.id}`);
   }
 
   public sendRequestToDatabase(request: any): void {
@@ -107,7 +111,7 @@ export class RequestDataService {
 		this._store$.dispatch(loadRequestListFromDBAction({requests: requestList}))
 		}
 	else {
-		const arr: string[] = [''];
+		// const arr: string[] = [''];
 		this._store$.dispatch(loadInitialStateAction())}
   });
 }

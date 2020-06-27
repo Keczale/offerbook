@@ -17,11 +17,21 @@
     <mat-form-field>
         <mat-label>Выберите категорию</mat-label>
         <mat-select formControlName="category">
-            <mat-option *ngFor="let category of offerbookService.categories"[value]= "category">
+            <mat-option *ngFor="let category of requestService.categories"[value]= "category">
             {{category}}
             </mat-option>
         </mat-select>
     </mat-form-field>
+    <mat-form-field>
+      <mat-label>Выберите город</mat-label>
+          <mat-select formControlName="city">
+          <mat-option *ngFor="let city of cityList" [value]= "city">
+          {{city}}
+          </mat-option>
+      </mat-select>
+  </mat-form-field>
+  <mat-checkbox class="example-margin" formControlName="secondHand">можно б/у</mat-checkbox>
+
     <mat-form-field>
       <ngx-mat-file-input formControlName="requestImage"
         [accept]="'.png,.jpg,.jpeg'"

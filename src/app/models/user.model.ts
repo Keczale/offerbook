@@ -6,13 +6,14 @@ export class User {
 		public id: string,
 		public userName: string, // сделать верификацию на уник
 		public email: string,
-		public location: Location,
+		public location: string,
 		public userData: UserData,
 		public userStatus: string, // registered or guest
 		public userType: string, // byer seller or universal
 		public userRequests: Request[], // order id's
 		public userOffers: Offer[], // offer id's
 		public sellerCategories: string[],
+		public sellerLocation: string[],
 		public userRating: UserRating
 	) {}
 }
@@ -35,5 +36,4 @@ interface UserRating {
 
 export enum UserTypes {'buyer', 'seller'}
 
-export enum productCategories {'auto/moto', 'seller'}
 

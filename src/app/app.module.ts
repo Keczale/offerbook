@@ -29,6 +29,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { PopupComponent } from './testpopup/popup/popup.component';
 import { RequestComponent } from './features/offerbook/request/request.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { PopupLocationComponent } from './app-components/popup-location/popup-location.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
 // import {MatCardModule} from '@angular/material/card';
 
 
@@ -36,6 +39,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 @NgModule({
   declarations: [
   AppComponent,
+  PopupLocationComponent,
   ],
   imports: [
 	BrowserModule,
@@ -54,6 +58,8 @@ import { MatDialogModule } from '@angular/material/dialog';
   BrowserAnimationsModule,
   MatButtonModule,
   MatFormFieldModule,
+  ReactiveFormsModule,
+  MatSelectModule,
   MatProgressBarModule,
   MatButtonToggleModule,
   MatMenuModule,
@@ -64,4 +70,4 @@ import { MatDialogModule } from '@angular/material/dialog';
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule { } 
