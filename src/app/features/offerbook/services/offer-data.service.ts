@@ -79,7 +79,7 @@ export class OfferDataService {
 												actualRequests.push(request);
 												console.log(request, actualRequests);
 
-											}).then((request)=>resolved(request)) // здесь проблема - получает резолв и пшел дальше
+											}).then((request) => resolved(request)) // здесь проблема - получает резолв и пшел дальше
 										})
 											})); console.log('11111111')
 									// resolve(actualRequests)

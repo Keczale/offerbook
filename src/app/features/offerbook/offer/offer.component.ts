@@ -5,6 +5,7 @@ import { OfferService } from '../services/offer.service';
 import { UserDataFacade } from 'src/app/store/userData/user-data.facade';
 import { User } from 'src/app/models/user.model';
 import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
 
 
 @Component({
@@ -21,7 +22,7 @@ export class OfferComponent implements OnInit, OnDestroy {
   constructor(
     public dialog: MatDialog,
     public offerService: OfferService,
-    private _userDataFacade: UserDataFacade,
+    private _userDataFacade: UserDataFacade
     ) { }
 
   ngOnInit(): void {

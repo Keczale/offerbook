@@ -24,7 +24,7 @@ import { MatButtonToggleModule} from '@angular/material/button-toggle';
 import { UserDataEffects } from './store/userData/user-data.effects';
 import { UserModule } from './features/user/user.module';
 import { OfferbookModule } from './features/offerbook/offerbook.module';
-import { userDataReducer, requestReducer } from './store';
+import { userDataReducer, requestReducer, offerReducer } from './store';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { PopupComponent } from './testpopup/popup/popup.component';
 import { RequestComponent } from './features/offerbook/request/request.component';
@@ -47,6 +47,7 @@ import { MatSelectModule } from '@angular/material/select';
   StoreModule.forRoot({ }),
   StoreModule.forFeature ('userData', userDataReducer),
   StoreModule.forFeature ('request', requestReducer),
+  StoreModule.forFeature ('offer', offerReducer),
   StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
   EffectsModule.forRoot([]),
   StoreRouterConnectingModule.forRoot(),

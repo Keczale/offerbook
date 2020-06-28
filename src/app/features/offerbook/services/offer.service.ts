@@ -3,8 +3,9 @@ import { OfferDataService } from './offer-data.service';
 import { UserDataFacade } from 'src/app/store/userData/user-data.facade';
 import { User } from 'src/app/models/user.model';
 import { Request } from 'src/app/models/request.model';
-import { Store } from '@ngrx/store';
-import { loadActualRequestListFromDBAction } from 'src/app/store/offer';
+import { Store, select } from '@ngrx/store';
+import { loadActualRequestListFromDBAction, offerRequestListSelector } from 'src/app/store/offer';
+import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -18,6 +19,10 @@ export class OfferService {
     private _store$: Store,
 
   ) { }
+
+  public get actualRequest$(): Observable<Request[]>{
+    return this._store$.pipe(select(offerRequestListSelector))
+  }
 
   public loadActualList(user: User): void {
     if(user.sellerLocation, user.sellerCategories){

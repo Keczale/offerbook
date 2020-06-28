@@ -1,2 +1,6 @@
 <button mat-button (click)="openDialog()">Launch dialog</button>
  
+<app-actual-request *ngFor="let request of offerService.actualRequest$ | async; let i = index"
+    [request]="request"
+    [index]="i+1">
+ </app-actual-request>

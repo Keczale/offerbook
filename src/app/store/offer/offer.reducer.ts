@@ -7,7 +7,7 @@ export const offerFeatureKey = 'offer';
 
 export interface OfferState {
 isLoading: boolean;
-requestList: Request[]
+requestList: Request[];
 }
 
 export const initialOfferState: OfferState = {
@@ -16,7 +16,7 @@ export const initialOfferState: OfferState = {
 };
 
 
-export const reducer = createReducer(
+export const _offerReducer = createReducer(
   initialOfferState,
   on(ActionsOffer.offerInProgressAction,
     (state: OfferState) => {
@@ -37,3 +37,6 @@ export const reducer = createReducer(
     
 );
 
+export function offerReducer(state, action) {
+	return _offerReducer(state, action);
+}

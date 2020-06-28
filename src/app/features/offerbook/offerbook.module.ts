@@ -24,13 +24,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { RequestChangePopupComponent } from './request/request-change-popup/request-change-popup.component';
 import { OfferEffects } from '../../store/offer/offer.effects';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import { ActualRequestComponent } from './offer/actual-request/actual-request.component';
 
 
 
 
 
 @NgModule({
-  declarations: [OfferbookComponent, RequestComponent, OfferComponent, RequestPopupComponent, RequestItemComponent, OfferPopupComponent, RequestChangePopupComponent],
+  declarations: [OfferbookComponent, RequestComponent, OfferComponent, RequestPopupComponent, RequestItemComponent, OfferPopupComponent, RequestChangePopupComponent, ActualRequestComponent],
   imports: [
     OfbRoutingModule,
     CommonModule,
