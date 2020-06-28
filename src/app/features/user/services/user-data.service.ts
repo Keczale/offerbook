@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store, select, } from '@ngrx/store';
-import { UserState, inProgressAction, DataIsLoadingSelector, getCurrentUserAction, currentUserSelector, userSignOutAction, currentUserNameSelector, cleanEmailErrorLoginAction, getEmailErrorLoginAction, emailErrorSelector, getLogOutErrorAction, addSellerAction, userTypeSelector, removeSellerAction, loadCurrentUserAction, setSellerCategoriesAction, sellerCategoriesSelector, setUserLocationAction } from 'src/app/store';
+import { UserState, inProgressAction, DataIsLoadingSelector, getCurrentUserAction, currentUserSelector, userSignOutAction, currentUserNameSelector, cleanEmailErrorLoginAction, getEmailErrorLoginAction, emailErrorSelector, getLogOutErrorAction, addSellerAction, userTypeSelector, removeSellerAction, loadCurrentUserAction, setSellerCategoriesAction, sellerCategoriesSelector, setUserLocationAction, setSellerLocationAction } from 'src/app/store';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Router } from '@angular/router';
@@ -58,7 +58,7 @@ constructor(
 	if (user) {this._store$
 		.dispatch(loadCurrentUserAction({id: user.id, name: user.userName,
 			email: user.email, userType: user.userType, sellerCategories : user.sellerCategories,
-			sellerLocation : user.sellerLocation, userLocation: user.location}));
+			sellerLocation: user.sellerLocation, userLocation: user.location}));
 	}
 	else {console.log('there are no such user in DB. Evidently its a first sign in')}
 	});
@@ -105,8 +105,9 @@ constructor(
 	// 	.unsubscribe();
 	//  }
 
-	public setLocation(city): void{
+	public setUserLocation(city: string): void{
 		this._store$.dispatch(setUserLocationAction({userLocation: city}));
+		this._store$.dispatch(setSellerLocationAction({sellerCities:[city]}));
 		this.userToDataBaseReg();
 	}
 
@@ -176,6 +177,10 @@ constructor(
 	public setUserCategories(sellerCategories: string[]): void {
 		this._store$.dispatch(setSellerCategoriesAction({sellerCategories}));
 		this.userToDataBaseReg()
+	}
+	public setSellerCities(sellerCities: string[]): void {
+		this._store$.dispatch(setSellerLocationAction({sellerCities}));
+		this.userToDataBaseReg();
 	}
 
 }

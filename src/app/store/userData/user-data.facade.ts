@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { UserState, DataIsLoadingSelector, currentUserNameSelector, logOutErrorSelector, userTypeSelector, userLocationSelector } from '.';
+import { UserState, DataIsLoadingSelector, currentUserNameSelector, logOutErrorSelector, userTypeSelector, userLocationSelector, currentUserSelector } from '.';
 import { Observable } from 'rxjs';
 import { UserDataService } from 'src/app/features/user/services/user-data.service';
+import { User } from 'src/app/models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,18 +18,21 @@ export class UserDataFacade {
   public get isLoading(): Observable<boolean>{
 	return this._store$.pipe(select(DataIsLoadingSelector));
   }
-  public get userName(): Observable<string>{
+  public get userName(): Observable<string> {
 	return this._store$.pipe(select(currentUserNameSelector));
   }
-  public get logOutError(): Observable<string>{
+  public get logOutError(): Observable<string> {
 	return this._store$.pipe(select(logOutErrorSelector));
   }
-  public get userType(): Observable<string>{
+  public get userType(): Observable<string> {
     return this._store$.pipe(select(userTypeSelector));
     }
-  public get userLocation$(): Observable<string>{
+  public get userLocation$(): Observable<string> {
     return this._store$.pipe(select(userLocationSelector));
       }
+    public get currentUser$(): Observable<User> {
+        return this._store$.pipe(select(currentUserSelector));
+          }
 
   public loadCurrentUserFromDB(uid: string): void {
 	this._userDataService.loadCurrentUserFromData(uid);

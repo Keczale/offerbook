@@ -5,6 +5,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import {MatIconModule} from '@angular/material/icon';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatExpansionModule} from '@angular/material/expansion';
+
 
 
 
@@ -31,7 +33,8 @@ import { OfficeComponent } from './office/office.component';
 	ReactiveFormsModule,
 	FormsModule,
 	MatIconModule,
-	MatCheckboxModule
+	MatCheckboxModule,
+	MatExpansionModule
   ],
   exports: [LoginComponent]
 })

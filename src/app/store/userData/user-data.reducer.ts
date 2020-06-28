@@ -42,7 +42,7 @@ const _userDataReducer = createReducer(
 	};
 	}),
 	on(ActionsUser.loadCurrentUserAction,
-		(state: UserState, { id, name, email, userType, sellerCategories, userLocation }) => {
+		(state: UserState, { id, name, email, userType, sellerCategories, sellerLocation, userLocation }) => {
 		return {
 			...state,
 			currentUser: {
@@ -52,6 +52,7 @@ const _userDataReducer = createReducer(
 				email: email,
 				userType: userType,
 				sellerCategories: sellerCategories,
+				sellerLocation: sellerLocation,
 				location: userLocation
 			}
 		};
@@ -152,7 +153,16 @@ on (ActionsUser.setSellerCategoriesAction,
 			...state.currentUser,
 			sellerCategories: sellerCategories}
 	};
-})
+}),
+on (ActionsUser.setSellerLocationAction,
+	(state: UserState, {sellerCities}) => {
+	return {
+		...state,
+		currentUser: {
+			...state.currentUser,
+			sellerLocation: sellerCities}
+	};
+}),
 );
 export function userDataReducer(state, action) {
 	return _userDataReducer(state, action);

@@ -28,7 +28,7 @@ export class PopupLocationComponent implements OnInit {
   }
 
   public submitForm(): void{
-    this._userDataService.setLocation(this.locationForm.value.city)
+    this._userDataService.setUserLocation(this.locationForm.value.city)
   }
 
 }

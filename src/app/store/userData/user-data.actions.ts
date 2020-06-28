@@ -9,7 +9,7 @@ export const inProgressAction = createAction(
 );
 
 export const loadCurrentUserAction = createAction(
-  '[UserData] Load init current user from database',
+  '[UserData] Load current user from database',
   props<{ id: string, name: string, email: string,
      userType: string, sellerCategories: string[],
      sellerLocation: string[], userLocation: string}>()
@@ -60,4 +60,8 @@ export const removeSellerAction = createAction(
 export const setSellerCategoriesAction = createAction(
   '[UserData] set seller categories  to current user',
   props<{ sellerCategories: string[]}>()
+);
+export const setSellerLocationAction = createAction(
+  '[UserData] set seller cities  to current user',
+  props<{ sellerCities: string[]}>()
 );

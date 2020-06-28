@@ -1,26 +1,71 @@
 <div>
     <button class="office__seller-button"
-    mat-button
+    mat-raised-button
     (click)="addSeller()">Буду продавать</button>
 </div>
-
 <div class="settings" *ngIf="userType==='seller'">
-    <h1 class="text">Выберите категории товаров и услуг</h1>
-    <p class="text">Вы будудете получать по ним уведомления о поступивших запросах покупателей</p>
-    <div class="settings__categories" >
-        <mat-checkbox class="settings__items" *ngFor="let category of selectCategoriesForm; let i = index"
-        [(ngModel)]="category.checked"
-        [checked]="category.checked">{{category.title}}</mat-checkbox>
-    </div>
-    <div>    
-    <button  class="email-form__login-btn"
-        mat-button type="submit" 
-        (click)="sendCategories()"
-        [title]="sendCategotiesTitle">OK</button>
-    <button  class="email-form__login-btn"
-        mat-stroked-button type="submit" 
-        (click)="clearsSelectedCategories()"
-        [title]="clearTitle">Очистить</button>
 
-    </div>
+    <h1 class="text">Настройте аккаунт продавца</h1>
+    <mat-accordion>
+        <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+            Категории
+            </mat-panel-title>
+            <mat-panel-description>
+                Выбрать категории товаров и услуг для продажи
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+            <div class="settings__categories" >
+                <mat-checkbox class="settings__items" *ngFor="let category of selectCategoriesForm; let i = index"
+                [(ngModel)]="category.checked"
+                [checked]="category.checked">{{category.title}}</mat-checkbox>
+            </div>
+        <div>
+            <button  class="email-form__login-btn"
+                mat-raised-button type="submit" 
+                (click)="sendCategories()"
+                [title]="sendCategotiesTitle">
+                OK
+            </button>
+            <button  class="email-form__login-btn"
+                mat-button type="submit" 
+                (click)="clearsSelectedCategories()"
+                [title]="clearTitle">
+                Очистить
+            </button>
+        </div>
+        </mat-expansion-panel>
+        <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                Локация
+                </mat-panel-title>
+                <mat-panel-description>
+                    Выбрать город(-а), где планируете продавать/ оказывать услуги
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div class="settings__categories" >
+                <mat-checkbox class="settings__items" *ngFor="let city of selectSellersCitiesForm; let i = index"
+                [(ngModel)]="city.checked"
+                [checked]="city.checked">{{city.title}}</mat-checkbox>
+            </div>
+
+
+            <div>
+                <button  class="email-form__login-btn"
+                    mat-raised-button type="submit" 
+                    (click)="sendSellersCities()"
+                    [title]="sendCategotiesTitle">
+                    OK
+                </button>
+                <button  class="email-form__login-btn"
+                    mat-button type="submit" 
+                    (click)="clearsSelectedCities()"
+                    [title]="clearTitle">
+                    Очистить
+                </button>
+            </div>
+            </mat-expansion-panel>
+    </mat-accordion>
 </div>

@@ -99,7 +99,11 @@ export class RequestDataService {
   }
 
   public sendRequestToDatabase(request: any): void {
+	console.log('proverka1',request)
+
 	  firebase.database().ref(`${this.requestBaseURL}/${request.id}`).set(request);
+	  console.log('proverka2')
+
   }
 
   public loadActialListFromDB(): void {

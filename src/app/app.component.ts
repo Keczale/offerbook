@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterContentInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterContentInit, OnDestroy, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireDatabase } from '@angular/fire/database';
@@ -7,10 +7,12 @@ import { AngularFireDatabase } from '@angular/fire/database';
 import { Store, select } from '@ngrx/store';
 import { UserState } from './store';
 import { UserDataFacade } from './store/userData/user-data.facade';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { RequestFacade } from './store/request/request.facade';
 import { MatDialog } from '@angular/material/dialog';
 import { PopupLocationComponent } from './app-components/popup-location/popup-location.component';
+import { User } from './models/user.model';
+import { OfferComponent } from './features/offerbook/offer/offer.component';
 
 @Component({
   selector: 'app-root',
@@ -21,10 +23,11 @@ export class AppComponent implements OnInit {
   public title: string = 'offerbook';
   public nameMask: string = 'User';
 
-  // public location: string = null;
+  // public currentUser: User = null;
 
   public userIsLoading: Observable<boolean> = this.userDataFacade.isLoading;
   public requestIsLoading: Observable<boolean> = this.requestFacade.isLoading;
+ //  public currentUserSubscriber: Subscription;
 
 
   constructor(
@@ -38,15 +41,16 @@ export class AppComponent implements OnInit {
 
 	) {	}
 
-	// public userlocation: Subscription;
 
 	ngOnInit(): void {
 		this.afAuth.authState.subscribe((a: firebase.User) => a ? this.userDataFacade.loadCurrentUserFromDB(a.uid) : null);
-		// this.userlocation = this.userDataFacade.userLocation$.subscribe((city: string) => this.location = city);
+		// this.currentUserSubscriber = this.userDataFacade.currentUser$.subscribe((user: User) => this.currentUser = user);
 	}
 
+
+
 	// ngOnDestroy(): void {
-	// 	this.userlocation.unsubscribe();
+	// 	this.currentUserSubscriber.unsubscribe();
 	// }
 
   public signOut(): void {

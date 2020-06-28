@@ -2,6 +2,8 @@ import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { UserDataService } from '../services/user-data.service';
 import { Subscription } from 'rxjs';
 import { productCategories } from 'src/app/models/common';
+import { userLocation } from 'src/app/models/common';
+
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { User } from 'src/app/models/user.model';
 import {MatSnackBarModule, MatSnackBar} from '@angular/material/snack-bar';
@@ -16,13 +18,26 @@ export class OfficeComponent implements OnInit, OnDestroy {
 
 	public userSubscriber: Subscription;
   public userType: string;
+
   public categories: string[];
   public checkedCategories: string[];
   public selectCategoriesForm = [];
 
+  public cities: string[];
+  public checkedSellersCities: string[];
+  public selectSellersCitiesForm = [];
+
   public sendCategotiesTitle = 'Отправить выбранные категории';
   public clearTitle = 'Очистить список';
   // public selectedCategories: string[] = [];
+  public step: number = 0;
+
+  public setStep (index: number): void {
+    this.step = index;
+  }
+  public nextStep(): void {
+    this.step++;
+  }
 
 
   constructor(
@@ -31,12 +46,16 @@ export class OfficeComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-	this.categories = productCategories;
+  this.categories = productCategories;
+  this.cities = userLocation;
   this.userSubscriber = this.userDataService.currentUser$
   .subscribe((user: User) => {
   this.userType = user.userType;
   this.checkedCategories = user.sellerCategories;
+  this.checkedSellersCities = user.sellerLocation;
   this.createCategoryForm(this.categories, this.checkedCategories);
+  this.createSellerCitiesForm(this.cities, this.checkedSellersCities);
+
   });
 
   
@@ -67,20 +86,44 @@ export class OfficeComponent implements OnInit, OnDestroy {
   	const arr: string[] = this.selectCategoriesForm.filter((category: any) => category.checked)
   	.map((category: any) => category = category.title);
     this.userDataService.setUserCategories(arr);
-    this._snackBar.open('Ваши категории изменены', '', {
+    this._snackBar.open('Ваши категории сохранены!', '', {
       duration: 2000,
     });
+    this.nextStep();
   }
 
   public addSeller(): void {
   this.userDataService.addSeller(this.userType);
   this.userType === 'seller' ?
-  this._snackBar.open('Теперь вы можете продавать! Выберите категории.', '', {
+  this._snackBar.open('Теперь вы можете продавать! Настройте аккаунт.', '', {
     duration: 2000,
   }) :
   this._snackBar.open('Изменения сохранены', '', {
     duration: 2000,
   });
+  }
+
+  public createSellerCitiesForm(allCities: string[], checkedCities: string[]): void {
+    this.selectSellersCitiesForm = [];
+    allCities.map((city: string) => {
+  	if (checkedCities) {checkedCities.includes(city) ?
+	  this.selectSellersCitiesForm.push({title: city, checked: true}) :
+	  this.selectSellersCitiesForm.push({title: city, checked: false});
+	  } else {this.selectSellersCitiesForm.push({title: city, checked: false});
+  }});
+  }
+  public clearsSelectedCities(): void {
+    this.selectSellersCitiesForm = [];
+    this.cities.map( (city: string) => this.selectSellersCitiesForm.push({title: city, checked: false}))
+  }
+  public sendSellersCities(): void {
+  	const cities: string[] = this.selectSellersCitiesForm.filter((city: any) => city.checked)
+  	.map((city: any) => city = city.title);
+    this.userDataService.setSellerCities(cities);
+    this._snackBar.open('Настройки локации сохранены!', '', {
+      duration: 2000,
+    });
+    this.nextStep();
   }
 
 }

@@ -129,7 +129,7 @@ export class RequestService {
 		let file: File = null;
 		let fileName: string = null;
 		let photoName: string = null;
-
+		console.log(value.secondHand, changedRequest.secondHand)
 		if (value.requestImage) {
 			 file = value.requestImage.files[0];
 			 fileName = file.name;
@@ -155,8 +155,8 @@ export class RequestService {
 			description: value.description ? value.description : changedRequest.description,
 			category: value.category ? value.category : changedRequest.category,
 			photos: value.requestImage ? [downloadPhotoURL] : changedRequest.photos,
-			secondHand: value.secondhand === changedRequest.secondHand ? changedRequest.secondHand : value.secondhand,
-			city: value.city === changedRequest.city ? changedRequest.secondHand : value.city,
+			secondHand: value.secondHand,
+			city: value.city,
 			lastChange: dateChangeStamp,
 			photoNames: [photoName]
 			//offers: []
@@ -166,6 +166,9 @@ export class RequestService {
 			//.then(() => this._store$.dispatch(createRequestAction({request: userRequest})))
 			.then(() => this._store$.dispatch(requestInProgressAction()))
 			.then(() => this._store$.dispatch(endChangeRequestAction()))
+			.then(() => this._snackBar.open('Изменения сохранены!', '', {
+				duration: 2000,
+			  	}))
 			.catch((error) => {
 				this._store$.dispatch(requestInProgressAction());
 				console.log(error);
