@@ -8,6 +8,7 @@ export interface UserState {
   isLoading: boolean;
   emailError: string;
   logOutError: string;
+  buyerWindow: boolean;
   currentUser: User;
 }
 
@@ -15,6 +16,7 @@ export const initialState: UserState = {
   isLoading: false,
   emailError: null,
   logOutError: null,
+  buyerWindow: true,
   currentUser: {
 	id: null,
 	userName: null, // сделать верификацию на уник

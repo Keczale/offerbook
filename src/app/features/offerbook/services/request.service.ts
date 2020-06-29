@@ -90,11 +90,12 @@ export class RequestService {
 			}
 
 	public loadActualList(): void {
+		this._store$.dispatch(requestInProgressAction())
 		this._offerbookDataService.loadActialListFromDB();
 	}
 
 	public deleteRequest(userRequest): void {
-		this._store$.dispatch(requestInProgressAction())
+		this._store$.dispatch(requestInProgressAction());
 		let photoName: string = userRequest.photoNames ? userRequest.photoNames[0] : null;
 		
 		this._offerbookDataService.deleteImageRequest(photoName)
@@ -115,7 +116,7 @@ export class RequestService {
 	}
 
 
-	public initChangeRequestAction(changedRequest){
+	public initChangeRequestAction (changedRequest: Request): void {
 		this._store$.dispatch(initChangeRequestAction ({request : changedRequest}))
 	}
 

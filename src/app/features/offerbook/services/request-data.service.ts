@@ -66,16 +66,17 @@ export class RequestDataService {
 			},
 			 async () => {
 				photoURL = await firebase.storage().ref(`${this.photoBaseURL}/${fileName}`).getDownloadURL();
-				resolve('done')
+				resolve('done');
 
 				this._snackBar.open('Готово!', '', {
 				duration: 2000,
 			  });
 			});
-			})
-	return photoURL}
-	else { return 'no changes'}
-			
+			});
+	return photoURL; }
+	else {
+		 return 'no changes';
+		}
 
 	//   const formData: FormData  = new FormData();
 	// const httpOptions: object = {
@@ -93,7 +94,7 @@ export class RequestDataService {
 	firebase.database().ref(`${this._baseActiveRequestMapURL}/${city}/${category}/${id}`)
 	.set(`${fromUser}/${id}`);
   }
-  public removeRequestFromMap(userRequest): void {
+  public removeRequestFromMap(userRequest: Request): void {
 	this.db.list(`${this._baseActiveRequestMapURL}/${userRequest.city}/${userRequest.category}`)
 	.remove(`${userRequest.id}`);
   }
@@ -107,28 +108,31 @@ export class RequestDataService {
   public loadActialListFromDB(): void {
 	firebase.database().ref(`${this.requestBaseURL}`).once('value')
 	.then((snap: any) => snap.val())
-	.then((requestMap) =>
-	{ if (requestMap) {
+	.then((requestMap: any) => {
+	if (requestMap) {
 		const requestList: Request[] = Object.values(requestMap);
-		this._store$.dispatch(loadRequestListFromDBAction({requests: requestList}))
+		this._store$.dispatch(loadRequestListFromDBAction({requests: requestList}));
+		this._store$.dispatch(requestInProgressAction());
 		}
 	else {
 		// const arr: string[] = [''];
-		this._store$.dispatch(loadInitialStateAction())}
+		this._store$.dispatch(loadInitialStateAction());
+		this._store$.dispatch(requestInProgressAction());
+	}
   });
 }
 
   public async deleteImageRequest(fileName: string): Promise<string> {
-	  if(firebase.storage().ref(`${this.photoBaseURL}/${fileName}`)){
+	  if(firebase.storage().ref(`${this.photoBaseURL}/${fileName}`)) {
 		firebase.storage().ref(`${this.photoBaseURL}/${fileName}`).delete()
-		.catch((error) => console.log(error));
+		.catch((error: Error) => console.log(error));
 	  }
-	  return('Фото удалено')
+	  return('Фото удалено');
   }
 
   public async deleteRequestFromDB(requestId: string): Promise<string> {
 	await this.db.list(`${this.requestBaseURL}/`).remove(`${requestId}`)
-	.catch((error) => console.log(error));
+	.catch((error: Error) => console.log(error));
 	return ('Карточка удалена :)');
   }
 }

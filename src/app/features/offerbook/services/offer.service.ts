@@ -4,7 +4,7 @@ import { UserDataFacade } from 'src/app/store/userData/user-data.facade';
 import { User } from 'src/app/models/user.model';
 import { Request } from 'src/app/models/request.model';
 import { Store, select } from '@ngrx/store';
-import { loadActualRequestListFromDBAction, offerRequestListSelector } from 'src/app/store/offer';
+import { loadActualRequestListFromDBAction, offerRequestListSelector, offerInProgressAction } from 'src/app/store/offer';
 import { Observable } from 'rxjs';
 
 
@@ -29,6 +29,7 @@ export class OfferService {
   }
 
   public loadActualList(user: User): void {
+    this._store$.dispatch(offerInProgressAction());
     if(user.sellerLocation, user.sellerCategories){
       this._offerDataService.loadActualListFromDB(user.sellerLocation, user.sellerCategories)
       .then(async(requestList: Request[]) => {
@@ -36,8 +37,9 @@ export class OfferService {
         .then((userIdList: string[]) => {console.log(userIdList);
          return requestList.filter((request: Request) => !userIdList.includes(request.id)); })
         .then((requests: Request[]) =>
-        {this._store$.dispatch(loadActualRequestListFromDBAction({ requests: requests }));
-      });
+        this._store$.dispatch(loadActualRequestListFromDBAction({ requests: requests })))
+        .then(() => this._store$.dispatch(offerInProgressAction()))
+        .catch((error: Error) => console.log(error));
       });
     }
   }

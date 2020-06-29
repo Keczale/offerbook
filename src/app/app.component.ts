@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PopupLocationComponent } from './app-components/popup-location/popup-location.component';
 import { User } from './models/user.model';
 import { OfferComponent } from './features/offerbook/offer/offer.component';
+import { OfferFacade } from './store/offer/offer.facade';
 
 @Component({
   selector: 'app-root',
@@ -27,6 +28,8 @@ export class AppComponent implements OnInit {
 
   public userIsLoading: Observable<boolean> = this.userDataFacade.isLoading;
   public requestIsLoading: Observable<boolean> = this.requestFacade.isLoading;
+  public offerIsLoading: Observable<boolean> = this.offerFacade.isLoading;
+
  //  public currentUserSubscriber: Subscription;
 
 
@@ -35,6 +38,7 @@ export class AppComponent implements OnInit {
 	  private _router: Router,
 	  public userDataFacade: UserDataFacade,
 	  public requestFacade: RequestFacade,
+	  public offerFacade: OfferFacade,
 	  public db: AngularFireDatabase,
 	  public store$: Store<UserState>,
 	  public dialog: MatDialog,

@@ -9,6 +9,11 @@ export const offerStateSelector = createSelector(
 	// tslint:disable-next-line: typedef
 	state => state
 );
+export const offerIsLoadingSelector = createSelector(
+	offerStateSelector,
+	// tslint:disable-next-line: typedef
+	state => state.isLoading
+);
 
 export const offerRequestListSelector = createSelector(
 	offerStateSelector,

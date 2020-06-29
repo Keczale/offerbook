@@ -49,6 +49,6 @@ import { ActualRequestComponent } from './offer/actual-request/actual-request.co
     MatCheckboxModule
   ],
   providers: [],
-  entryComponents:[]
+  entryComponents: [RequestComponent, OfferComponent]
 })
 export class OfferbookModule { }
