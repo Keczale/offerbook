@@ -5,6 +5,7 @@ import { Request } from 'src/app/models/request.model';
 
 import { loadInitialStateAction } from 'src/app/store';
 import { loadActualRequestListFromDBAction } from 'src/app/store/offer';
+import { User } from 'src/app/models/user.model';
 
 
 @Injectable({
@@ -14,6 +15,7 @@ export class OfferDataService {
 
   public requestBaseURL: string = '/requests/active';
   public requestMapBaseURL: string = '/requests/map';
+  public userBaseURL: string = '/users';
 
   constructor(
     private _store$: Store,
@@ -52,7 +54,17 @@ export class OfferDataService {
 			}))
 			
 		}
-
+public async loadUserRequests(userId: string): Promise<string[]>{
+	let requestIdList: string[] = [];
+	await firebase.database().ref(`${this.requestBaseURL}/${userId}`).once('value')
+	.then((snap: any) => snap.val())
+	.then( async (requestMap: string[]) => {
+		if (requestMap) {
+			requestIdList = Object.keys(requestMap);
+		}
+	});
+	return requestIdList;
+}
 
   public async loadActualListFromDB(sellerLocation: string[], sellerCategories: string[]): Promise<Request[]> {
 		let actualRequests: Request[] = [];
@@ -81,7 +93,7 @@ export class OfferDataService {
 
 											}).then((request) => resolved(request)) // здесь проблема - получает резолв и пшел дальше
 										})
-											})); console.log('11111111')
+											}));
 									// resolve(actualRequests)
 								}
 								else {
@@ -94,11 +106,22 @@ export class OfferDataService {
 				 }).then((requesty: Request[]) => { console.log(actualRequests); } );
 				 
 
-		})); console.log(22222222)})).then(() => {console.log(actualRequests); resolve()});
+		})); })).then(() => {console.log(actualRequests); resolve()});
 	})
 	console.log(actualRequests)
 		return actualRequests;
 
+  }
+
+
+  public async loadBuyerInfo(uid: string): Promise<User>{
+	let buyer: User = null;
+	await firebase.database().ref(`${this.userBaseURL}/${uid}`).once('value')
+	.then((snap: any) => snap.val())
+	.then((user: User) => buyer = user)
+	.catch((error: Error) => console.log(error));
+	console.log(buyer)
+	return buyer;
   }
 
 }

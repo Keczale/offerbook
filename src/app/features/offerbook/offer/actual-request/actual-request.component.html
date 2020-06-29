@@ -1,5 +1,14 @@
 <mat-card class="request">
     <p>{{index}}</p>
-    {{request.title}}
+    <div class="request__describe flexbox">
+        <span class="request__title">{{request.title}}</span>
+        <p>{{request.category}}</p>
+        <p>{{request.description}}</p>
+</div>
     <img class="request__photo " src="{{request.photos[0]}}">
+    <div class="request__buyer flexbox">
+        <p>{{buyer ? buyer.userName : 'user'}}</p>
+        <p>{{(buyer && buyer.userRating)  ? buyer.userRating : 'нет оценок'}}</p>
+    </div>
+
 </mat-card>

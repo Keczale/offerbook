@@ -24,15 +24,21 @@ export class OfferService {
     return this._store$.pipe(select(offerRequestListSelector))
   }
 
+  public loadBuyerInfo(uid: string): Promise<User>{
+    return this._offerDataService.loadBuyerInfo(uid)
+  }
+
   public loadActualList(user: User): void {
     if(user.sellerLocation, user.sellerCategories){
       this._offerDataService.loadActualListFromDB(user.sellerLocation, user.sellerCategories)
-      .then((requestList: Request[]) => {
-        console.log(requestList)
-        this._store$.dispatch(loadActualRequestListFromDBAction({ requests: requestList }))
-
-      });}
+      .then(async(requestList: Request[]) => {
+        await this._offerDataService.loadUserRequests(user.id)
+        .then((userIdList: string[]) => {console.log(userIdList);
+         return requestList.filter((request: Request) => !userIdList.includes(request.id)); })
+        .then((requests: Request[]) =>
+        {this._store$.dispatch(loadActualRequestListFromDBAction({ requests: requests }));
+      });
+      });
+    }
   }
-
-
 }

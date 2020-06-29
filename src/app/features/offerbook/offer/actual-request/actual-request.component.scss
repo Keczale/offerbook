@@ -1,8 +1,34 @@
-.request__photo{
+
+.request{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: .4rem;
+
+    &__photo{
     
         object-fit: contain; /*this makes de image in src fit to the size of specified below*/
         //width: 100%; /* Here you can use wherever you want to specify the width and also the height of the <img>*/
-        height: 14rem;
-        max-width: 14rem;
+        height: 6rem;
+        max-width: 6rem;
+    }
+
+    .flexbox{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+    &__describe{
+
+    }
+    &__buyer{
+        
+    }
+
+
+    &__title{
+        font-weight: bold;
+    }
       
+
 }
