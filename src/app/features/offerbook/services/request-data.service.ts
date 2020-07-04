@@ -18,6 +18,7 @@ export class RequestDataService {
   private _baseImageUrl: string = '/images';
   private _baseActiveRequestUrl: string = '/requests/active';
   private _baseActiveRequestMapURL: string = '/requests/map';
+  private _noPhotoUrl: string = '../assets/img/no-photo.jpg';
 
   public photoBaseURL: string = `${this._baseImageUrl}/${firebase.auth().currentUser.uid}`;
   public requestBaseURL: string = `${this._baseActiveRequestUrl}/${firebase.auth().currentUser.uid}`;
@@ -52,7 +53,7 @@ export class RequestDataService {
   public async uploadRequestImage(file: any, fileName: string): Promise<string> {
 	const uploadFile: File = file;
 	let photoURL: string;
-	if(file){
+	if (file){
 	const storageRef: firebase.storage.Reference = firebase.storage()
 		.ref(`${this.photoBaseURL}/${fileName}`);
 
@@ -75,7 +76,7 @@ export class RequestDataService {
 			});
 	return photoURL; }
 	else {
-		 return 'no changes';
+		 return this._noPhotoUrl;
 		}
 
 	//   const formData: FormData  = new FormData();
@@ -99,31 +100,35 @@ export class RequestDataService {
 	.remove(`${userRequest.id}`);
   }
 
-  public sendRequestToDatabase(request: any): void {
+  public async sendRequestToDatabase(request: Request): Promise <string> {
 
-	  firebase.database().ref(`${this.requestBaseURL}/${request.id}`).set(request);
-
+	  await firebase.database().ref(`${this.requestBaseURL}/${request.id}`).set(request)
+	  .catch((error: Error) => console.log(error));
+	return 'done';
   }
 
-  public loadActialListFromDB(): void {
-	firebase.database().ref(`${this.requestBaseURL}`).once('value')
+  public async loadActualListFromDB(): Promise<any> {
+	let requestMap: any = null;
+	await firebase.database().ref(`${this.requestBaseURL}`).once('value')
 	.then((snap: any) => snap.val())
-	.then((requestMap: any) => {
-	if (requestMap) {
-		const requestList: Request[] = Object.values(requestMap);
-		this._store$.dispatch(loadRequestListFromDBAction({requests: requestList}));
-		this._store$.dispatch(requestInProgressAction());
-		}
-	else {
-		// const arr: string[] = [''];
-		this._store$.dispatch(loadInitialStateAction());
-		this._store$.dispatch(requestInProgressAction());
-	}
-  });
+	.then((map: object) => requestMap = map);
+	return requestMap;
+// 	{
+// 	if (requestMap) {
+// 		const requestList: Request[] = Object.values(requestMap);
+// 		this._store$.dispatch(loadRequestListFromDBAction({requests: requestList}));
+// 		this._store$.dispatch(requestInProgressAction());
+// 		}
+// 	else {
+// 		// const arr: string[] = [''];
+// 		this._store$.dispatch(loadInitialStateAction());
+// 		this._store$.dispatch(requestInProgressAction());
+// 	}
+//   };
 }
 
   public async deleteImageRequest(fileName: string): Promise<string> {
-	  if(firebase.storage().ref(`${this.photoBaseURL}/${fileName}`)) {
+	  if (Boolean(fileName) && firebase.storage().ref(`${this.photoBaseURL}/${fileName}`)) {
 		firebase.storage().ref(`${this.photoBaseURL}/${fileName}`).delete()
 		.catch((error: Error) => console.log(error));
 	  }

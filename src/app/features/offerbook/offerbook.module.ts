@@ -24,14 +24,19 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { RequestChangePopupComponent } from './request/request-change-popup/request-change-popup.component';
 import { OfferEffects } from '../../store/offer/offer.effects';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+
 import { ActualRequestComponent } from './offer/actual-request/actual-request.component';
+import { OfferListComponent } from './request/offer-list/offer-list.component';
+import { OfferItemComponent } from './request/offer-item/offer-item.component';
 
 
 
 
 
 @NgModule({
-  declarations: [OfferbookComponent, RequestComponent, OfferComponent, RequestPopupComponent, RequestItemComponent, OfferPopupComponent, RequestChangePopupComponent, ActualRequestComponent],
+  declarations: [OfferbookComponent, RequestComponent, OfferComponent, RequestPopupComponent, RequestItemComponent, OfferPopupComponent, RequestChangePopupComponent, ActualRequestComponent, OfferListComponent, OfferItemComponent],
   imports: [
     OfbRoutingModule,
     CommonModule,
@@ -45,10 +50,12 @@ import { ActualRequestComponent } from './offer/actual-request/actual-request.co
     MatSelectModule,
     MaterialFileInputModule,
     MatIconModule,
+    MatTooltipModule,
     HttpClientModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatButtonToggleModule
   ],
   providers: [],
-  entryComponents: [RequestComponent, OfferComponent]
+  entryComponents: [OfferPopupComponent]
 })
 export class OfferbookModule { }

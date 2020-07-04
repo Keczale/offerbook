@@ -20,8 +20,18 @@ export const initChangeRequestAction = createAction(
 export const endChangeRequestAction = createAction(
   '[Request] End changging request',
 );
+export const offerListOpenAction = createAction(
+  '[Request] Open offerList component in currentRequest',
+);
+export const offerListCloseAction = createAction(
+  '[Request] Close offerList component in currentRequest',
+);
 
 export const loadRequestListFromDBAction = createAction(
-  '[Request] Load buyer request from data base',
+  '[Request] Load request list from data base',
+  props<{ requests: Request[] }>()
+);
+export const setFilteredRequestListAction = createAction(
+  '[Request] Set filteredRequestList',
   props<{ requests: Request[] }>()
 );

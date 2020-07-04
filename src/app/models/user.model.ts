@@ -11,9 +11,13 @@ export class User {
 		public userStatus: string, // registered or guest
 		public userType: string, // byer seller or universal
 		public userRequests: Request[], // order id's
+		public requestsLastOffer: LastOffer[],
 		public userOffers: Offer[], // offer id's
 		public sellerCategories: string[],
 		public sellerLocation: string[],
+		public sellerRejectedRequests: string[],
+		public sellerResponsedRequests: string[],
+		public sellerLastLoadedRequest: string,
 		public userRating: UserRating
 	) {}
 }
@@ -22,6 +26,10 @@ interface UserData {
 	name: string;
 	surname: number;
 	birthDay: string;
+}
+export interface LastOffer {
+	request: string;
+	lastOffer: string;
 }
 
 interface Location {

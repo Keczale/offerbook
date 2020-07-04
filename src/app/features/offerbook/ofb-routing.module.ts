@@ -6,23 +6,33 @@ import { AngularFireAuthGuard, redirectUnauthorizedTo } from '@angular/fire/auth
 import { RequestComponent } from './request/request.component';
 import { OfferComponent } from './offer/offer.component';
 import { OfferbookComponent } from './offerbook.component';
+import { OfferListComponent } from './request/offer-list/offer-list.component';
 
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['/login']);
 
 const routes: Routes = [
   {
-  path: '',
-  component: OfferbookComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedToLogin },
+    path: '',
+    component: OfferbookComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedToLogin },
 
-	children:[{
-	path: 'myrequests',
-	component: RequestComponent,
+    children: [{
+    path: 'myrequests',
+    component: RequestComponent,
   },
   {
-	path: 'myoffers',
-	component: OfferComponent,
+    path: 'myrequests/:id',
+    component: OfferListComponent,
+    // children: [
+    //   {path: 'offers',
+    //   component: OfferListComponent}
+    // ]
+    },
+  {
+    path: 'myoffers',
+    component: OfferComponent,
   }]
-  }
+  },
+  
   ];
 
 @NgModule({

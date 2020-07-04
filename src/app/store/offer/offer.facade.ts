@@ -15,4 +15,6 @@ export class OfferFacade {
   public get isLoading(): Observable<boolean>{
     return this._store$.pipe(select(offerIsLoadingSelector));
     }
+
+    
 }

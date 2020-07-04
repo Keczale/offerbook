@@ -48,4 +48,8 @@ export class RequestChangePopupComponent implements OnInit, OnDestroy {
   public submitForm(): void {
     this.requestService.submitChangeForm(this.requestChangeForm.value);
   }
+
+  public cancelChanging(): void{
+    this.requestService.cancelChanging();
+  }
 }

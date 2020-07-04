@@ -47,5 +47,16 @@
   </div>
   <div mat-dialog-actions>
     <button mat-button mat-dialog-close>Отменить</button>
-    <button mat-raised-button mat-dialog-close type="submit" (click)="submitForm()">Отправить</button>
+    <button mat-raised-button
+      mat-dialog-close 
+      type="submit" 
+      (click)="submitForm()"
+      [class.disabled]="requestForm.controls['title'].invalid || 
+      requestForm.controls['description'].invalid ||
+      requestForm.controls['category'].invalid ||
+      requestForm.controls['city'].invalid"
+      [disabled]="requestForm.controls['title'].invalid || 
+      requestForm.controls['description'].invalid ||
+      requestForm.controls['category'].invalid ||
+      requestForm.controls['city'].invalid">Отправить</button>
   </div>

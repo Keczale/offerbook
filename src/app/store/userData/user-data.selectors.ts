@@ -26,6 +26,7 @@ export const currentUserNameSelector = createSelector(
 	// tslint:disable-next-line: typedef
 	state => state.userName
 );
+
 export const emailErrorSelector = createSelector(
 	userDataFeatureSelector,
 	// tslint:disable-next-line: typedef
@@ -46,9 +47,19 @@ export const userLocationSelector = createSelector(
 	// tslint:disable-next-line: typedef
 	state => state.location
 );
+export const lastOffersSelector = createSelector(
+	currentUserSelector,
+	// tslint:disable-next-line: typedef
+	state => state.requestsLastOffer
+);
 
 export const sellerCategoriesSelector = createSelector(
 	currentUserSelector,
 	// tslint:disable-next-line: typedef
 	state => state.sellerCategories
+);
+export const sellerLocationSelector = createSelector(
+	currentUserSelector,
+	// tslint:disable-next-line: typedef
+	state => state.sellerLocation
 );

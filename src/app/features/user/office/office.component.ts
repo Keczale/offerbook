@@ -27,8 +27,11 @@ export class OfficeComponent implements OnInit, OnDestroy {
   public checkedSellersCities: string[];
   public selectSellersCitiesForm = [];
 
-  public sendCategotiesTitle = 'Отправить выбранные категории';
-  public clearTitle = 'Очистить список';
+  public userId: string = '';
+
+  public sendCategotiesTitle: string = 'Отправить выбранные категории';
+  public clearTitle: string = 'Очистить список';
+  public sendCityTitle: string = 'Отправить выбранные города';
   // public selectedCategories: string[] = [];
   public step: number = 0;
 
@@ -51,6 +54,7 @@ export class OfficeComponent implements OnInit, OnDestroy {
   this.userSubscriber = this.userDataService.currentUser$
   .subscribe((user: User) => {
   this.userType = user.userType;
+  this.userId = user.id;
   this.checkedCategories = user.sellerCategories;
   this.checkedSellersCities = user.sellerLocation;
   this.createCategoryForm(this.categories, this.checkedCategories);
@@ -125,5 +129,7 @@ export class OfficeComponent implements OnInit, OnDestroy {
     });
     this.nextStep();
   }
+
+  
 
 }

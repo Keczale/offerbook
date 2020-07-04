@@ -56,9 +56,7 @@ constructor(
 	.then((snapshot: database.DataSnapshot) => snapshot.val())
 	.then((user: User) => {
 	if (user) {this._store$
-		.dispatch(loadCurrentUserAction({id: user.id, name: user.userName,
-			email: user.email, userType: user.userType, sellerCategories : user.sellerCategories,
-			sellerLocation: user.sellerLocation, userLocation: user.location}));
+		.dispatch(loadCurrentUserAction({currentUser: user}));
 	}
 	else {console.log('there are no such user in DB. Evidently its a first sign in')}
 	});
@@ -122,7 +120,7 @@ constructor(
 	.then((userData: auth.UserCredential) => this.userToStoreReg(name, userData))
 	.then(() => this.userToDataBaseReg())
 	.then(() => this.loading())
-	.then(() => this._router.navigate(['']))
+	.then(() => this._router.navigate(['']));
   }
 
   public signInEmail(email: any, password: any): void {

@@ -14,9 +14,24 @@ export const offerIsLoadingSelector = createSelector(
 	// tslint:disable-next-line: typedef
 	state => state.isLoading
 );
+export const requestListIsChangingSelector = createSelector(
+	offerStateSelector,
+	// tslint:disable-next-line: typedef
+	state => state.requestListIsChanging
+);
+export const sellersNewRequestCountSelector = createSelector(
+	offerStateSelector,
+	// tslint:disable-next-line: typedef
+	state => state.newRequestCount
+);
 
 export const offerRequestListSelector = createSelector(
 	offerStateSelector,
 	// tslint:disable-next-line: typedef
 	state => state.requestList
+);
+export const openedRequestSelector = createSelector(
+	offerStateSelector,
+	// tslint:disable-next-line: typedef
+	state => state.openedRequest
 );

@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterContentInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterContentInit, OnDestroy, ViewChild, ChangeDetectorRef, AfterViewChecked } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireDatabase } from '@angular/fire/database';
@@ -20,7 +20,7 @@ import { OfferFacade } from './store/offer/offer.facade';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewChecked {
   public title: string = 'offerbook';
   public nameMask: string = 'User';
 
@@ -35,13 +35,15 @@ export class AppComponent implements OnInit {
 
   constructor(
 	  public afAuth: AngularFireAuth,
-	  private _router: Router,
+	  // private _router: Router,
 	  public userDataFacade: UserDataFacade,
 	  public requestFacade: RequestFacade,
 	  public offerFacade: OfferFacade,
 	  public db: AngularFireDatabase,
 	  public store$: Store<UserState>,
 	  public dialog: MatDialog,
+	  private cdRef: ChangeDetectorRef
+
 
 	) {	}
 
@@ -51,7 +53,10 @@ export class AppComponent implements OnInit {
 		// this.currentUserSubscriber = this.userDataFacade.currentUser$.subscribe((user: User) => this.currentUser = user);
 	}
 
+	ngAfterViewChecked(): void{
+		this.cdRef.detectChanges();
 
+	}
 
 	// ngOnDestroy(): void {
 	// 	this.currentUserSubscriber.unsubscribe();

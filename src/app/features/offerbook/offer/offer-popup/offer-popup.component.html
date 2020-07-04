@@ -1,5 +1,52 @@
-<h1 mat-dialog-title>Ваша заявка</h1>
-<div mat-dialog-content>This dialog showcases the title, close, content and actions elements.</div>
-<div mat-dialog-actions>
-  <button mat-button mat-dialog-close>Close</button>
-</div>
+<h1 mat-dialog-title>Ваше предложение </h1>
+<div mat-dialog-content [formGroup]="offerForm" (ngSubmit)="submitForm()" class="offer-form">
+    <mat-form-field>
+        <mat-label>Введите описание</mat-label>
+        <input matInput
+        type="text"
+            placeholder="Описание"
+            formControlName="description">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Введите условия</mat-label>
+        <textarea matInput
+            placeholder="Доставка, подарки, рассрочка..."
+            formControlName="conditions">
+        </textarea>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Стоимость</mat-label>
+      <input matInput
+          placeholder="Укажите цену"
+          formControlName="price">
+  </mat-form-field>
+    
+  <mat-checkbox class="example-margin" formControlName="secondHand">б/у</mat-checkbox>
+
+    <mat-form-field>
+      <ngx-mat-file-input formControlName="offerImage"
+        [accept]="'.png,.jpg,.jpeg'"
+       placeholder="Выберите фото" ></ngx-mat-file-input>
+      <mat-icon matSuffix>folder</mat-icon>
+      <mat-error *ngIf="offerForm.get('offerImage').hasError('maxContentSize')">
+        Размер файла не должен превышать {{offerForm.get('requestImage')?.getError('maxContentSize').maxSize | byteFormat}}
+         (Ваш файл {{offerForm.get('offerImage')?.getError('maxContentSize').actualSize
+        | byteFormat}}).
+      </mat-error>
+    </mat-form-field>
+    
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button mat-dialog-close>Отменить</button>
+    <button mat-raised-button
+    mat-dialog-close 
+    type="submit" 
+    (click)="submitForm()"
+    [class.disabled]="offerForm.controls['description'].invalid || 
+      offerForm.controls['conditions'].invalid ||
+      offerForm.controls['price'].invalid"
+    [disabled]="offerForm.controls['description'].invalid || 
+      offerForm.controls['conditions'].invalid ||
+      offerForm.controls['price'].invalid">Отправить</button>
+  </div>

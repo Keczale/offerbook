@@ -1,0 +1,10 @@
+<button mat-button routerLink="/myrequests">назад</button>
+
+<h1>Все предложения</h1>
+
+<app-offer-item
+    *ngFor = "let offer of offerList; let i = index"
+    [currentOffer] = "offer"
+    [index] = "i+1"
+    [currentRequest] = "currentRequest">
+</app-offer-item>

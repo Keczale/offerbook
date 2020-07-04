@@ -19,7 +19,7 @@
         <button mat-menu-item routerLink="/myaccount" >В кабинет</button>
         <button mat-menu-item (click)="signOut()">Выйти</button>
       </mat-menu>
-    <mat-error *ngIf="userDataFacade.logOutError | async">{{userDataFacade.logOutError | async}}</mat-error>
+    <mat-error *ngIf="userDataFacade.logOutError | async as logOutError">{{logOutError}}</mat-error>
   </div>
 </header>
 <mat-progress-bar mode="query" *ngIf="userIsLoading | async"></mat-progress-bar>

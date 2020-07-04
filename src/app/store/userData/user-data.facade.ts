@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { UserState, DataIsLoadingSelector, currentUserNameSelector, logOutErrorSelector, userTypeSelector, userLocationSelector, currentUserSelector } from '.';
+import { UserState, DataIsLoadingSelector, currentUserNameSelector, logOutErrorSelector, userTypeSelector, userLocationSelector, currentUserSelector, setRejectedRequestAction, sellerLocationSelector, sellerCategoriesSelector, setResponsedRequestAction, lastOffersSelector, setLastOfferToRequestsAction } from '.';
 import { Observable } from 'rxjs';
 import { UserDataService } from 'src/app/features/user/services/user-data.service';
-import { User } from 'src/app/models/user.model';
+import { User, LastOffer } from 'src/app/models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -29,10 +29,33 @@ export class UserDataFacade {
     }
   public get userLocation$(): Observable<string> {
     return this._store$.pipe(select(userLocationSelector));
-      }
-    public get currentUser$(): Observable<User> {
-        return this._store$.pipe(select(currentUserSelector));
-          }
+    }
+  public get currentUser$(): Observable<User> {
+    return this._store$.pipe(select(currentUserSelector));
+    }
+  public get sellerLocation$(): Observable<string[]> {
+    return this._store$.pipe(select(sellerLocationSelector));
+    }
+  public get sellerCategory$(): Observable<string[]> {
+    return this._store$.pipe(select(sellerCategoriesSelector));
+    }
+  public get lastOffers$(): Observable<object[]> {
+    return this._store$.pipe(select(lastOffersSelector));
+    }
+
+    public setRejectedRequest(id: string): void {
+      this._store$.dispatch(setRejectedRequestAction({rejected: id}));
+    }  
+  public setLastOfferToRequestsAction(lastOfferList: LastOffer[]): void {
+    this._store$.dispatch(setLastOfferToRequestsAction({newLastOfferList: lastOfferList}));
+  }
+  public setAcceptedRequest(id: string): void {
+    this._store$.dispatch(setResponsedRequestAction({responsed: id}));
+  }
+
+  public userToDataBase(): void {
+    this._userDataService.userToDataBaseReg();
+  }
 
   public loadCurrentUserFromDB(uid: string): void {
 	this._userDataService.loadCurrentUserFromData(uid);

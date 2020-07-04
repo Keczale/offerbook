@@ -1,4 +1,12 @@
 <button mat-raised-button (click)="openDialog()">Создать запрос</button>
 <div class="request__list">
-    <app-request-item *ngFor="let request of requestService.requestList$ | async" [userRequest]="request"></app-request-item>
+    <mat-button-toggle-group name="requestFilter" aria-label="Filter">
+        <mat-button-toggle value="all" (click) = "filterAll()">Все</mat-button-toggle>
+        <mat-button-toggle class="filter" (click) = "filterActive()" value="active">Активные</mat-button-toggle>
+        <mat-button-toggle class="filter" (click) = "filterCompleted()" value="completed">Завершённые</mat-button-toggle>
+      </mat-button-toggle-group>
+    <app-request-item 
+        *ngFor="let request of requestFacade.filteredRequestList$ | async"
+        [userRequest]="request">
+    </app-request-item>
 </div>

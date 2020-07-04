@@ -1,14 +1,39 @@
-<mat-card class="request">
-    <p>{{index}}</p>
+<mat-card 
+    class="request"
+    *ngIf="!isRemoved">
+    
+    <div class="request__index">{{index}}</div>
+    <img class="request__photo " src="{{request.photos[0]}}">
+
     <div class="request__describe flexbox">
         <span class="request__title">{{request.title}}</span>
-        <p>{{request.category}}</p>
+        <p class="request__category">{{request.category}}</p>
         <p>{{request.description}}</p>
-</div>
-    <img class="request__photo " src="{{request.photos[0]}}">
+    </div>
     <div class="request__buyer flexbox">
         <p>{{buyer ? buyer.userName : 'user'}}</p>
         <p>{{(buyer && buyer.userRating)  ? buyer.userRating : 'нет оценок'}}</p>
+    </div>
+    <div class="request__other-offers">
+        offers quantity
+        best prise
+        sec hand if -//- 
+    </div>
+    <div class="request__remove">
+        <button 
+            mat-raised-button
+            title="Дважды кликнуть, чтобы убрать из списка"
+            (dblclick)="rejectRequest()">
+            Отклонить
+        </button>
+    </div>
+    <div class="request__accept">
+        <button 
+            mat-raised-button
+            title="Сделать предложение"
+            (click)="openDialog()">
+            Откликнуться
+        </button>
     </div>
 
 </mat-card>

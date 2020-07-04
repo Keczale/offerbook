@@ -25,10 +25,14 @@ export const initialState: UserState = {
 	userData: {name: null, surname: null, birthDay: null},
 	userStatus: null, // registered or guest если гость,
 	userType: 'buyer', // byer seller or universal
-	userRequests: [], // order id's
-	userOffers: [], // offer id's
+	userRequests: [null], // order id's
+	requestsLastOffer: [],
+	userOffers: [null], // offer id's
 	sellerCategories: [null],
 	sellerLocation: [null],
+	sellerRejectedRequests: [null],
+	sellerResponsedRequests: [null],
+	sellerLastLoadedRequest: null,
 	userRating: {buyer: null, seller: null}
 
   }
@@ -44,18 +48,11 @@ const _userDataReducer = createReducer(
 	};
 	}),
 	on(ActionsUser.loadCurrentUserAction,
-		(state: UserState, { id, name, email, userType, sellerCategories, sellerLocation, userLocation }) => {
+		(state: UserState, { currentUser }) => {
 		return {
 			...state,
 			currentUser: {
-				...state.currentUser,
-				id: id,
-				userName: name,
-				email: email,
-				userType: userType,
-				sellerCategories: sellerCategories,
-				sellerLocation: sellerLocation,
-				location: userLocation
+				...currentUser,
 			}
 		};
 	}
@@ -69,6 +66,36 @@ on(ActionsUser.getCurrentUserAction,
 			id: id,
 			userName: name,
 			email: email}
+	};
+}
+),
+on(ActionsUser.setLastLoadedRequestAction,
+	(state: UserState, { requestId }) => {
+	return {
+		...state,
+		currentUser: {
+			...state.currentUser,
+			sellerLastLoadedRequest: requestId}
+	};
+}
+),
+on(ActionsUser.setRejectedRequestAction,
+	(state: UserState, { rejected }) => {
+	return {
+		...state,
+		currentUser: {
+			...state.currentUser,
+			sellerRejectedRequests: [...Object.assign([],state.currentUser.sellerRejectedRequests), rejected]  }
+	};
+}
+),
+on(ActionsUser.setResponsedRequestAction,
+	(state: UserState, { responsed }) => {
+	return {
+		...state,
+		currentUser: {
+			...state.currentUser,
+			sellerResponsedRequests: [...Object.assign([],state.currentUser.sellerResponsedRequests), responsed]  }
 	};
 }
 ),
@@ -165,7 +192,18 @@ on (ActionsUser.setSellerLocationAction,
 			sellerLocation: sellerCities}
 	};
 }),
+on (ActionsUser.setLastOfferToRequestsAction,
+	(state: UserState, {newLastOfferList}) => {
+	return {
+		...state,
+		currentUser: {
+			...state.currentUser,
+			requestsLastOffer: newLastOfferList}
+	};
+}),
 );
+
+
 export function userDataReducer(state, action) {
 	return _userDataReducer(state, action);
 }

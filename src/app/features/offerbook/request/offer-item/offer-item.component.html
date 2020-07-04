@@ -1,0 +1,44 @@
+<mat-card 
+    class="currentoffer"
+    [class.accepted] = "currentOffer.status === accepted"
+    [ngClass] = "{rejected: currentOffer.status === rejected}">
+    
+    <div class="currentoffer__index">{{index}}</div>
+    <img class="currentoffer__photo " src="{{currentOffer.photos[0]}}">
+
+    <div class="currentoffer__head flexbox">
+        <span class="currentoffer__title">{{currentOffer.title}}</span>
+        <p class="currentoffer__category">{{currentOffer.category}}</p>
+        <p>{{currentOffer.description}}</p>
+    </div>
+    <div class="currentoffer__describe flexbox">
+        
+        <p>{{currentOffer.description}}</p>
+    </div>
+    <div class="currentoffer__seller flexbox">
+        <p>{{currentOffer.fromUserName ? currentOffer.fromUserName : 'нет имени'}}</p>
+        <p>{{(currentOffer.fromUserRating)  ? currentOffer.fromUserRating : 'нет оценок'}}</p>
+    </div>
+    <div class="currentoffer__other-offers">
+        <div *ngIf = "currentOffer.secondHand">б/у</div>
+    </div>
+    <!-- <div class="request__remove">
+        <button 
+            mat-raised-button
+            title="Дважды кликнуть, чтобы убрать из списка"
+            (dblclick)="rejectRequest()">
+            Отклонить
+        </button>
+    </div> -->
+    <div class="request__accept">
+        <button 
+            mat-raised-button
+            title="Двойной клик, чтобы принять предложение продавцы"
+            (dblclick) = "acceptOffer()"
+            [disabled] = "currentOffer.status !== 'opened'">
+            {{currentOffer.status === 'accepted' ? 'Принято' : 'Принять'}}
+        </button>
+    </div>
+
+</mat-card>
+ 

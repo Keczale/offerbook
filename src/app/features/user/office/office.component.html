@@ -1,13 +1,35 @@
 <div>
     <button class="office__seller-button"
     mat-raised-button
-    (click)="addSeller()">Буду продавать</button>
+    title="Щёлкните дважды, чтобы активировать или убрать режим продавца"
+    matTooltip="Щёлкните дважды, чтобы активировать или убрать режим продавца"
+    matTooltipPosition="right"
+
+    (dblclick)="addSeller()">Буду продавать</button>
 </div>
 <div class="settings" *ngIf="userType==='seller'">
 
     <h1 class="text">Настройте аккаунт продавца</h1>
     <mat-accordion>
+
         <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                UID
+                </mat-panel-title>
+                <mat-panel-description>
+                    Узнать свой номер
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <p>{{userId}}</p>
+                    <button  class="office__uid-btn"
+                    mat-raised-button type="submit" 
+                    (click)="nextStep()">
+                    OK
+                </button>
+            </mat-expansion-panel>
+
+        <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
         <mat-expansion-panel-header>
             <mat-panel-title>
             Категории
@@ -36,7 +58,7 @@
             </button>
         </div>
         </mat-expansion-panel>
-        <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+        <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)" hideToggle>
             <mat-expansion-panel-header>
                 <mat-panel-title>
                 Локация
@@ -56,7 +78,7 @@
                 <button  class="email-form__login-btn"
                     mat-raised-button type="submit" 
                     (click)="sendSellersCities()"
-                    [title]="sendCategotiesTitle">
+                    [title]="sendCityTitle">
                     OK
                 </button>
                 <button  class="email-form__login-btn"

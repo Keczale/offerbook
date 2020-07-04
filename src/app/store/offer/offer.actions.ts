@@ -6,18 +6,28 @@ export const offerInProgressAction = createAction(
   '[Offer] Activate/disactivate load bar'
 );
 
+export const requestListIsChangingAction = createAction(
+  '[Offer] Activate status changing request list'
+);
+export const requestListNotChangingAction = createAction(
+  '[Offer] Disactivate status changing request list'
+);
 
 export const loadActualRequestListFromDBAction = createAction(
   '[Offer] Load buyer requests from data base for seller',
   props<{ requests: Request[] }>()
 );
 
-export const loadOffersSuccess = createAction(
-  '[Offer] Load Offers Success',
-  props<{ data: any }>()
+export const setNewRequestCounterAction = createAction(
+  '[Offer] Set count of new actual requests for seller',
+  props<{ count: number }>()
 );
 
-export const loadOffersFailure = createAction(
-  '[Offer] Load Offers Failure',
-  props<{ error: any }>()
+export const setRequestToAnswer = createAction(
+  '[Offer] Set request to give offer',
+  props<{ request: Request }>()
+);
+
+export const closeRequestToAnswer = createAction(
+  '[Offer] clear request after offer',
 );

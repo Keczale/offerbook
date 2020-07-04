@@ -13,12 +13,13 @@ export class Request {
 		public lastChange: number = null,
 		// public viewed: number, // how much sellers open request , or boolean
 		public photos: string[] = [], // src images
-		public photoNames: string[]=[],
+		public photoNames: string[]= [],
 		public status: string = '', // active done
 		public deleted: boolean = false,
 		// public changed: Date, // when was las change
 		// public dealedOffers: DealedOffer,
-		//public offers: Offer[] = [], //refers to offers
+		public offers: Offer[] = [],
+		public newOffersToRequest: number = null
 		) {}
 }
 interface DealedOffer {
@@ -26,5 +27,5 @@ interface DealedOffer {
 	seller: number;
 }
 
-export enum requestStatus {'active', 'completed'}
+export enum RequestStatus {'active', 'completed'}
 

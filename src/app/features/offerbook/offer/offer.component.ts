@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
+import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { OfferPopupComponent } from './offer-popup/offer-popup.component';
 import { OfferService } from '../services/offer.service';
 import { UserDataFacade } from 'src/app/store/userData/user-data.facade';
 import { User } from 'src/app/models/user.model';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable, combineLatest, Subject } from 'rxjs';
+import { takeUntil, take } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 
@@ -15,34 +15,52 @@ import { Store } from '@ngrx/store';
 })
 export class OfferComponent implements OnInit, OnDestroy {
 
+
+  // public rejectedRequests: string[];
+
   public currentUser: User;
   public currentUserSubscriber: Subscription;
+  
+
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
+
+
 
 
   constructor(
-    public dialog: MatDialog,
     public offerService: OfferService,
-    private _userDataFacade: UserDataFacade
+    public userDataFacade: UserDataFacade,
+    private cdRef: ChangeDetectorRef
+
     ) { }
 
   ngOnInit(): void {
-    this.currentUserSubscriber = this._userDataFacade.currentUser$
-    .subscribe((user: User) => {
-      if(user){
-      this.currentUser = user;
-      this.offerService.loadActualList(this.currentUser);
-      console.log(this.currentUser); }
+    combineLatest(
+      this.userDataFacade.sellerLocation$,
+      this.userDataFacade.sellerCategory$)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((all) => {
+        this.userDataFacade.currentUser$
+        .subscribe((user: User) => {
+        this.currentUser = user;
+        this.offerService.loadActualList(this.currentUser);
+        })
+        .unsubscribe();
     });
-
   }
 
   ngOnDestroy(): void {
-    	this.currentUserSubscriber.unsubscribe();
-    }
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+     }
 
-  openDialog() {
-    this.dialog.open(OfferPopupComponent);
+  
+
+  public saveRejectedRequests(): void {
+    this.offerService.saveRejectedRequests();
   }
 
-
+  public refreshRequestList(): void {
+    this.offerService.refreshRequestList();
+  }
 }

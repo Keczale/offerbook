@@ -6,15 +6,19 @@ export const requestFeatureKey = 'request';
 
 export interface RequestState {
 isLoading: boolean;
+isOpenedOfferList: boolean;
 changedRequest: Request;
 requestList: Request[];
+filteredRequestList: Request[];
 }
 
 export const initialStateRequest: RequestState = {
   isLoading: false,
   changedRequest: null,
+  isOpenedOfferList: false,
 
-  requestList: []
+  requestList: [],
+  filteredRequestList: [],
 };
 
 
@@ -34,6 +38,15 @@ export const _requestReducer = createReducer(
         requestList: [
           ...state.requestList,
           {...request}
+        ]
+      };
+      }),
+    on(ActionsRequest.setFilteredRequestListAction,
+      (state: RequestState, { requests }) => {
+      return {
+        ...state,
+        requestList: [
+          ...requests
         ]
       };
       }),
@@ -66,7 +79,21 @@ export const _requestReducer = createReducer(
             ...state,
             requestList: []
           };
-          })
+          }),
+  on(ActionsRequest.offerListOpenAction,
+    (state: RequestState) => {
+    return {
+      ...state,
+      isOpenedOfferList: true
+    };
+    }),
+  on(ActionsRequest.offerListCloseAction,
+    (state: RequestState) => {
+    return {
+      ...state,
+      isOpenedOfferList: false
+    };
+    }),
 );
 
 export function requestReducer(state, action) {

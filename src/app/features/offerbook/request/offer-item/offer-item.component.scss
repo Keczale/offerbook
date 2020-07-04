@@ -1,5 +1,4 @@
-
-.request{
+.currentoffer{
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -21,9 +20,16 @@
         //width: 100%; /* Here you can use wherever you want to specify the width and also the height of the <img>*/
         max-height: 6rem;
         max-width: 6rem;
-    }    
+    }  
+    &__head{
+        flex: 1 1 10%;
+        
+        padding-left: .4rem;
+
+        font-weight: bold;
+    }  
     &__describe{
-        flex: 1 1 25%;
+        flex: 1 1 40%;
         padding-left: .4rem;
 
     }
@@ -31,20 +37,12 @@
         font-style: italic;;
     }
     
-    &__buyer{
+    &__seller{
     flex: 0 1 15%;
     padding-left: .4rem;
 
     }
-    &__other-offers{
-        flex: 0 1 15%;
-        padding: 0 .3rem;
 
-    }
-    &__remove{
-        flex: 0 1 10%;
-
-    }
     &__accept{
         flex: 0 1 10%;
 
@@ -53,6 +51,12 @@
     &__title{
         font-weight: bold;
     }
-      
+    
 
+}
+.accepted{
+    background-color: rgb(126, 212, 126);
+}
+.rejected{
+    background-color: rgb(236, 134, 143);
 }

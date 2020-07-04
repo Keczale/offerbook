@@ -1,15 +1,42 @@
-.example-card {
+.wrapper{
+  padding: .3rem;
+}
+
+.request-card {
     max-width: 14rem;
+
+
 
     &__image {
       object-fit: contain; /*this makes de image in src fit to the size of specified below*/
       //width: 100%; /* Here you can use wherever you want to specify the width and also the height of the <img>*/
       height: 14rem;
     }
+    &__describe{
+      max-height: 1.5rem;
+    }
+    &__actions{
+      display: flex;
+    }
+    &__btn{
+      flex: 0 0 50%;
+    }
+    &__offers{
+      font-weight: 600;
+      cursor: pointer;
+    }
+    &__new-offers{
+      font-weight: 600;
+    }
+    &__best-price{
+      font-weight: 600;
+    }
 
   }
-  
-  .example-header-image {
+  .accepted{
+    background-color: rgb(147, 224, 147);
+  }
+  .request-header-image {
     background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
     background-size: cover;
   }
