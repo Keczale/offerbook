@@ -34,3 +34,8 @@ export const isOpenedOfferListSelector = createSelector(
 	// tslint:disable-next-line: typedef
 	state => state.isOpenedOfferList
 );
+export const requestFilterNameSelector = createSelector(
+	requestFeatureSelector,
+	// tslint:disable-next-line: typedef
+	state => state.filterName
+);

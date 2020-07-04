@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { RequestState, requestIsLoadingSelector, requestChangeSelector, requestListSelector, isOpenedOfferListSelector, offerListOpenAction, offerListCloseAction, filteredRequestListSelector, setFilteredRequestListAction } from '.';
+import { RequestState, requestIsLoadingSelector, requestChangeSelector, requestListSelector, isOpenedOfferListSelector, offerListOpenAction, offerListCloseAction, filteredRequestListSelector, setFilteredRequestListAction, requestFilterNameSelector, setRequestFilterNameAction } from '.';
 import { Observable } from 'rxjs';
 import { Request } from 'src/app/models/request.model';
 
@@ -13,6 +13,7 @@ export class RequestFacade {
   constructor(
     private _store$: Store<RequestState>,
   ) { }
+
   public get isLoading(): Observable<boolean> {
     return this._store$.pipe(select(requestIsLoadingSelector));
     }
@@ -28,6 +29,9 @@ export class RequestFacade {
   public get isOpenedOfferList$(): Observable<boolean> {
     return this._store$.pipe(select(isOpenedOfferListSelector));
   }
+  public get requestFilterName$(): Observable<string> {
+    return this._store$.pipe(select(requestFilterNameSelector));
+  }
 
   public openOfferList(): void {
     this._store$.dispatch(offerListOpenAction());
@@ -38,5 +42,9 @@ export class RequestFacade {
   public setFilteredRequestList(requests: Request[]): void {
     this._store$.dispatch(setFilteredRequestListAction({requests}));
   }
+  public setRequestFilterName(requestFilterName: string): void {
+    this._store$.dispatch(setRequestFilterNameAction({requestFilterName}));
+  }
+
 
 }

@@ -23,3 +23,6 @@ export class Offer {
 }
 
 export enum OfferStatus {'opened', 'accepted', 'refused'}
+
+export enum OfferFilterName {'all', 'active', 'responsed', 'rejected'}
+

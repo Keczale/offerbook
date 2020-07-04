@@ -28,4 +28,4 @@ interface DealedOffer {
 }
 
 export enum RequestStatus {'active', 'completed'}
-
+export enum RequestFilterName {'all', 'active', 'completed'}

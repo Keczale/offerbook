@@ -1,13 +1,17 @@
 <mat-card 
     class="request"
-    *ngIf="!isRemoved">
+    *ngIf="!isHidden">
     
     <div class="request__index">{{index}}</div>
     <img class="request__photo " src="{{request.photos[0]}}">
 
     <div class="request__describe flexbox">
         <span class="request__title">{{request.title}}</span>
-        <p class="request__category">{{request.category}}</p>
+        <p class="request__category">
+            {{request.category}} | 
+            <span> {{request.secondHand ? 'можно б/у' : ''}}</span>
+        </p>
+        
         <p>{{request.description}}</p>
     </div>
     <div class="request__buyer flexbox">
@@ -15,8 +19,8 @@
         <p>{{(buyer && buyer.userRating)  ? buyer.userRating : 'нет оценок'}}</p>
     </div>
     <div class="request__other-offers">
-        offers quantity
-        best prise
+        Предложений: {{!request.offers || !request.offers.length ? 'ещё нет' : request.offers.length }}
+        {{bestPrice ? bestPrice : ''}}
         sec hand if -//- 
     </div>
     <div class="request__remove">

@@ -23,11 +23,19 @@ export const setNewRequestCounterAction = createAction(
   props<{ count: number }>()
 );
 
-export const setRequestToAnswer = createAction(
+export const setRequestToAnswerAction = createAction(
   '[Offer] Set request to give offer',
   props<{ request: Request }>()
 );
 
-export const closeRequestToAnswer = createAction(
+export const closeRequestToAnswerAction = createAction(
   '[Offer] clear request after offer',
+);
+export const setFiltredRequestListAction = createAction(
+  '[Offer] Set filtered request list',
+  props<{ filteredList: Request[] }>()
+);
+export const setOfferFilterNameAction = createAction(
+  '[Offer] Set filter name in Offer',
+  props<{ offerFilterName: string }>()
 );

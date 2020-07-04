@@ -1,7 +1,7 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import * as ActionsOffer from './offer.actions';
 import { Request } from 'src/app/models/request.model';
-import { Offer } from 'src/app/models/offer.model';
+import { Offer, OfferFilterName } from 'src/app/models/offer.model';
 
 
 export const offerFeatureKey = 'offer';
@@ -12,6 +12,8 @@ requestListIsChanging: boolean;
 newRequestCount: number;
 openedRequest: Request;
 requestList: Request[];
+filteredRequestList: Request[];
+filterName: string;
 }
 
 export const initialOfferState: OfferState = {
@@ -19,7 +21,9 @@ export const initialOfferState: OfferState = {
   requestListIsChanging: false,
   newRequestCount: null,
   openedRequest: null,
-  requestList: []
+  requestList: [],
+  filteredRequestList: [],
+  filterName: OfferFilterName[1]
 };
 
 
@@ -62,18 +66,32 @@ export const _offerReducer = createReducer(
         newRequestCount : count
       };
       }),
-    on(ActionsOffer.setRequestToAnswer,
+    on(ActionsOffer.setRequestToAnswerAction,
       (state: OfferState, { request }) => {
       return {
         ...state,
       openedRequest: request
       };
       }),
-    on(ActionsOffer.closeRequestToAnswer,
+    on(ActionsOffer.closeRequestToAnswerAction,
       (state: OfferState) => {
       return {
         ...state,
       openedRequest : null
+      };
+      }),
+    on(ActionsOffer.setFiltredRequestListAction,
+      (state: OfferState, {filteredList}) => {
+      return {
+        ...state,
+        filteredRequestList: filteredList
+      };
+      }),
+    on(ActionsOffer.setOfferFilterNameAction,
+      (state: OfferState, {offerFilterName}) => {
+      return {
+        ...state,
+      filterName: offerFilterName
       };
       }),
     

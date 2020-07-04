@@ -32,6 +32,10 @@ export const loadRequestListFromDBAction = createAction(
   props<{ requests: Request[] }>()
 );
 export const setFilteredRequestListAction = createAction(
-  '[Request] Set filteredRequestList',
+  '[Request] Set filtered Request List',
   props<{ requests: Request[] }>()
+);
+export const setRequestFilterNameAction = createAction(
+  '[Request] Set request filter name',
+  props<{ requestFilterName: string }>()
 );

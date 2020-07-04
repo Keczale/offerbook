@@ -4,9 +4,10 @@ import { OfferService } from '../../services/offer.service';
 import { User } from 'src/app/models/user.model';
 import { OfferDataService } from '../../services/offer-data.service';
 import { UserDataFacade } from 'src/app/store/userData/user-data.facade';
-import { setRejectedRequestAction } from 'src/app/store';
+// import { setRejectedRequestAction } from 'src/app/store';
 import { OfferPopupComponent } from '../offer-popup/offer-popup.component';
 import { MatDialog } from '@angular/material/dialog';
+import { Offer } from 'src/app/models/offer.model';
 
 
 @Component({
@@ -22,11 +23,16 @@ export class ActualRequestComponent implements OnInit {
 
   @Input()
   public index: Request = null;
-
+ 
+  @Input()
   public buyer: User = null;
+
+  @Input()
+  public bestPrice: string = null;
+  
   
   @Input()
-  public isRemoved: boolean;
+  public isHidden: boolean;
   
   constructor(
 	public offerService: OfferService,
@@ -39,18 +45,30 @@ export class ActualRequestComponent implements OnInit {
 
   ngOnInit(): void {
 	// console.log(this.buyer, this.request.fromUser)
-	if(this.request) {
+	if (!this.offerService.isEmpty(this.request)) {
 	this._offerDataService.loadBuyerInfo(this.request.fromUser)
   .then((user: User) => {// console.log(user);
-     this.buyer = user;})
+     this.buyer = user;
+    })
 	.catch((error: Error) => console.log(error));
 	}
   }
 
+  public getBestPrice(): void {
+    if(Boolean(!this.offerService.isEmpty(this.request))){
+      const offerList: Offer[] = Object.values(this.request.offers)
+        .sort((a: Offer, b: Offer) => a.price - b.price);
+      this.bestPrice = `Лучшая цена: ${offerList[0].price}`;
+    }
+  }
+
+
+
   public rejectRequest(): void {
-    this.isRemoved = true; // можно убрать(рендер от массива стора) - но так быстрее
+    this.isHidden = true;
     this.userFacade.setRejectedRequest(this.request.id);
     this.offerService.setRequestListIsChanging();
+    this.offerService.initCurrentFilter()
   }
 
   openDialog() {

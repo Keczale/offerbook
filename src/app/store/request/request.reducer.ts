@@ -1,5 +1,5 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import { Request } from 'src/app/models/request.model';
+import { Request, RequestFilterName } from 'src/app/models/request.model';
 import * as ActionsRequest from './request.actions';
 
 export const requestFeatureKey = 'request';
@@ -10,6 +10,7 @@ isOpenedOfferList: boolean;
 changedRequest: Request;
 requestList: Request[];
 filteredRequestList: Request[];
+filterName: string;
 }
 
 export const initialStateRequest: RequestState = {
@@ -19,6 +20,7 @@ export const initialStateRequest: RequestState = {
 
   requestList: [],
   filteredRequestList: [],
+  filterName: RequestFilterName[1]
 };
 
 
@@ -45,7 +47,7 @@ export const _requestReducer = createReducer(
       (state: RequestState, { requests }) => {
       return {
         ...state,
-        requestList: [
+        filteredRequestList: [
           ...requests
         ]
       };
@@ -92,6 +94,13 @@ export const _requestReducer = createReducer(
     return {
       ...state,
       isOpenedOfferList: false
+    };
+    }),
+  on(ActionsRequest.setRequestFilterNameAction,
+    (state: RequestState, {requestFilterName}) => {
+    return {
+      ...state,
+      filterName: requestFilterName
     };
     }),
 );

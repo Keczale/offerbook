@@ -88,6 +88,7 @@ export class RequestService {
 		dateCreating: dateCreateStamp,
 		lastChange: dateCreateStamp,
 		photos: [downloadPhotoURL],
+		status: RequestStatus[0],
 		photoNames: [photoName]
 		//offers: []
 		};

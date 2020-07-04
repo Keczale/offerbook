@@ -49,7 +49,7 @@ export class UserDataFacade {
   public setLastOfferToRequestsAction(lastOfferList: LastOffer[]): void {
     this._store$.dispatch(setLastOfferToRequestsAction({newLastOfferList: lastOfferList}));
   }
-  public setAcceptedRequest(id: string): void {
+  public setResponsedRequest(id: string): void {
     this._store$.dispatch(setResponsedRequestAction({responsed: id}));
   }
 

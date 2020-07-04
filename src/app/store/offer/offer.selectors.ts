@@ -35,3 +35,13 @@ export const openedRequestSelector = createSelector(
 	// tslint:disable-next-line: typedef
 	state => state.openedRequest
 );
+export const filteredRequestListInOfferSelector = createSelector(
+	offerStateSelector,
+	// tslint:disable-next-line: typedef
+	state => state.filteredRequestList
+);
+export const offerFilterNameSelector = createSelector(
+	offerStateSelector,
+	// tslint:disable-next-line: typedef
+	state => state.filterName
+);
