@@ -3,7 +3,7 @@ import { Store, select } from '@ngrx/store';
 import { UserState, DataIsLoadingSelector, currentUserNameSelector, logOutErrorSelector, userTypeSelector, userLocationSelector, currentUserSelector, setRejectedRequestAction, sellerLocationSelector, sellerCategoriesSelector, setResponsedRequestAction, lastOffersSelector, setLastOfferToRequestsAction } from '.';
 import { Observable } from 'rxjs';
 import { UserDataService } from 'src/app/features/user/services/user-data.service';
-import { User, LastOffer } from 'src/app/models/user.model';
+import { User, LastOffer, SellersResponsedRequests } from 'src/app/models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -49,8 +49,8 @@ export class UserDataFacade {
   public setLastOfferToRequestsAction(lastOfferList: LastOffer[]): void {
     this._store$.dispatch(setLastOfferToRequestsAction({newLastOfferList: lastOfferList}));
   }
-  public setResponsedRequest(id: string): void {
-    this._store$.dispatch(setResponsedRequestAction({responsed: id}));
+  public setResponsedRequest(responsedRequestId: string, responsedRequestRef: string): void {
+    this._store$.dispatch(setResponsedRequestAction({responsedRequestId, responsedRequestRef}));
   }
 
   public userToDataBase(): void {

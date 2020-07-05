@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
 import { Store } from '@ngrx/store';
-import { Request } from 'src/app/models/request.model';
+import { Request, RequestStatus } from 'src/app/models/request.model';
 
 import { loadInitialStateAction } from 'src/app/store';
 import { loadActualRequestListFromDBAction } from 'src/app/store/offer';
-import { User } from 'src/app/models/user.model';
+import { User, SellersResponsedRequests } from 'src/app/models/user.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Offer } from 'src/app/models/offer.model';
 
@@ -80,9 +80,34 @@ public async loadOwnRequests(userId: string): Promise<string[]>{
 	});
 	return requestIdList;
 }
+public isEmpty (obj: any): boolean {
+    if (obj) {
+      for (let key in obj) {
+        return false;
+      }
+    
+    return true;
+  }
+	}
 
-  public async loadActualListFromDB(sellerLocation: string[], sellerCategories: string[]): Promise<Request[]> {
-		let actualRequests: Request[] = [];
+	// public loadResponsedRequests(): 	
+
+  public async loadActualListFromDB(sellerLocation: string[], sellerCategories: string[], sellersResponsed: SellersResponsedRequests): Promise<Request[]> {
+	let actualRequests: Request[] = [];
+
+	if (sellersResponsed && sellersResponsed.requestRef) {
+	const responsedRefs: string[] = Object.assign([], sellersResponsed.requestRef);
+	responsedRefs.map((ref: string) => {
+		firebase.database().ref(`${this.requestBaseURL}/${ref}`).once('value')
+		.then((snap: any) => snap.val())
+		.then((request: Request) => {
+			console.log(request)
+			if (request && request.status === RequestStatus[1]) {
+			actualRequests.push(request);
+			}
+		});
+	});
+	}
 		await new Promise(async (resolve) => {
 
 			await Promise.all(sellerLocation.map(async (city: string) => { 
@@ -94,6 +119,7 @@ public async loadOwnRequests(userId: string): Promise<string[]>{
 							.then((snap: any) => snap.val())
 							.then( async (requestMap: string[]) => {
 								if (requestMap) {
+									// сюда добавить ссылки на респонсед ссылки
 									
 									const actualRequestRefList: string[] = Object.values(requestMap);
 									await Promise.all(actualRequestRefList.map(async (adress: string) => {

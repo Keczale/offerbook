@@ -33,7 +33,7 @@
     <div class="request__accept">
         <button 
             mat-raised-button
-            title="Двойной клик, чтобы принять предложение продавцы"
+            title="Двойной клик, чтобы принять предложение продавца"
             (dblclick) = "acceptOffer()"
             [disabled] = "currentOffer.status !== 'opened'">
             {{currentOffer.status === 'accepted' ? 'Принято' : 'Принять'}}

@@ -67,25 +67,17 @@ console.log('destroy')
   }
 
   public filterAll(): void {
-    this.requestFacade.setFilteredRequestList(this.requestList);
-    this.requestFacade.setRequestFilterName(RequestFilterName[0]);
-  }
+    this.requestService.filterAll();
+}
+
   
   public filterActive(): void {
-    //const arr: Request[] = this.requestList;
-    const requests: Request[] = this.requestList.filter((request: Request) =>
-      request.status === RequestStatus[0]);
-    this.requestFacade.setFilteredRequestList(requests);
-
-    this.requestFacade.setRequestFilterName(RequestFilterName[1]);
+    this.requestService.filterActive();
 
   }
   
   public filterCompleted(): void {
-    const requests: Request[] = this.requestList.filter((request: Request) =>
-      request.status === RequestStatus[1]);
-    this.requestFacade.setFilteredRequestList(requests);
-    this.requestFacade.setRequestFilterName(RequestFilterName[2]);
+    this.requestService.filterCompleted();
   }
 
 

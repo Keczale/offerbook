@@ -20,5 +20,6 @@
 <app-actual-request *ngFor="let request of offerFacade.filteredRequestList$ | async; let i = index"
     [request]="request"
     [index]="i+1"
+    [currentUser]="currentUser"
     >
  </app-actual-request>

@@ -4,6 +4,8 @@ export class Request {
 	constructor(
 		public id: string = '',
 		public fromUser: string = '',
+		public fromUserName: string = '',
+		public fromUserRating: number = null,
 		public title: string = '',
 		public description: string = '',
 		public category: string = '',
@@ -16,10 +18,9 @@ export class Request {
 		public photoNames: string[]= [],
 		public status: string = '', // active done
 		public deleted: boolean = false,
-		// public changed: Date, // when was las change
-		// public dealedOffers: DealedOffer,
-		public offers: Offer[] = [],
-		public newOffersToRequest: number = null
+		public offers: object = {},
+		public newOffersToRequest: number = null,
+		public acceptedSellerId: string = ''
 		) {}
 }
 interface DealedOffer {

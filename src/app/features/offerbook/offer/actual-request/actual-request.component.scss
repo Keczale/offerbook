@@ -1,9 +1,11 @@
-
+.wrap{
+    margin-bottom: .5rem;
+}
 .request{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: .4rem;
+    margin-bottom: .6rem;
 
     .flexbox{
         display: flex;
@@ -53,6 +55,29 @@
     &__title{
         font-weight: bold;
     }
-      
+
+    &__offerPhoto{
+        flex: 1 1 20%;
+        object-fit: contain; 
+        max-height: 6rem;
+        max-width: 6rem;
+    }
+}
+.offer-info{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: .4rem;
+
+    &__photo{
+        flex: 1 1 20%;
+        object-fit: contain; 
+        max-height: 6rem;
+        max-width: 6rem;
+    }
+    &__details{
+        flex: 1 1 80%;
+        padding: .5rem;
+    }
 
 }

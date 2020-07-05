@@ -30,6 +30,7 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { ActualRequestComponent } from './offer/actual-request/actual-request.component';
 import { OfferListComponent } from './request/offer-list/offer-list.component';
 import { OfferItemComponent } from './request/offer-item/offer-item.component';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 
 
@@ -53,7 +54,8 @@ import { OfferItemComponent } from './request/offer-item/offer-item.component';
     MatTooltipModule,
     HttpClientModule,
     MatCheckboxModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatExpansionModule
   ],
   providers: [],
   entryComponents: [OfferPopupComponent]

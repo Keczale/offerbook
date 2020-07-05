@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy, ViewChild } from '@angular/core';
-import { Request } from 'src/app/models/request.model';
+import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Request, RequestStatus } from 'src/app/models/request.model';
 import { OfferService } from '../../services/offer.service';
 import { User } from 'src/app/models/user.model';
 import { OfferDataService } from '../../services/offer-data.service';
@@ -21,6 +21,8 @@ export class ActualRequestComponent implements OnInit {
   @Input()
   public request: Request;
 
+  public offerListForCounter: Offer[] = [];
+
   @Input()
   public index: Request = null;
  
@@ -29,6 +31,11 @@ export class ActualRequestComponent implements OnInit {
 
   @Input()
   public bestPrice: string = null;
+
+  @Input()
+  public currentUser: User = null;
+
+  public offerToRequest: Offer = null;
   
   
   @Input()
@@ -46,13 +53,29 @@ export class ActualRequestComponent implements OnInit {
   ngOnInit(): void {
 	// console.log(this.buyer, this.request.fromUser)
 	if (!this.offerService.isEmpty(this.request)) {
-	this._offerDataService.loadBuyerInfo(this.request.fromUser)
-  .then((user: User) => {// console.log(user);
-     this.buyer = user;
-    })
-	.catch((error: Error) => console.log(error));
-	}
+  //   this._offerDataService.loadBuyerInfo(this.request.fromUser)
+  //   .then((user: User) => {// console.log(user);
+  //      this.buyer = user;
+  //     })
+  // .catch((error: Error) => console.log(error));
+  if (this.request && Boolean(this.request.offers)) {
+  const myOfferInArr: Offer[] = Object.values(this.request.offers).filter((offer: Offer) => offer.fromUserId === this.currentUser.id);
+  if (Boolean(myOfferInArr.length)) {
+    this.offerToRequest = Object.values(this.request.offers).filter((offer: Offer) => offer.fromUserId === this.currentUser.id)[0];
   }
+  }
+}
+  }
+  // ngAfterContentChecked(): void {
+  //   if (!this.offerService.isEmpty(this.request)) {
+  //     this._offerDataService.loadBuyerInfo(this.request.fromUser)
+  //     .then((user: User) => {// console.log(user);
+  //        this.buyer = user;
+  //       })
+  //       .catch((error: Error) => console.log(error));
+  //     } 
+  //   }
+  
 
   public getBestPrice(): void {
     if(Boolean(!this.offerService.isEmpty(this.request))){
@@ -61,14 +84,19 @@ export class ActualRequestComponent implements OnInit {
       this.bestPrice = `Лучшая цена: ${offerList[0].price}`;
     }
   }
-
+  
+  getOfferList(): void {
+    if(this.request.offers && !this.offerService.isEmpty(this.request.offers)){
+    this.offerListForCounter = Object.values(this.request.offers);
+    }
+  }
 
 
   public rejectRequest(): void {
     this.isHidden = true;
     this.userFacade.setRejectedRequest(this.request.id);
     this.offerService.setRequestListIsChanging();
-    this.offerService.initCurrentFilter()
+    this.offerService.initCurrentFilter();
   }
 
   openDialog() {

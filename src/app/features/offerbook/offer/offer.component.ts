@@ -24,7 +24,7 @@ export class OfferComponent implements OnInit, OnDestroy {
 
   public currentUser: User;
   public currentUserSubscriber: Subscription;
-  public requestList: Request[]
+  public requestList: Request[];
   
 
   private ngUnsubscribe: Subject<void> = new Subject<void>();

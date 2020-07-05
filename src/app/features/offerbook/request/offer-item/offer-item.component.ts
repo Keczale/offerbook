@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Offer, OfferStatus } from 'src/app/models/offer.model';
 import { RequestService } from '../../services/request.service';
+import { Request } from 'src/app/models/request.model';
+
 
 @Component({
   selector: 'app-offer-item',
@@ -13,7 +15,7 @@ export class OfferItemComponent implements OnInit {
   public currentOffer: Offer;
 
   @Input()
-  public currentRequest: Offer;
+  public currentRequest: Request;
 
   @Input()
   public index: number;

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { OfferDataService } from './offer-data.service';
 import { UserDataFacade } from 'src/app/store/userData/user-data.facade';
-import { User } from 'src/app/models/user.model';
+import { User, SellersResponsedRequests } from 'src/app/models/user.model';
 import { Request } from 'src/app/models/request.model';
 import { Store, select } from '@ngrx/store';
 import { loadActualRequestListFromDBAction, offerInProgressAction, requestListIsChangingSelector, requestListIsChangingAction, requestListNotChangingAction, setNewRequestCounterAction, sellersNewRequestCountSelector, openedRequestSelector, setRequestToAnswerAction } from 'src/app/store/offer';
@@ -78,14 +78,14 @@ export class OfferService {
   public loadActualList(user: User): void {
     this._store$.dispatch(offerInProgressAction());
     if (Boolean(user.sellerLocation) && Boolean(user.sellerCategories)) {
-      this._offerDataService.loadActualListFromDB(user.sellerLocation, user.sellerCategories)
+      this._offerDataService.loadActualListFromDB(user.sellerLocation, user.sellerCategories, user.sellerResponsedRequests)
       .then(async(requestList: Request[]) => {
         
         await this._offerDataService.loadOwnRequests(user.id)
         .then((userRequestIdList: string[]) => {
           return this.requestFilterBySellersRequests(user, requestList, userRequestIdList);
         })
-        .then((requests: Request[]) => {    console.log(requests)
+        .then((requests: Request[]) => {
           if (Boolean(user.sellerLastLoadedRequest)) {
              let count: number = requests.findIndex((request: Request) =>
              request.id === user.sellerLastLoadedRequest);
@@ -124,8 +124,8 @@ export class OfferService {
     }, this._timeOutForReject);
   }
 
-  public setResponsedRequest(id: string): void {
-    this._userFacade.setResponsedRequest(id);
+  public setResponsedRequest(responsedId: string, responsedRef: string): void {
+    this._userFacade.setResponsedRequest(responsedId, responsedRef );
     this._userFacade.userToDataBase();
   }
 
@@ -195,7 +195,7 @@ export class OfferService {
       };
     })
     .then(() => this._offerDataService.sendOfferToDatabase(offer, openedRequest.fromUser))
-    .then(() => this.setResponsedRequest(openedRequest.id))
+    .then(() => this.setResponsedRequest(openedRequest.id, `${openedRequest.fromUser}/${openedRequest.id}`))
 
     .then(() => this._store$.dispatch(offerInProgressAction()))
     .then(() => this.refreshRequestList())
@@ -226,7 +226,7 @@ export class OfferService {
       else if (filterName === OfferFilterName[3]) {
         this.filterRejected();
       }
-    
+    console.log('init filter')
   });
   }
 
@@ -238,8 +238,10 @@ export class OfferService {
     currentUser = user;
     });
     this.loadActualList(currentUser);
-    this.initCurrentFilter();
+    setTimeout(() => this.initCurrentFilter(), 0);
   }
+
+
   public filterAll(): void {
     this._offerFacade.offerRequestList$.pipe(take(1))
     .subscribe((requestList: Request[]) => {
@@ -254,13 +256,20 @@ export class OfferService {
           this.currentUser = updatedUser;
           });
     this._offerFacade.offerRequestList$.pipe(take(1))
-    .subscribe((requestList: Request[]) => { 
+    .subscribe((requestList: Request[]) => {
     const rejectedRequests: string[] = Object.assign([], this.currentUser.sellerRejectedRequests);
-    const responsedRequests: string[] = Object.assign([], this.currentUser.sellerResponsedRequests);
-    console.log(responsedRequests, requestList)
+    let responsedRequests: string[] = [];
+
+    if(this.currentUser.sellerResponsedRequests && this.currentUser.sellerResponsedRequests.requestId) {
+      responsedRequests = Object.assign([], this.currentUser.sellerResponsedRequests.requestId);
+    }
+    
+    console.log(responsedRequests, requestList);
     const unwantedArr: string[] = [...rejectedRequests, ...responsedRequests];
     const requests: Request[] = requestList.filter((request: Request) =>
     !unwantedArr.includes(request.id));
+    // const requests: Request[] = requestList.filter((request: Request) =>
+    // !unwantedArr.includes(request.id));
     this._offerFacade.setFilteredRequestList(requests);
     this._offerFacade.setOfferFilterName(OfferFilterName[1]);
     });
@@ -272,8 +281,10 @@ export class OfferService {
           .subscribe((updatedUser: User) => {
           this.currentUser = updatedUser;
           });
-    const responsedRequests: string[] = Object.assign([], this.currentUser.sellerResponsedRequests);
-    const requests: Request[] = requestList.filter((request: Request) =>
+    let responsedRequests: string[] = [];
+    if(this.currentUser.sellerResponsedRequests && this.currentUser.sellerResponsedRequests.requestId){
+      responsedRequests = Object.assign([], this.currentUser.sellerResponsedRequests.requestId);
+    }    const requests: Request[] = requestList.filter((request: Request) =>
     responsedRequests.includes(request.id));
     this._offerFacade.setFilteredRequestList(requests);
     this._offerFacade.setOfferFilterName(OfferFilterName[2]);

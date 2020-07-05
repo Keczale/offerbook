@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { User, LastOffer } from 'src/app/models/user.model';
+import { User, LastOffer, SellersResponsedRequests } from 'src/app/models/user.model';
 
 // export enum dataActionType {
 //   loadFromLocalStorage = '[UserData] Activate/disactivate load bar',
@@ -18,8 +18,8 @@ export const setRejectedRequestAction = createAction(
   props<{ rejected: string}>()
 );
 export const setResponsedRequestAction = createAction(
-  '[UserData] Set accepted request',
-  props<{ responsed: string}>()
+  '[UserData] Set responser request',
+  props<{ responsedRequestId: string, responsedRequestRef: string}>()
 );
 export const getCurrentUserAction = createAction(
   '[UserData] Get current user from database',

@@ -1,6 +1,6 @@
-<mat-card 
-    class="request"
+<mat-card class="wrap"
     *ngIf="!isHidden">
+    <div class = "request">
     
     <div class="request__index">{{index}}</div>
     <img class="request__photo " src="{{request.photos[0]}}">
@@ -11,17 +11,15 @@
             {{request.category}} | 
             <span> {{request.secondHand ? 'можно б/у' : ''}}</span>
         </p>
-        
         <p>{{request.description}}</p>
     </div>
     <div class="request__buyer flexbox">
-        <p>{{buyer ? buyer.userName : 'user'}}</p>
-        <p>{{(buyer && buyer.userRating)  ? buyer.userRating : 'нет оценок'}}</p>
+        <p>{{request.fromUserName ? request.fromUserName : 'без имени'}}</p>
+        <p>{{request.fromUserRating  ? request.fromUserRating : 'нет оценок'}}</p>
     </div>
     <div class="request__other-offers">
-        Предложений: {{!request.offers || !request.offers.length ? 'ещё нет' : request.offers.length }}
+        Предложений: {{!offerListForCounter.length ? 'ещё нет' : offerListForCounter.length }}
         {{bestPrice ? bestPrice : ''}}
-        sec hand if -//- 
     </div>
     <div class="request__remove">
         <button 
@@ -39,5 +37,33 @@
             Откликнуться
         </button>
     </div>
+</div>
+
+<mat-accordion *ngIf = "offerToRequest">
+    <mat-expansion-panel hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Предложение
+        </mat-panel-title>
+        <mat-panel-description>
+          Посмотреть детали моего предложения
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="offer-info">
+        <img class = "offer-info__photo" src="{{offerToRequest.photos[0]}}" title="фото">
+        <div class="offer-info__details">
+            <p>Описание: {{offerToRequest.description}}</p>
+            <p> Цена: {{offerToRequest.price}}</p>
+            <p>{{offerToRequest.secondHand ? 'Б/у' : ''}}</p>
+        </div>
+    </div>
+    </mat-expansion-panel>
+   
+  </mat-accordion>
+    
+    
 
 </mat-card>
+
+
+

@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 // import { MatSnackBar } from '@angular/material/snack-bar';
 import { requestInProgressAction, requestListSelector, createRequestAction, initChangeRequestAction, endChangeRequestAction, loadRequestListFromDBAction, loadInitialStateAction, userDataReducer, setLastOfferToRequestsAction } from 'src/app/store';
 import { RequestDataService } from './request-data.service';
-import { Request, RequestStatus } from 'src/app/models/request.model';
+import { Request, RequestStatus, RequestFilterName } from 'src/app/models/request.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { RequestFacade } from 'src/app/store/request/request.facade';
@@ -57,12 +57,17 @@ export class RequestService {
 
   public submitForm(value: any): void {
 
+	this._store$.dispatch(requestInProgressAction());
+
+	let currentUser: User = null;
+	this._userFacade.currentUser$.pipe(take(1)).subscribe((user: User) => currentUser = user);
+
 	const requestId: string = this.autoKey;
 	let fileName: string = '';
 	let photoName: string = '';
 	let file: File = null;
 
-	if (value.requestImage){
+	if (value.requestImage) {
 		fileName = value.requestImage.files[0].name;
 		photoName = `${this.autoKey}${fileName.slice(fileName.length - this._fileNameEndCut, fileName.length) }`;
 		file = value.requestImage.files[0];
@@ -71,15 +76,15 @@ export class RequestService {
 	// let downloadPhotoURL: string;
 	let userRequest: Request = new Request();
 
-	this._store$.dispatch(requestInProgressAction());
-
 	this._requestDataService.uploadRequestImage(file, photoName)
-	.then((downloadPhotoURL) => {
+	.then((downloadPhotoURL: string) => {
 		const dateCreateStamp: number = Date.now();
 		userRequest = {
 		...userRequest,
 		id: requestId,
-		fromUser: this._requestDataService.userUid,
+		fromUser: currentUser.id,
+		fromUserName: Boolean(currentUser.userName) ? currentUser.userName : null,
+		fromUserRating: !this.isEmpty(currentUser.userRating) ? currentUser.userRating.buyer : null,
 		title: value.title,
 		description: value.description,
 		category: value.category,
@@ -95,6 +100,7 @@ export class RequestService {
 	})
 		.then(() => this._requestDataService.sendRequestToDatabase(userRequest))
 		.then(() => this.loadActualList())
+		// .then(() => this.initCurrentFilter())
 		//.then(() => this._store$.dispatch(createRequestAction({request: userRequest})))
 		.then(() => this._store$.dispatch(requestInProgressAction()))
 		.then(() => this._requestDataService.addRequestToMap(userRequest.city, userRequest.category, userRequest.fromUser, userRequest.id))
@@ -143,7 +149,7 @@ export class RequestService {
 				let lastOffers: LastOffer[] = [];
 				// const currentUser: User = null;
 				this._userFacade.lastOffers$.pipe(take(1)).subscribe((offers: LastOffer[]) => lastOffers = offers);
-				console.log(lastOffers)// COUNTER
+				console.log(lastOffers) // COUNTER
 				if (lastOffers && lastOffers.length) {
 					console.log(lastOffers)
 
@@ -164,16 +170,14 @@ export class RequestService {
 							userRequest.newOffersToRequest = countNewOffer;
 							requestsWithCounter.push(userRequest);
 							// newLastOfferList.push({request: userRequest.id, lastOffer: userRequest.offers[0].id});
-							console.log(userRequest)
 
 							resolve();
 							}
-							else{resolve();
-								console.log('1')
+							else {resolve();
 
 							}
 						}
-						else {								console.log('2')
+						else {
 							if (!this.isEmpty(userRequest.offers)){
 							const offersArr: Offer[] = Object.values(userRequest.offers);
 							const countNewOffer: number = offersArr.length;
@@ -187,7 +191,6 @@ export class RequestService {
 					resolve();
 					}
 				else {
-					console.log('если нет')
 					requestList.map( (userRequest: Request) => {
 						if(!this.isEmpty(userRequest.offers)){
 						const offerArr: Offer[] = Object.values(userRequest.offers);
@@ -196,7 +199,6 @@ export class RequestService {
 							requestsWithCounter.push(userRequest);
 						}
 					});
-					console.log('requestMap5');
 					resolve();
 				}
 			});
@@ -214,23 +216,13 @@ export class RequestService {
 			this._userFacade.userToDataBase();
 			console.log(requestsWithCounter);
 			this._store$.dispatch(loadRequestListFromDBAction({requests: requestsWithCounter})); // cxtnxbr ???
+			this.initCurrentFilter();
+
 			this._store$.dispatch(requestInProgressAction());
-			// setTimeout(() => {
-			// 	this._store$.dispatch(setLastOfferToRequestsAction({ newLastOfferList}));
-
-			// 	this._userFacade.userToDataBase();
-			// 	console.log(requestListWithCounter)
-
-			// 	this._store$.dispatch(loadRequestListFromDBAction({requests: requestList})); // cxtnxbr ???
-
-			// 	this._store$.dispatch(requestInProgressAction());
-
-			// }, 0);
-				
-			
 			}
 			else {
 				this._store$.dispatch(loadInitialStateAction());
+				this.initCurrentFilter();
 				this._store$.dispatch(requestInProgressAction());
 			}
 
@@ -244,9 +236,9 @@ export class RequestService {
 		return true
 	}
 
-	public deleteRequest(userRequest): void {
+	public deleteRequest(userRequest: Request): void {
 		this._store$.dispatch(requestInProgressAction());
-		const photoName: string = userRequest.photoNames.length ? userRequest.photoNames[0] : null;
+		const photoName: string = Boolean(userRequest.photoNames.length) ? userRequest.photoNames[0] : null;
 			this._requestDataService.deleteImageRequest(photoName)
 			.then((any: any) => this._requestDataService.deleteRequestFromDB(userRequest.id))
 			.then((isDone: string) => {
@@ -256,6 +248,7 @@ export class RequestService {
 					duration: 2000,
 				});
 			})
+			// .then(() => this.initCurrentFilter())
 			.then(() => this._requestDataService.removeRequestFromMap(userRequest))
 			.catch((error: Error) => {
 				console.log(error);
@@ -313,6 +306,7 @@ export class RequestService {
 			}})
 			.then(() => this._requestDataService.sendRequestToDatabase(changedRequest))
 			.then(() => this.loadActualList())
+			// .then(() => this.initCurrentFilter())
 			//.then(() => this._store$.dispatch(createRequestAction({request: userRequest})))
 			.then(() => this._store$.dispatch(requestInProgressAction()))
 			.then(() => this._store$.dispatch(endChangeRequestAction()))
@@ -329,14 +323,14 @@ export class RequestService {
 		this._store$.dispatch(endChangeRequestAction());
 	}
 
-public acceptOffer(currentRequest, acceptedOffer): void {
+public acceptOffer(currentRequest: Request, acceptedOffer: Offer): void {
 	this._store$.dispatch(requestInProgressAction());
-	let request = {...currentRequest};
+	let request: Request = {...currentRequest};
 	
 	request = {...request, status: RequestStatus[1]};
 
-	for (let key in request.offers){
-		//console.log(obj, key, obj[key])
+	for (let key in request.offers) {
+		console.log(request.offers)
 		if (Boolean(key)) {
 			const offer: Offer = request.offers[key];
 			console.log(offer, offer.status);
@@ -347,6 +341,7 @@ public acceptOffer(currentRequest, acceptedOffer): void {
 		}
 
 	}
+	this._requestDataService.removeRequestFromMap(request);
 	this._requestDataService.sendRequestToDatabase(request)
 	.then(() => {
 		this._store$.dispatch(requestInProgressAction());
@@ -357,5 +352,56 @@ public acceptOffer(currentRequest, acceptedOffer): void {
 	.then(() => this.simpleLoadActualList())
 	.catch((error: Error) => console.log(error));
 }
+
+public initCurrentFilter(): void {
+    
+    this._requestFacade.requestFilterName$.pipe(take(1))
+    .subscribe((filterName: string) => {
+      if (filterName === RequestFilterName[0]) {
+        this.filterAll();
+      }
+      else if (filterName === RequestFilterName[1]) {
+		this.filterActive();
+		console.log('init filterActive')
+
+      }
+      else if (filterName === RequestFilterName[2]) {
+        this.filterCompleted();
+      }
+    console.log('init filter')
+  });
+  }
+
+  public filterAll(): void {
+    this._requestFacade.requestList$.pipe(take(1))
+    .subscribe((requestList: Request[]) => {
+    this._requestFacade.setFilteredRequestList(requestList);
+    this._requestFacade.setRequestFilterName(RequestFilterName[0]);
+  });
+}
+
+  
+  public filterActive(): void {
+    this._requestFacade.requestList$.pipe(take(1))
+    .subscribe((requestList: Request[]) => {
+      const requests: Request[] = requestList.filter((request: Request) =>
+      request.status === RequestStatus[0]);
+    this._requestFacade.setFilteredRequestList(requests);
+
+	this._requestFacade.setRequestFilterName(RequestFilterName[1]);
+	console.log('afer filter act')
+
+    });
+  }
+  
+  public filterCompleted(): void {
+    this._requestFacade.requestList$.pipe(take(1))
+    .subscribe((requestList: Request[]) => {
+    const requests: Request[] = requestList.filter((request: Request) =>
+      request.status === RequestStatus[1]);
+    this._requestFacade.setFilteredRequestList(requests);
+    this._requestFacade.setRequestFilterName(RequestFilterName[2]);
+    });
+  }
 
 }

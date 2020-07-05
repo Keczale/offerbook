@@ -22,7 +22,11 @@ export const initialState: UserState = {
 	userName: null, // сделать верификацию на уник
 	email: null,
 	location: 'Вся Беларусь',
-	userData: {name: null, surname: null, birthDay: null},
+	userData: {
+		name: null,
+		surname: null,
+		birthDay: null
+	},
 	userStatus: null, // registered or guest если гость,
 	userType: 'buyer', // byer seller or universal
 	userRequests: [null], // order id's
@@ -31,7 +35,10 @@ export const initialState: UserState = {
 	sellerCategories: [null],
 	sellerLocation: [null],
 	sellerRejectedRequests: [null],
-	sellerResponsedRequests: [null],
+	sellerResponsedRequests: {
+		requestId: ['1'],
+		requestRef: [null]
+	},
 	sellerLastLoadedRequest: null,
 	userRating: {buyer: null, seller: null}
 
@@ -90,12 +97,16 @@ on(ActionsUser.setRejectedRequestAction,
 }
 ),
 on(ActionsUser.setResponsedRequestAction,
-	(state: UserState, { responsed }) => {
+	(state: UserState, { responsedRequestId, responsedRequestRef }) => {
 	return {
 		...state,
 		currentUser: {
 			...state.currentUser,
-			sellerResponsedRequests: [...Object.assign([],state.currentUser.sellerResponsedRequests), responsed]  }
+			sellerResponsedRequests: {
+				requestId: [...Object.assign([],state.currentUser.sellerResponsedRequests.requestId), responsedRequestId],
+				requestRef:  [...Object.assign([],state.currentUser.sellerResponsedRequests.requestRef), responsedRequestRef]
+			}
+			}
 	};
 }
 ),

@@ -16,13 +16,13 @@ export class User {
 		public sellerCategories: string[],
 		public sellerLocation: string[],
 		public sellerRejectedRequests: string[],
-		public sellerResponsedRequests: string[],
+		public sellerResponsedRequests: SellersResponsedRequests,
 		public sellerLastLoadedRequest: string,
 		public userRating: UserRating
 	) {}
 }
 
-interface UserData {
+export interface UserData {
 	name: string;
 	surname: number;
 	birthDay: string;
@@ -30,6 +30,11 @@ interface UserData {
 export interface LastOffer {
 	request: string;
 	lastOffer: string;
+}
+
+export interface SellersResponsedRequests{
+	requestId: string[];
+	requestRef: string[];
 }
 
 interface Location {
