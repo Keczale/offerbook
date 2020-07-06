@@ -1,8 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RequestService } from '../../services/request.service';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-// import { RequestDataService } from '../../services/request-data.service';
-// import { HttpClient } from '@angular/common/http';
 import { FileValidator } from 'ngx-material-file-input';
 import { userLocation } from 'src/app/models/common';
 import { UserDataFacade } from 'src/app/store/userData/user-data.facade';
@@ -24,10 +22,8 @@ export class RequestPopupComponent implements OnInit, OnDestroy {
 
   constructor(
 	public requestService: RequestService,
-	//public offerbookDataService: RequestDataService,
-	  public userDataFacade: UserDataFacade,
+	public userDataFacade: UserDataFacade,
 	private _fb: FormBuilder,
-	// private _httpClient: HttpClient
 	) {   }
 
   ngOnInit(): void {
@@ -42,15 +38,8 @@ export class RequestPopupComponent implements OnInit, OnDestroy {
 	});
   }
   ngOnDestroy(): void {
-	this._citySubscriber.unsubscribe()
+	this._citySubscriber.unsubscribe();
   }
-  // uploadFile(event) {
-  //   const file: File = (event.target as HTMLInputElement).files[0];
-  //   this.requestForm.patchValue({
-  //     requestImage: file
-  //   });
-  //   this.requestForm.get('requestImage').updateValueAndValidity()
-  // }
 
   public submitForm(): void {
 	this.requestService.submitForm(this.requestForm.value);

@@ -1,14 +1,11 @@
-import { Component, OnInit, AfterContentInit, OnDestroy, Input } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RequestPopupComponent } from './request-popup/request-popup.component';
 import { RequestService } from '../services/request.service';
 import { RequestFacade } from 'src/app/store/request/request.facade';
 import { takeUntil, take } from 'rxjs/operators';
-import { Subject, Observable } from 'rxjs';
-import { Request, RequestStatus, RequestFilterName } from 'src/app/models/request.model';
+import { Subject } from 'rxjs';
+import { Request } from 'src/app/models/request.model';
 
-// import { Store, select } from '@ngrx/store';
-// import { Subscriber } from 'rxjs';
 
 
 @Component({
@@ -24,62 +21,47 @@ export class RequestComponent implements OnInit, OnDestroy {
 
   public requestList: Request[] = [];
 
-  //public requestListAll: Request[] = [];
-
   constructor(
-    public dialog: MatDialog,
-    public requestService: RequestService,
-    public requestFacade: RequestFacade,
+		public requestService: RequestService,
+		public requestFacade: RequestFacade,
 
   ) { }
 
   ngOnInit(): void {
-   //this.requestService.loadActualList();
-    setTimeout(() => this.requestService.loadActualList(), 0);
-    this.requestFacade.requestList$.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((requests: Request[]) => {
-      if(Boolean(requests.length)){
-        this.requestList = requests;
-        this.requestFacade.filteredRequestList$.pipe(take(1))
-    .subscribe((filteredRequests: Request[]) => {
-      if (Boolean(requests.length) && !Boolean(filteredRequests.length)) {
-        this.filterActive();
-      } 
-    });
-
-      }
-      
-    });
-    console.log('init')
-
-  }
-
+		setTimeout(() => this.requestService.loadActualList(), 0);
+		this.requestFacade.requestList$.pipe(takeUntil(this.ngUnsubscribe))
+		.subscribe((requests: Request[]) => {
+			if (Boolean(requests.length)) {
+				this.requestList = requests;
+				this.requestFacade.filteredRequestList$.pipe(take(1))
+		.subscribe((filteredRequests: Request[]) => {
+		if (Boolean(requests.length) && !Boolean(filteredRequests.length)) {
+		this.filterActive();
+			}
+		});
+   }
+ });
+}
 
   ngOnDestroy(): void {
-this.ngUnsubscribe.next();
-this.ngUnsubscribe.complete();
-console.log('destroy')
-
+		this.ngUnsubscribe.next();
+		this.ngUnsubscribe.complete();
   }
-  
+
   public openDialog(): void {
-    this.requestService.openDialog(RequestPopupComponent);
+		this.requestService.openDialog(RequestPopupComponent);
   }
 
   public filterAll(): void {
-    this.requestService.filterAll();
-}
+		this.requestService.filterAll();
+	}
 
-  
   public filterActive(): void {
-    this.requestService.filterActive();
-
+		this.requestService.filterActive();
   }
-  
+
   public filterCompleted(): void {
-    this.requestService.filterCompleted();
+		this.requestService.filterCompleted();
   }
-
-
 
 }

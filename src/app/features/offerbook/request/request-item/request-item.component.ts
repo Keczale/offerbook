@@ -44,14 +44,14 @@ export class RequestItemComponent implements OnInit {
   }
   public isEmpty(obj){
 		for(let key in obj){
-			return false
+			return false;
 		}
-		return true
+		return true;
 	}
 
   public changeRequest(changedRequest: Request): void {
     this.requestService.openDialog(RequestChangePopupComponent);
-    this.requestService.initChangeRequestAction(changedRequest)
+    this.requestService.initChangeRequestAction(changedRequest);
 	}
   
   
