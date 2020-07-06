@@ -1,13 +1,15 @@
 <p *ngIf="offerService.SellersRequestCount$ | async as newRequests">Новых запросов: {{newRequests}}</p>
-<button mat-raised-button (click)="refreshRequestList()">Обновить</button>
-
-<mat-button-toggle-group name="requestFilter" aria-label="Filter" [value] ="offerFacade.offerFilterName$ | async">
+<div class="offer__navigate">
+  <mat-button-toggle-group name="requestFilter" aria-label="Filter" [value] ="offerFacade.offerFilterName$ | async">
     <mat-button-toggle value="all" (click) = "offerService.filterAll()">Все</mat-button-toggle>
-    <mat-button-toggle class="filter" (click) = "offerService.filterActive()" value="active">Активные</mat-button-toggle>
-    <mat-button-toggle class="filter" (click) = "offerService.filterResponsed()" value="responsed">В работе</mat-button-toggle>
-    <mat-button-toggle class="filter" (click) = "offerService.filterRejected()" value="rejected">Отклонённые</mat-button-toggle>
-
+    <mat-button-toggle class="offer__filter" (click) = "offerService.filterActive()" value="active">Активные</mat-button-toggle>
+    <mat-button-toggle class="offer__filter" (click) = "offerService.filterResponsed()" value="responsed">В работе</mat-button-toggle>
+    <mat-button-toggle class="offer__filter" (click) = "offerService.filterRejected()" value="rejected">Отклонённые</mat-button-toggle>
   </mat-button-toggle-group>
+  
+  <button mat-raised-button (click)="refreshRequestList()">Обновить</button>
+</div>
+
 <button 
     mat-button 
     class="save-changes"

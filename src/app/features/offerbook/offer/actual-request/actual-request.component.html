@@ -1,5 +1,7 @@
 <mat-card class="wrap"
-    *ngIf="!isHidden">
+    *ngIf="!isHidden"
+    [class.accepted]="offerToRequest && offerToRequest.status === offerStatus[1]"
+    [class.rejected]="offerToRequest && offerToRequest.status === offerStatus[2]">
     <div class = "request">
     
     <div class="request__index">{{index}}</div>
@@ -21,7 +23,7 @@
         Предложений: {{!offerListForCounter.length ? 'ещё нет' : offerListForCounter.length }}
         {{bestPrice ? bestPrice : ''}}
     </div>
-    <div class="request__remove">
+    <div class="request__remove" *ngIf="!offerToRequest">
         <button 
             mat-raised-button
             title="Дважды кликнуть, чтобы убрать из списка"
@@ -29,12 +31,39 @@
             Отклонить
         </button>
     </div>
+    <div class="request__remove" *ngIf="offerToRequest && request.status === requestStatusEnum[1]">
+        <button 
+            mat-raised-button
+            title="=Временно недоступно= Дважды кликнуть, чтобы убрать из списка"
+            disabled
+            (dblclick)="rejectRequest()">
+            Убрать
+        </button>
+    </div>
     <div class="request__accept">
         <button 
             mat-raised-button
             title="Сделать предложение"
-            (click)="openDialog()">
+            (click)="openDialog()"
+            *ngIf="!offerToRequest">
             Откликнуться
+        </button>
+        <button 
+            mat-button
+            title="Сделать предложение"
+            *ngIf="offerToRequest && request.status===requestStatusEnum[0]"
+            disabled
+            class="disabled">
+            На рассмотрении
+        </button>
+        <button 
+            mat-raised-button
+            title="Сделать предложение"
+            (click)="openDialog()"
+            disabled
+            *ngIf="offerToRequest && request.status===requestStatusEnum[1]"
+            >
+            {{offerToRequest && offerToRequest.status === offerStatus[1] ? 'Успех!' : 'Отклонено'}}
         </button>
     </div>
 </div>

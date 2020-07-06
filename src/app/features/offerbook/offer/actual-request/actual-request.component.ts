@@ -7,7 +7,7 @@ import { UserDataFacade } from 'src/app/store/userData/user-data.facade';
 // import { setRejectedRequestAction } from 'src/app/store';
 import { OfferPopupComponent } from '../offer-popup/offer-popup.component';
 import { MatDialog } from '@angular/material/dialog';
-import { Offer } from 'src/app/models/offer.model';
+import { Offer, OfferStatus } from 'src/app/models/offer.model';
 
 
 @Component({
@@ -36,11 +36,13 @@ export class ActualRequestComponent implements OnInit {
   public currentUser: User = null;
 
   public offerToRequest: Offer = null;
-  
-  
+
+  public offerStatus: any = OfferStatus;
+  public requestStatusEnum: any = RequestStatus;
+
   @Input()
   public isHidden: boolean;
-  
+
   constructor(
 	public offerService: OfferService,
   private _offerDataService: OfferDataService,

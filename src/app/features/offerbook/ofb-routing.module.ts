@@ -12,27 +12,28 @@ const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['/login']);
 
 const routes: Routes = [
   {
-    path: '',
-    component: OfferbookComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedToLogin },
+		path: '',
+		component: OfferbookComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedToLogin },
 
-    children: [{
-    path: 'myrequests',
-    component: RequestComponent,
+		children: [{
+		path: 'myrequests',
+		component: RequestComponent,
+	},
+	{
+    path: '',
+    redirectTo: 'myrequests',
+    pathMatch: 'full'
   },
   {
-    path: 'myrequests/:id',
-    component: OfferListComponent,
-    // children: [
-    //   {path: 'offers',
-    //   component: OfferListComponent}
-    // ]
-    },
+		path: 'myrequests/:id',
+		component: OfferListComponent,
+		},
   {
-    path: 'myoffers',
-    component: OfferComponent,
+		path: 'myoffers',
+		component: OfferComponent,
   }]
   },
-  
+
   ];
 
 @NgModule({

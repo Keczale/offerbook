@@ -1,12 +1,16 @@
-<button mat-raised-button (click)="openDialog()">Создать запрос</button>
+<div class="request__navigate">
 <mat-button-toggle-group name="requestFilter" aria-label="Filter" [value] ="requestFacade.requestFilterName$ | async">
     <mat-button-toggle value="all" (click) = "filterAll()">Все</mat-button-toggle>
-    <mat-button-toggle class="filter" (click) = "filterActive()" value="active">Активные</mat-button-toggle>
-    <mat-button-toggle class="filter" (click) = "filterCompleted()" value="completed">Завершённые</mat-button-toggle>
+    <mat-button-toggle class="request__filter" (click) = "filterActive()" value="active">Активные</mat-button-toggle>
+    <mat-button-toggle class="request__filter" (click) = "filterCompleted()" value="completed">Завершённые</mat-button-toggle>
   </mat-button-toggle-group>
+
+  <button mat-raised-button (click)="openDialog()">Создать запрос</button>
+</div>
 <div class="request__list">
     <app-request-item 
-        *ngFor="let request of requestFacade.filteredRequestList$ | async"
+        *ngFor="let request of requestFacade.filteredRequestList$ | async; let i = index"
+        [index]="i+1"
         [userRequest]="request">
     </app-request-item>
 </div>

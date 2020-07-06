@@ -19,6 +19,8 @@ export class RequestItemComponent implements OnInit {
   
   @Input()
   public userRequest: Request;
+  @Input()
+  public index: number;
 
   public offersToRequest: Offer[] = null;
   public bestPrice: number = null;

@@ -3,6 +3,13 @@
     justify-content: flex-start;
     flex-wrap: wrap;
 }
-.filter{
+.request__filter{
     font-weight: bold;
+}
+.request__navigate{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding-bottom: 1.5rem;
+
 }

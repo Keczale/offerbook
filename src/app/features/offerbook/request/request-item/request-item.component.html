@@ -2,16 +2,16 @@
   <mat-card class="request-card"
   [class.accepted] = "userRequest.status === requestStatus[1]">
       <mat-card-header>
-        <div mat-card-avatar class="request-header-image"></div>
+        <div mat-card-avatar class="request-card__index">{{index}}</div>
         <mat-card-title>{{userRequest.title}}</mat-card-title>
-        <mat-card-subtitle>Категория: {{userRequest.category}}</mat-card-subtitle>
+        <mat-card-subtitle>{{userRequest.category}}</mat-card-subtitle>
       </mat-card-header>
       <img mat-card-image class="request-card__image" src="{{userRequest.photos[0]}}" alt="{{userRequest.title}}">
       <mat-card-content >
         <p class="request-card__describe">
           {{userRequest.description}}
         </p>
-        <div>
+        <div class="request-card__info">
           <p class="request-card__offers" (click)="openOffers(userRequest.id)">
             Предложений <span class="request-card__offers">{{offersQuantity ? offersQuantity : 'пока нет'}}</span>
             <i *ngIf = "userRequest.newOffersToRequest">

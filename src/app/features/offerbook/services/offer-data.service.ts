@@ -21,7 +21,6 @@ export class OfferDataService {
   private _offerStartURL: string = '/offer/active';
   private _noPhotoUrl: string = '../assets/img/no-photo.jpg';
 
-
   public requestMapBaseURL: string = '/requests/map';
   public userBaseURL: string = '/users';
 
@@ -48,26 +47,26 @@ export class OfferDataService {
 								if (requestMap) {
 									const actualRequestList: string[] = Object.values(requestMap);
 										actualRequestList.map((adress: string) => {
-											console.log(`${this.requestBaseURL}/${adress}`)
 										firebase.database().ref(`${this.requestBaseURL}/${adress}`).once('value')
 											.then((snap: any) => snap.val())
 											.then((request: Request) => {
-												console.log(request, actualRequests); actualRequests.push(request);
-												resolve('done')})
+												actualRequests.push(request);
+												resolve('done');
+											});
 
 									});
 								}
 								else {
 									this._store$.dispatch(loadInitialStateAction());
-									resolve('done with empty')
+									resolve('done with empty');
 								}
 							});
 
-					})
+					});
 					return actualRequests;
 
-		}))
-		
+		}));
+
 	}
 public async loadOwnRequests(userId: string): Promise<string[]>{
 	let requestIdList: string[] = [];
@@ -90,8 +89,6 @@ public isEmpty (obj: any): boolean {
   }
 	}
 
-	// public loadResponsedRequests(): 	
-
   public async loadActualListFromDB(sellerLocation: string[], sellerCategories: string[], sellersResponsed: SellersResponsedRequests): Promise<Request[]> {
 	let actualRequests: Request[] = [];
 
@@ -101,7 +98,6 @@ public isEmpty (obj: any): boolean {
 		firebase.database().ref(`${this.requestBaseURL}/${ref}`).once('value')
 		.then((snap: any) => snap.val())
 		.then((request: Request) => {
-			console.log(request)
 			if (request && request.status === RequestStatus[1]) {
 			actualRequests.push(request);
 			}
@@ -110,27 +106,24 @@ public isEmpty (obj: any): boolean {
 	}
 		await new Promise(async (resolve) => {
 
-			await Promise.all(sellerLocation.map(async (city: string) => { 
+			await Promise.all(sellerLocation.map(async (city: string) => {
 
 				await Promise.all(sellerCategories.map(async (category: string) => {
 			  await new Promise( (resolve) => {
-				
+
 						firebase.database().ref(`${this.requestMapBaseURL}/${city}/${category}`).once('value')
 							.then((snap: any) => snap.val())
 							.then( async (requestMap: string[]) => {
 								if (requestMap) {
-									// сюда добавить ссылки на респонсед ссылки
-									
+
 									const actualRequestRefList: string[] = Object.values(requestMap);
 									await Promise.all(actualRequestRefList.map(async (adress: string) => {
 										await new Promise( (resolved) => {
-										console.log(`${this.requestBaseURL}/${adress}`)
 										firebase.database().ref(`${this.requestBaseURL}/${adress}`).once('value')
 											.then((snap: any) => snap.val())
 											.then((request: Request) => {
 												actualRequests = Object.assign([], actualRequests)
 												actualRequests.push(request);
-												console.log(request, actualRequests);
 
 											}).then((request) => resolved(request)) // здесь проблема - получает резолв и пшел дальше
 										});
@@ -139,20 +132,19 @@ public isEmpty (obj: any): boolean {
 								}
 								else {
 									this._store$.dispatch(loadInitialStateAction());
-									console.log('else')
-									resolve (actualRequests)
+									resolve (actualRequests);
 								}
 							}).then(() => resolve('done'));
 
-				 }).then((requesty: Request[]) => { console.log(actualRequests); } );
+				 });
 
 
-		})); })).then(() => {console.log(actualRequests); resolve()});
+		})); })).then(() => {resolve();
+							});
 	});
 		return actualRequests;
 
   }
-
 
   public async loadBuyerInfo(uid: string): Promise<User> {
 	let buyer: User = null;
@@ -160,7 +152,6 @@ public isEmpty (obj: any): boolean {
 	.then((snap: any) => snap.val())
 	.then((user: User) => buyer = user)
 	.catch((error: Error) => console.log(error));
-	console.log(buyer);
 	return buyer;
   }
 
@@ -197,6 +188,5 @@ public isEmpty (obj: any): boolean {
 public sendOfferToDatabase(offer: Offer, requestsUser: string): void {
 	firebase.database().ref(`${this.requestBaseURL}/${requestsUser}/${offer.requestId}/offers`).push(offer);
 }
-
 
 }

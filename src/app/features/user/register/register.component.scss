@@ -1,0 +1,26 @@
+.register-wrap{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 5rem;
+}
+.registerform{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 15rem;
+    margin: 0 auto;
+
+    &__tologin{
+        margin-top: .5rem;
+        padding-top: .5rem;
+        border-top: 1px solidrgb(192, 192, 192);
+    }
+    &__loginlink{
+        color: rgb(119, 49, 211);
+    }
+    &__btn{
+        width:100%;
+    }
+}

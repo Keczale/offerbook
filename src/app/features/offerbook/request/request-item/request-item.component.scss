@@ -13,13 +13,16 @@
       height: 14rem;
     }
     &__describe{
-      max-height: 1.5rem;
+      height: 2rem;
     }
     &__actions{
       display: flex;
     }
     &__btn{
       flex: 0 0 50%;
+    }
+    &__info{
+      height: 2.5rem;
     }
     &__offers{
       font-weight: 600;
@@ -31,14 +34,20 @@
     &__best-price{
       font-weight: 600;
     }
+    &__index {
+     display: flex;
+     justify-content: center;
+     align-items: center;
+
+     font-weight: 600;
+
+     background-color: rgb(194, 194, 194);
+    }
 
   }
   .accepted{
     background-color: rgb(147, 224, 147);
   }
-  .request-header-image {
-    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
-    background-size: cover;
-  }
+  
 
   

@@ -1,3 +1,13 @@
 .save-changes{
     width: 100%
 }
+.offer__navigate{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    padding-bottom: 1.5rem;
+}
+.offer__filter{
+    font-weight: bold;
+}

@@ -1,17 +1,20 @@
-<p>Уже есть аккаунт? </p><a routerLink="/login">Войти</a>
-<form [formGroup]='registerForm'>
-    <mat-form-field>
-        <mat-label>Введи имя</mat-label>
-        <input matInput type="text" formControlName="name">
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label >Введи Email</mat-label>
-        <input matInput type="text" formControlName="email">
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>Введи пароль</mat-label>
-        <input matInput type="password" formControlName="password">
-    </mat-form-field>
-  
-    <button mat-button type="submit" (click)="createUser()">Send</button>
-</form>
+
+<div class="register-wrap">
+    <form  class="registerform" [formGroup]='registerForm'>
+        <mat-form-field>
+            <mat-label>Введи имя</mat-label>
+            <input matInput type="text" formControlName="name">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label >Введи Email</mat-label>
+            <input matInput type="text" formControlName="email">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Введи пароль</mat-label>
+            <input matInput type="password" formControlName="password">
+        </mat-form-field>    
+        <button class="registerform__btn" mat-button type="submit" (click)="createUser()">Send</button>
+        <div class="registerform__tologin">Уже есть аккаунт? <a class="registerform__loginlink" routerLink="/login">Войти</a></div>
+
+    </form>
+</div>
