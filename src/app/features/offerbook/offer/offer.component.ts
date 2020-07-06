@@ -19,85 +19,70 @@ import { OfferFilterName } from 'src/app/models/offer.model';
 })
 export class OfferComponent implements OnInit, OnDestroy {
 
-
-  // public rejectedRequests: string[];
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   public currentUser: User;
   public currentUserSubscriber: Subscription;
   public requestList: Request[];
-  
-
-  private ngUnsubscribe: Subject<void> = new Subject<void>();
-
-
-
 
   constructor(
-    public offerService: OfferService,
-    public userDataFacade: UserDataFacade,
-    private cdRef: ChangeDetectorRef,
-    public offerFacade: OfferFacade,
-
-    ) { }
+		public offerService: OfferService,
+		public userDataFacade: UserDataFacade,
+		private cdRef: ChangeDetectorRef,
+		public offerFacade: OfferFacade,
+		) { }
 
   ngOnInit (): void {
-    console.log('init')
 
-    combineLatest(
-      this.userDataFacade.sellerLocation$,
-      this.userDataFacade.sellerCategory$)
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(([sellerLocation, sellerCategory]: [string[], string[]]) => {
-        if (Boolean(sellerLocation) && Boolean(sellerCategory)) {
-          this.userDataFacade.currentUser$.pipe(take(1))
-          .subscribe((user: User) => {
-          this.currentUser = user;
-          this.offerService.loadActualList(this.currentUser);
-          });
-          this.offerFacade.offerRequestList$.pipe(takeUntil(this.ngUnsubscribe))
-          .subscribe((offerRequestList: Request[]) => {
-            this.requestList = offerRequestList;
-            if (Boolean(offerRequestList.length)) {
-
-              this.offerFacade.filteredRequestList$.pipe(take(1))
-              .subscribe((filteredList: Request[]) => {
-                if (!Boolean(filteredList.length)) {
-                  this.filterActive();
-                }
-              });
-            }
-          });
-          
-        }
-    });
+		combineLatest(
+			this.userDataFacade.sellerLocation$,
+			this.userDataFacade.sellerCategory$)
+			.pipe(takeUntil(this.ngUnsubscribe))
+			.subscribe(([sellerLocation, sellerCategory]: [string[], string[]]) => {
+				if (Boolean(sellerLocation) && Boolean(sellerCategory)) {
+					this.userDataFacade.currentUser$.pipe(take(1))
+					.subscribe((user: User) => {
+					this.currentUser = user;
+					this.offerService.loadActualList(this.currentUser);
+					});
+					this.offerFacade.offerRequestList$.pipe(takeUntil(this.ngUnsubscribe))
+					.subscribe((offerRequestList: Request[]) => {
+						this.requestList = offerRequestList;
+						if (Boolean(offerRequestList.length)) {
+							this.offerFacade.filteredRequestList$.pipe(take(1))
+							.subscribe((filteredList: Request[]) => {
+								if (!Boolean(filteredList.length)) {
+									this.filterActive();
+								}
+							});
+						}
+					});
+				}
+		});
   }
 
   ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
-     }
-
-  
+		this.ngUnsubscribe.next();
+		this.ngUnsubscribe.complete();
+		}
 
   public saveRejectedRequests(): void {
-    this.offerService.saveRejectedRequests();
+		this.offerService.saveRejectedRequests();
   }
 
   public refreshRequestList(): void {
-    this.offerService.refreshRequestList();
+		this.offerService.refreshRequestList();
   }
 
   public filterAll(): void {
-    this.offerService.filterAll();
+		this.offerService.filterAll();
   }
-  
+
   public filterActive(): void {
-    this.offerService.filterActive();
+		this.offerService.filterActive();
   }
   public filterRejected(): void {
-    this.offerService.filterRejected();
-
+		this.offerService.filterRejected();
   }
-
 
 }

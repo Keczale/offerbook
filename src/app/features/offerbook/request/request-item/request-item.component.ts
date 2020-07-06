@@ -5,7 +5,6 @@ import { RequestChangePopupComponent } from '../request-change-popup/request-cha
 import { Offer } from 'src/app/models/offer.model';
 import { Router } from '@angular/router';
 
-
 @Component({
   selector: 'app-request-item',
   templateUrl: './request-item.component.html',
@@ -14,9 +13,9 @@ import { Router } from '@angular/router';
 
 })
 export class RequestItemComponent implements OnInit {
-  
+
   public requestStatus: any = RequestStatus;
-  
+
   @Input()
   public userRequest: Request;
   @Input()
@@ -28,20 +27,19 @@ export class RequestItemComponent implements OnInit {
   public offersQuantity: number = null;
 
   constructor(
-    public requestService: RequestService,
-    private _router: Router,
-
+		public requestService: RequestService,
+		private _router: Router,
   ) { }
 
   ngOnInit(): void {
-    console.log(this.userRequest);
-    if (!this.isEmpty(this.userRequest.offers)) {
-      this.offersToRequest = Object.values(this.userRequest.offers)
-        .sort((a: Offer, b: Offer) => a.price - b.price);
-    this.bestPrice = this.offersToRequest[0].price;
-    this.offersQuantity = this.offersToRequest.length;
-    }
-  }
+		if (!this.isEmpty(this.userRequest.offers)) {
+			this.offersToRequest = Object.values(this.userRequest.offers)
+			.sort((a: Offer, b: Offer) => a.price - b.price);
+			this.bestPrice = this.offersToRequest[0].price;
+			this.offersQuantity = this.offersToRequest.length;
+		}
+	}
+	
   public isEmpty(obj){
 		for(let key in obj){
 			return false;
@@ -50,14 +48,12 @@ export class RequestItemComponent implements OnInit {
 	}
 
   public changeRequest(changedRequest: Request): void {
-    this.requestService.openDialog(RequestChangePopupComponent);
-    this.requestService.initChangeRequestAction(changedRequest);
+		this.requestService.openDialog(RequestChangePopupComponent);
+		this.requestService.initChangeRequestAction(changedRequest);
 	}
-  
-  
 
   public openOffers (id: string): void {
-    this._router.navigate(['/myrequests', id]);
+		this._router.navigate(['/myrequests', id]);
   }
 
 }

@@ -198,7 +198,6 @@ export class RequestService {
 					});
 					this._store$.dispatch(setLastOfferToRequestsAction({ newLastOfferList }));
 					this._userFacade.userToDataBase();
-					console.log(requestsWithCounter);
 					this._store$.dispatch(loadRequestListFromDBAction({ requests: requestsWithCounter })); // cxtnxbr ???
 					this.initCurrentFilter();
 

@@ -5,7 +5,7 @@
     <mat-button-toggle class="request__filter" (click) = "filterCompleted()" value="completed">Завершённые</mat-button-toggle>
   </mat-button-toggle-group>
 
-  <button mat-raised-button (click)="openDialog()">Создать запрос</button>
+  <div><app-button-wrap *ngFor="let i of arr"></app-button-wrap></div>
 </div>
 <div class="request__list">
     <app-request-item 
@@ -14,3 +14,4 @@
         [userRequest]="request">
     </app-request-item>
 </div>
+

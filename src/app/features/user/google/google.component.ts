@@ -21,16 +21,13 @@ export class GoogleComponent implements OnInit {
 	public userDataService: UserDataService,
 	private _store$: Store<UserState>) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   public signInGoogle(): void {
 	this.userDataService.signInGoogle();
-	console.log(auth)
 	this.afAuth.signInWithPopup(new auth.GoogleAuthProvider())
 		.then(() => this._router.navigate(['']), () => this.userDataService.loading())
 		.then(() => this.userDataService.loading());
   }
 
 }
- 

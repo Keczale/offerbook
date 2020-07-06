@@ -21,6 +21,9 @@ export class RequestComponent implements OnInit, OnDestroy {
 
   public requestList: Request[] = [];
 
+  // just with ngFor matDialog working correctly after page reloading
+  public arr: number[] = [1];
+
   constructor(
 		public requestService: RequestService,
 		public requestFacade: RequestFacade,
