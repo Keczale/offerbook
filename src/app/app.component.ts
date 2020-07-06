@@ -24,14 +24,9 @@ export class AppComponent implements OnInit, AfterViewChecked {
   public title: string = 'offerbook';
   public nameMask: string = 'User';
 
-  // public currentUser: User = null;
-
   public userIsLoading: Observable<boolean> = this.userDataFacade.isLoading;
   public requestIsLoading: Observable<boolean> = this.requestFacade.isLoading;
   public offerIsLoading: Observable<boolean> = this.offerFacade.isLoading;
-
- //  public currentUserSubscriber: Subscription;
-
 
   constructor(
 	  public afAuth: AngularFireAuth,
@@ -43,30 +38,22 @@ export class AppComponent implements OnInit, AfterViewChecked {
 	  public store$: Store<UserState>,
 	  public dialog: MatDialog,
 	  private cdRef: ChangeDetectorRef
-
-
 	) {	}
-
 
 	ngOnInit(): void {
 		this.afAuth.authState.subscribe((a: firebase.User) => a ? this.userDataFacade.loadCurrentUserFromDB(a.uid) : null);
-		// this.currentUserSubscriber = this.userDataFacade.currentUser$.subscribe((user: User) => this.currentUser = user);
 	}
 
-	ngAfterViewChecked(): void{
+	ngAfterViewChecked(): void {
 		this.cdRef.detectChanges();
 
 	}
-
-	// ngOnDestroy(): void {
-	// 	this.currentUserSubscriber.unsubscribe();
-	// }
 
   public signOut(): void {
 	this.userDataFacade.userSignOut();
   }
 
   public openDialog(): void {
-    this.dialog.open(PopupLocationComponent);
+		this.dialog.open(PopupLocationComponent);
   }
 }

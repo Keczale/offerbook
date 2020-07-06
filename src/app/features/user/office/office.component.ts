@@ -4,9 +4,8 @@ import { Subscription } from 'rxjs';
 import { productCategories } from 'src/app/models/common';
 import { userLocation } from 'src/app/models/common';
 
-import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { User } from 'src/app/models/user.model';
-import {MatSnackBarModule, MatSnackBar} from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -21,29 +20,20 @@ export class OfficeComponent implements OnInit, OnDestroy {
 
   public categories: string[];
   public checkedCategories: string[];
-  public selectCategoriesForm = [];
+  public selectCategoriesForm: any[] = [];
 
   public cities: string[];
   public checkedSellersCities: string[];
-  public selectSellersCitiesForm = [];
+  public selectSellersCitiesForm: any[] = [];
 
   public userId: string = '';
 
   public sendCategotiesTitle: string = 'Отправить выбранные категории';
   public clearTitle: string = 'Очистить список';
   public sendCityTitle: string = 'Отправить выбранные города';
-  // public selectedCategories: string[] = [];
   public step: number = 0;
 
-  public setStep (index: number): void {
-    this.step = index;
-  }
-  public nextStep(): void {
-    this.step++;
-  }
-
-
-  constructor(
+  constructor (
   public userDataService: UserDataService,
   private _snackBar: MatSnackBar
   ) { }
@@ -59,21 +49,22 @@ export class OfficeComponent implements OnInit, OnDestroy {
   this.checkedSellersCities = user.sellerLocation;
   this.createCategoryForm(this.categories, this.checkedCategories);
   this.createSellerCitiesForm(this.cities, this.checkedSellersCities);
-
   });
-
-  
-//   .subscribe((cat: string[]) => this.checkedCategories = cat);
   }
+
   ngOnDestroy(): void {
   this.userSubscriber.unsubscribe();
-//   this._sellerCategoriesSub.unsubscribe();
   }
- 
+	public setStep (index: number): void {
+		this.step = index;
+  }
+  public nextStep(): void {
+		this.step++;
+  }
 
   public createCategoryForm(allCat: string[], checkedCat: string[]): void {
-    this.selectCategoriesForm = [];
-    allCat.map((item: any) => {
+		this.selectCategoriesForm = [];
+		allCat.map((item: any) => {
   	if (checkedCat) {checkedCat.includes(item) ?
 	  this.selectCategoriesForm.push({title: item, checked: true}) :
 	  this.selectCategoriesForm.push({title: item, checked: false});
@@ -81,35 +72,34 @@ export class OfficeComponent implements OnInit, OnDestroy {
   }});
   }
   public clearsSelectedCategories(): void {
-    this.selectCategoriesForm = [];
-    this.categories.map( item => this.selectCategoriesForm.push({title: item, checked: false}))
+		this.selectCategoriesForm = [];
+		this.categories.map( (item: string) => this.selectCategoriesForm.push({title: item, checked: false}));
   }
-
 
   public sendCategories(): void {
   	const arr: string[] = this.selectCategoriesForm.filter((category: any) => category.checked)
   	.map((category: any) => category = category.title);
-    this.userDataService.setUserCategories(arr);
-    this._snackBar.open('Ваши категории сохранены!', '', {
-      duration: 2000,
-    });
-    this.nextStep();
+		this.userDataService.setUserCategories(arr);
+		this._snackBar.open('Ваши категории сохранены!', '', {
+			duration: 2000,
+		});
+		this.nextStep();
   }
 
   public addSeller(): void {
   this.userDataService.addSeller(this.userType);
   this.userType === 'seller' ?
   this._snackBar.open('Теперь вы можете продавать! Настройте аккаунт.', '', {
-    duration: 2000,
+		duration: 2000,
   }) :
   this._snackBar.open('Изменения сохранены', '', {
-    duration: 2000,
+		duration: 2000,
   });
   }
 
   public createSellerCitiesForm(allCities: string[], checkedCities: string[]): void {
-    this.selectSellersCitiesForm = [];
-    allCities.map((city: string) => {
+		this.selectSellersCitiesForm = [];
+		allCities.map((city: string) => {
   	if (checkedCities) {checkedCities.includes(city) ?
 	  this.selectSellersCitiesForm.push({title: city, checked: true}) :
 	  this.selectSellersCitiesForm.push({title: city, checked: false});
@@ -117,19 +107,17 @@ export class OfficeComponent implements OnInit, OnDestroy {
   }});
   }
   public clearsSelectedCities(): void {
-    this.selectSellersCitiesForm = [];
-    this.cities.map( (city: string) => this.selectSellersCitiesForm.push({title: city, checked: false}))
+		this.selectSellersCitiesForm = [];
+		this.cities.map( (city: string) => this.selectSellersCitiesForm.push({title: city, checked: false}))
   }
   public sendSellersCities(): void {
   	const cities: string[] = this.selectSellersCitiesForm.filter((city: any) => city.checked)
   	.map((city: any) => city = city.title);
-    this.userDataService.setSellerCities(cities);
-    this._snackBar.open('Настройки локации сохранены!', '', {
-      duration: 2000,
-    });
-    this.nextStep();
-  }
-
-  
-
+		this.userDataService.setSellerCities(cities);
+		this._snackBar.open('Настройки локации сохранены!', '', {
+			duration: 2000,
+		});
+		this.nextStep();
+	}
+	
 }

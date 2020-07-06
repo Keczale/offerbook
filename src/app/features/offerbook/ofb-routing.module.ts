@@ -20,9 +20,9 @@ const routes: Routes = [
 		component: RequestComponent,
 	},
 	{
-    path: '',
-    redirectTo: 'myrequests',
-    pathMatch: 'full'
+		path: '',
+		redirectTo: 'myrequests',
+		pathMatch: 'full'
   },
   {
 		path: 'myrequests/:id',

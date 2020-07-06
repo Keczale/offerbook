@@ -9,11 +9,9 @@ import { AngularFireAuth } from '@angular/fire/auth';
 export class OfferbookComponent implements OnInit {
 
   constructor(
-    public afAuth: AngularFireAuth,
+		public afAuth: AngularFireAuth,
   ) { }
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 
 }

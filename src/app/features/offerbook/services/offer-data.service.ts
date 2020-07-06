@@ -4,11 +4,9 @@ import { Store } from '@ngrx/store';
 import { Request, RequestStatus } from 'src/app/models/request.model';
 
 import { loadInitialStateAction } from 'src/app/store';
-import { loadActualRequestListFromDBAction } from 'src/app/store/offer';
 import { User, SellersResponsedRequests } from 'src/app/models/user.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Offer } from 'src/app/models/offer.model';
-
 
 @Injectable({
   providedIn: 'root'
@@ -68,7 +66,7 @@ export class OfferDataService {
 		}));
 
 	}
-public async loadOwnRequests(userId: string): Promise<string[]>{
+public async loadOwnRequests(userId: string): Promise<string[]> {
 	let requestIdList: string[] = [];
 	await firebase.database().ref(`${this.requestBaseURL}/${userId}`).once('value')
 	.then((snap: any) => snap.val())
@@ -84,7 +82,6 @@ public isEmpty (obj: any): boolean {
       for (let key in obj) {
         return false;
       }
-    
     return true;
   }
 	}
@@ -138,7 +135,6 @@ public isEmpty (obj: any): boolean {
 
 				 });
 
-
 		})); })).then(() => {resolve();
 							});
 	});
@@ -161,7 +157,7 @@ public isEmpty (obj: any): boolean {
 		if (file) {
 		const storageRef: firebase.storage.Reference = firebase.storage()
 			.ref(`${this.photoBaseURL}/${fileName}`);
-	
+
 		await new Promise((resolve) => {
 		this._uploadTask =  storageRef.put(uploadFile);
 		this._uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
@@ -173,7 +169,7 @@ public isEmpty (obj: any): boolean {
 				 async () => {
 					photoURL = await firebase.storage().ref(`${this.photoBaseURL}/${fileName}`).getDownloadURL();
 					resolve('done');
-	
+
 					this._snackBar.open('Готово!', '', {
 					duration: 2000,
 				  });

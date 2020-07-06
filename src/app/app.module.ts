@@ -16,7 +16,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {MatMenuModule} from '@angular/material/menu';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule} from '@angular/material/progress-bar';
 import { MatButtonToggleModule} from '@angular/material/button-toggle';
@@ -26,15 +25,11 @@ import { UserModule } from './features/user/user.module';
 import { OfferbookModule } from './features/offerbook/offerbook.module';
 import { userDataReducer, requestReducer, offerReducer } from './store';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { PopupComponent } from './testpopup/popup/popup.component';
-import { RequestComponent } from './features/offerbook/request/request.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { PopupLocationComponent } from './app-components/popup-location/popup-location.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
-// import {MatCardModule} from '@angular/material/card';
-
-
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -66,9 +61,9 @@ import { MatSelectModule } from '@angular/material/select';
   MatMenuModule,
   MatSnackBarModule,
   MatDialogModule,
-  // MatCardModule
+  MatCardModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { } 
+export class AppModule { }

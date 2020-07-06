@@ -1,12 +1,5 @@
 import { Component, OnInit, Inject, OnDestroy} from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-// import { AngularFireAuth } from '@angular/fire/auth';
-// import { auth } from 'firebase/app';
-// import { Router } from '@angular/router';
-// import { DataService } from 'src/app/services/data.service';
-// import { Store } from '@ngrx/store';
-// import { UserState, inProgressAction } from 'src/app/store';
-// import { delay } from 'rxjs/operators';
 import { UserDataService } from '../services/user-data.service';
 
 
@@ -30,12 +23,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
 		name : new FormControl('', Validators.required),
 		email : new FormControl('', [Validators.required, Validators.email]),
 		password : new FormControl('', [Validators.required, Validators.minLength(this.minPasswordLength)]),
-		//confirmPassword : new FormControl('', [Validators.required,]),
 	});
 	}
 
-	ngOnDestroy(): void {
-	}
+	ngOnDestroy(): void {}
 
   public checkPasswords(group: FormGroup): any { // here we have the 'passwords' group
   	const pass: string = group.get('password').value;
