@@ -30,11 +30,13 @@ import { PopupLocationComponent } from './app-components/popup-location/popup-lo
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
+import { NotFoundComponent } from './app-components/not-found/not-found.component';
 
 @NgModule({
   declarations: [
   AppComponent,
   PopupLocationComponent,
+  NotFoundComponent,
   ],
   imports: [
 	BrowserModule,

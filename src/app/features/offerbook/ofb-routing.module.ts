@@ -7,6 +7,7 @@ import { RequestComponent } from './request/request.component';
 import { OfferComponent } from './offer/offer.component';
 import { OfferbookComponent } from './offerbook.component';
 import { OfferListComponent } from './request/offer-list/offer-list.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['/login']);
 
@@ -15,8 +16,6 @@ const routes: Routes = [
 		path: '',
 		component: OfferbookComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedToLogin },
 
-		children: [
-	]
   },
   {
 	path: '',
@@ -25,17 +24,22 @@ const routes: Routes = [
 },
   {
 	path: 'myrequests',
-	component: RequestComponent,
+	component: RequestComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedToLogin },
 },
 
 {
 	path: 'myrequests/:id',
-	component: OfferListComponent,
+	component: OfferListComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedToLogin },
 	},
 {
 	path: 'myoffers',
-	component: OfferComponent,
+	component: OfferComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedToLogin },
+},
+{
+	path: '**',
+	component: NotFoundComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedToLogin },
 }
+
   ];
 
 @NgModule({

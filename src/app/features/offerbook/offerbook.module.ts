@@ -31,6 +31,7 @@ import { OfferItemComponent } from './request/offer-item/offer-item.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { ButtonWrapComponent } from './request/button-wrap/button-wrap.component';
 import { PhotoPopupComponent } from './photo-popup/photo-popup.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { PhotoPopupComponent } from './photo-popup/photo-popup.component';
     OfferItemComponent,
     ButtonWrapComponent,
     PhotoPopupComponent,
+    NotFoundComponent
     ],
   imports: [
     OfbRoutingModule,

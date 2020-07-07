@@ -121,7 +121,6 @@ constructor(
 	.catch((error: Error) => {
 		this.loading();
 		this.inGoogleError = error.message;
-		
 	});
   }
 

@@ -25,10 +25,10 @@ export class GoogleComponent implements OnInit {
 
   public signInGoogle(): void {
 	this.userDataService.signInGoogle();
-	this.afAuth.signInWithPopup(new auth.GoogleAuthProvider())
-		.then(() => this._router.navigate(['']), () => this.userDataService.loading())
-		.then(() => this.userDataService.loading())
-		.catch((error: Error) => console.log(error));
+	// this.afAuth.signInWithPopup(new auth.GoogleAuthProvider())
+	// 	.then(() => this._router.navigate(['']))
+	// 	.then(() => this.userDataService.loading())
+	// 	.catch((error: Error) => console.log(error));
   }
 
 }
