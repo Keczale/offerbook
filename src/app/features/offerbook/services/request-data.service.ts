@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import * as firebase from 'firebase';
 import { Store } from '@ngrx/store';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Request } from 'src/app/models/request.model';
 import { AngularFireDatabase } from '@angular/fire/database';
 
@@ -18,7 +18,6 @@ export class RequestDataService {
   private _baseActiveRequestMapURL: string = '/requests/map';
   private _noPhotoUrl: string = '../assets/img/no-photo.jpg';
 
-
   public get userUid(): string {
 		return firebase.auth().currentUser.uid;
 	}
@@ -32,8 +31,8 @@ export class RequestDataService {
 	}
 
   constructor(
-	private _httpClient: HttpClient,
-	private _store$: Store,
+	// private _httpClient: HttpClient,
+	// private _store$: Store,
 	private _snackBar: MatSnackBar,
 	public db: AngularFireDatabase
   ) { }
@@ -49,7 +48,7 @@ export class RequestDataService {
 		})
 		.catch((error: any) =>
 		console.log(error));
-}
+	}
 
   public async uploadRequestImage(file: any, fileName: string): Promise<string> {
 	const uploadFile: File = file;
@@ -101,7 +100,8 @@ export class RequestDataService {
 	let requestMap: any = null;
 	await firebase.database().ref(`${this.requestBaseURL}`).once('value')
 	.then((snap: any) => snap.val())
-	.then((map: object) => requestMap = map);
+	.then((map: object) => requestMap = map)
+	.catch((error: Error) => console.log(error));
 	return requestMap;
 }
 

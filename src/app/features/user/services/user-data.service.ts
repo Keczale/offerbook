@@ -114,15 +114,14 @@ constructor(
   public signInGoogle(): void {
 	this.loading();
 	this._afAuth.signInWithPopup(new auth.GoogleAuthProvider())
-	// .then(() => this.userToDataBaseReg())
-	// .then(() => this.onUserSubscription.unsubscribe())
 	.then(() => {this.userToStoreAndBaseLogInGoogle(); this.inGoogleError = null;
 	})
 	.then(() => this.loading())
 	.then(() => this._router.navigate(['']))
 	.catch((error: Error) => {
-		this.inGoogleError = error.message;
 		this.loading();
+		this.inGoogleError = error.message;
+		
 	});
   }
 

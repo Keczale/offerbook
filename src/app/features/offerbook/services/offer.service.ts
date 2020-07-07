@@ -73,7 +73,6 @@ export class OfferService {
 				if (Boolean(requestList.length)) {
 				await this._offerDataService.loadOwnRequests(user.id)
 				.then((userRequestIdList: string[]) => {
-					console.log(requestList);
 					return this.requestFilterBySellersRequests(user, requestList, userRequestIdList);
 				})
 				.then((requests: Request[]) => {

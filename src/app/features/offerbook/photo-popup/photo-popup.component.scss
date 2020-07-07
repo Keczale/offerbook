@@ -1,0 +1,15 @@
+.photo{
+    max-height: 90vh;
+    max-width: 90vw;
+
+    &__image{
+        object-fit: contain;
+        width: 95%;
+        height: 95%;
+    }
+}
+
+.close-button{
+    display: flex;
+    justify-content: flex-end;
+}

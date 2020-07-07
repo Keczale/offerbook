@@ -5,13 +5,13 @@
     <div class = "request">
     
     <div class="request__index">{{index}}</div>
-    <img class="request__photo " src="{{request.photos[0]}}">
+    <img class="request__photo " src="{{request.photos[0]}}" (click)="openPhoto(request.photos[0])">
 
     <div class="request__describe flexbox">
         <span class="request__title">{{request.title}}</span>
         <p class="request__category">
-            {{request.category}} | 
-            <span> {{request.secondHand ? 'можно б/у' : ''}}</span>
+            {{request.category}} |
+            <span *ngIf="request.secondHand"> можно б/у <mat-icon >loop</mat-icon></span>
         </p>
         <p>{{request.description}}</p>
     </div>

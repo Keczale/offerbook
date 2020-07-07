@@ -4,7 +4,7 @@
     [ngClass] = "{rejected: currentOffer.status === rejected}">
     
     <div class="currentoffer__index">{{index}}</div>
-    <img class="currentoffer__photo " src="{{currentOffer.photos[0]}}">
+    <img class="currentoffer__photo " src="{{currentOffer.photos[0]}}" (click)="openPhoto(currentOffer.photos[0])">
 
     <div class="currentoffer__head flexbox">
         <span class="currentoffer__title">{{currentOffer.title}}</span>

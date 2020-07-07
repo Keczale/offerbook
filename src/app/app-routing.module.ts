@@ -20,25 +20,14 @@ const routes: Routes = [
 	path: 'register',
 	component: RegisterComponent
   },
-  // {
-	// path: '',
-  // component: OfferbookComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedToLogin },
-  // redirectTo: 'myrequests',
-  // pathMatch: 'full'
-  // },
+  {
+    path: '',
+    redirectTo: 'myrequests',
+    pathMatch: 'full'
+  },
   {
 	path: '',
   loadChildren: () => import ('./features/offerbook/offerbook.module').then((m) => m.OfferbookModule)
-
-  // children:[{
-	// path: 'myrequests',
-	// component: RequestComponent,
-  // },
-  // {
-	// path: 'myoffers',
-	// component: OfferComponent,
-  // },
-  // ],
   },
   {
   path: 'myaccount',

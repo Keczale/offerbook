@@ -5,6 +5,8 @@ import { RequestFacade } from 'src/app/store/request/request.facade';
 import { takeUntil, take } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Request } from 'src/app/models/request.model';
+import { UserDataFacade } from 'src/app/store/userData/user-data.facade';
+import { User } from 'src/app/models/user.model';
 
 
 
@@ -27,12 +29,20 @@ export class RequestComponent implements OnInit, OnDestroy, AfterViewChecked {
   constructor(
 		public requestService: RequestService,
 		public requestFacade: RequestFacade,
+		private _userFacade: UserDataFacade,
 	  private cdRef: ChangeDetectorRef
 
   ) { }
 
   ngOnInit(): void {
-		this.requestService.loadActualList(); //убрал нулувой setTimeout
+		this._userFacade.currentUser$.pipe(takeUntil(this.ngUnsubscribe))
+		.subscribe((user: User) => {
+			if (user && Boolean(user.id)) {
+				this.requestService.loadActualList(); //убрал нулувой setTimeout
+				this.ngUnsubscribe.next();
+				this.ngUnsubscribe.complete();
+			}
+		});
 		this.requestFacade.requestList$.pipe(takeUntil(this.ngUnsubscribe))
 		.subscribe((requests: Request[]) => {
 			if (Boolean(requests.length)) {
@@ -45,7 +55,7 @@ export class RequestComponent implements OnInit, OnDestroy, AfterViewChecked {
 						});
 	 			}
 			else if (Boolean(requests) && !Boolean(requests.length)) {
-				setTimeout(() => this.requestList = [], 1000);
+				setTimeout(() => this.requestList = [], 2000);
 			}
  });
 }

@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Offer, OfferStatus } from 'src/app/models/offer.model';
 import { RequestService } from '../../services/request.service';
 import { Request } from 'src/app/models/request.model';
+import { MatDialog } from '@angular/material/dialog';
+import { PhotoPopupComponent } from '../../photo-popup/photo-popup.component';
 
 
 @Component({
@@ -25,6 +27,8 @@ export class OfferItemComponent implements OnInit {
 
   constructor(
     private _requestService: RequestService,
+    public dialog: MatDialog,
+
   ) { }
 
   ngOnInit(): void { }
@@ -32,6 +36,12 @@ export class OfferItemComponent implements OnInit {
   public acceptOffer(): void {
     // this.dialog.open(OfferPopupComponent);
     this._requestService.acceptOffer(this.currentRequest, this.currentOffer);
+  }
+
+  public openPhoto(url: string): void {
+		this.dialog.open(PhotoPopupComponent, {
+			data: url
+			});
   }
 
 }

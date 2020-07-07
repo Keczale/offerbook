@@ -41,7 +41,13 @@ export class AppComponent implements OnInit, AfterViewChecked {
 	) {	}
 
 	ngOnInit(): void {
-		this.afAuth.authState.subscribe((a: firebase.User) => a ? this.userDataFacade.loadCurrentUserFromDB(a.uid) : null);
+		this.afAuth.authState.pipe(takeUntil(this._ngUnsubscribe)).subscribe((authUser: firebase.User) => {
+			if (authUser) {
+				this.userDataFacade.loadCurrentUserFromDB(authUser.uid);
+				this._ngUnsubscribe.next();
+				this._ngUnsubscribe.complete();
+			}
+		});
 	}
 
 	ngAfterViewChecked(): void {
