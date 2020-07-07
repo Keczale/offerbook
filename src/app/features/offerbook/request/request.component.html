@@ -1,12 +1,15 @@
 <div class="request__navigate">
-<mat-button-toggle-group name="requestFilter" aria-label="Filter" [value] ="requestFacade.requestFilterName$ | async">
-    <mat-button-toggle value="all" (click) = "filterAll()">Все</mat-button-toggle>
-    <mat-button-toggle class="request__filter" (click) = "filterActive()" value="active">Активные</mat-button-toggle>
-    <mat-button-toggle class="request__filter" (click) = "filterCompleted()" value="completed">Завершённые</mat-button-toggle>
-  </mat-button-toggle-group>
+    <mat-button-toggle-group name="requestFilter" aria-label="Filter" [value] ="requestFacade.requestFilterName$ | async">
+        <mat-button-toggle value="all" (click) = "filterAll()">Все</mat-button-toggle>
+        <mat-button-toggle class="request__filter" (click) = "filterActive()" value="active">Активные</mat-button-toggle>
+        <mat-button-toggle class="request__filter" (click) = "filterCompleted()" value="completed">Завершённые</mat-button-toggle>
+    </mat-button-toggle-group>
 
-  <div><app-button-wrap *ngFor="let i of arr"></app-button-wrap></div>
+    <ng-container *ngIf="(requestFacade.requestList$ | async).length ">
+        <app-button-wrap *ngFor="let i of arr">Создать запрос</app-button-wrap>
+    </ng-container>
 </div>
+
 <div class="request__list">
     <app-request-item 
         *ngFor="let request of requestFacade.filteredRequestList$ | async; let i = index"
@@ -14,4 +17,8 @@
         [userRequest]="request">
     </app-request-item>
 </div>
-
+<ng-container *ngIf="requestList && !(requestFacade.requestList$ | async).length ">
+    <div class="first-request-button">
+        <app-button-wrap *ngFor="let i of arr">Сделай свой первый запрос!</app-button-wrap>
+    </div>
+</ng-container>

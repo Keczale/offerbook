@@ -23,11 +23,11 @@ export class PopupLocationComponent implements OnInit {
 
   ngOnInit(): void {
     this.locationForm = this._fb.group({
-      city: new FormControl('', Validators.required),
+      city: new FormControl(userLocation[1], Validators.required),
       });
   }
 
-  public submitForm(): void{
+  public submitForm(): void {
     this._userDataService.setUserLocation(this.locationForm.value.city)
   }
 

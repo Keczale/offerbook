@@ -15,7 +15,8 @@ const routes: Routes = [
 		path: '',
 		component: OfferbookComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedToLogin },
 
-		children: [{
+		children: [
+	{
 		path: 'myrequests',
 		component: RequestComponent,
 	},

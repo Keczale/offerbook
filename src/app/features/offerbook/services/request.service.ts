@@ -109,11 +109,11 @@ export class RequestService {
 			.then((requestMap: object) => {
 				if (!this.isEmpty(requestMap)) {
 					const requestList: Request[] = Object.values(requestMap)
+					.sort((a: Request, b: Request) => a.lastChange - b.lastChange).reverse();
 					return requestList;
 				}
 			})
 			.then((requests: Request[]) => {
-				console.log(requests);
 				this._store$.dispatch(loadRequestListFromDBAction({ requests }));
 				this._store$.dispatch(requestInProgressAction());
 			})
@@ -130,7 +130,7 @@ export class RequestService {
 			.then(async (requestMap: object) => {
 				if (!this.isEmpty(requestMap)) {
 					const requestList: Request[] = Object.values(requestMap)
-						.sort((a: Request, b: Request) => a.lastChange - b.lastChange);
+						.sort((a: Request, b: Request) => a.lastChange - b.lastChange).reverse();
 
 					const requestsWithCounter: Request[] = [];
 
@@ -210,6 +210,7 @@ export class RequestService {
 				}
 			});
 	}
+
 	public isEmpty(obj) {
 		for (let key in obj) {
 			return false;

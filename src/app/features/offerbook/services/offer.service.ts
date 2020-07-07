@@ -25,21 +25,20 @@ export class OfferService {
   public currentUser: User = null;
 
   constructor(
-		private _offerDataService: OfferDataService,
-		private _userFacade: UserDataFacade,
-		private _offerFacade: OfferFacade,
-		private _store$: Store,
-		private _snackBar: MatSnackBar
-
+	private _offerDataService: OfferDataService,
+	private _userFacade: UserDataFacade,
+	private _offerFacade: OfferFacade,
+	private _store$: Store,
+	private _snackBar: MatSnackBar
   ) { }
 
-		private get autoKey(): string {
-		return (this._dateStamp().slice(this._dateStamp.length - this._idPrefficsStart, this._dateStamp().length)) +
-		this._offerDataService.userUid.slice(0, this._idPrefficsEnd); }
+	private get autoKey(): string {
+	return (this._dateStamp().slice(this._dateStamp.length - this._idPrefficsStart, this._dateStamp().length)) +
+	this._offerDataService.userUid.slice(0, this._idPrefficsEnd); }
 
-		private _dateStamp(): string {
-			return (Date.now()).toString();
-		}
+	private _dateStamp(): string {
+		return (Date.now()).toString();
+	}
 
   public get IsRequestListChanging$(): Observable<boolean> {
 		return this._store$.pipe(select(requestListIsChangingSelector));
@@ -53,7 +52,9 @@ export class OfferService {
   }
   public requestFilterBySellersRequests(user: User, requestList: Request[], userRequestIdList: string[]): Request[] {
 		const unwantedArr: string[] = [...userRequestIdList];
-		const filteredList: Request[] = requestList.filter((request: Request) => !unwantedArr.includes(request.id));
+		const filteredList: Request[] = requestList.filter((request: Request) =>
+			Boolean(request) &&	!unwantedArr.includes(request.id)
+		 );
    return this.requestSorterDownDate(filteredList);
   }
   public requestSorterDownDate(requestList: Request[]): Request[] {
@@ -69,8 +70,10 @@ export class OfferService {
 		if (Boolean(user.sellerLocation) && Boolean(user.sellerCategories)) {
 			this._offerDataService.loadActualListFromDB(user.sellerLocation, user.sellerCategories, user.sellerResponsedRequests)
 			.then(async(requestList: Request[]) => {
+				if (Boolean(requestList.length)) {
 				await this._offerDataService.loadOwnRequests(user.id)
 				.then((userRequestIdList: string[]) => {
+					console.log(requestList);
 					return this.requestFilterBySellersRequests(user, requestList, userRequestIdList);
 				})
 				.then((requests: Request[]) => {
@@ -91,7 +94,9 @@ export class OfferService {
 				.catch((error: Error) => {console.log(error);
 				this._store$.dispatch(offerInProgressAction());
 				});
-			});
+			}
+			})
+			.catch((error: Error) => console.log(error));
 		}
   }
 
@@ -115,7 +120,7 @@ export class OfferService {
 		this._userFacade.userToDataBase();
   }
 
-  public setOpenedRequest(request: Request): void{
+  public setOpenedRequest(request: Request): void {
 		this._store$.dispatch(setRequestToAnswerAction({request}));
   }
 

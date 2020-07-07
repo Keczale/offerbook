@@ -14,6 +14,7 @@ import { Offer } from 'src/app/models/offer.model';
 export class OfferDataService {
 
 	private _uploadTask: firebase.storage.UploadTask;
+
 	private _startImageUrl: string = '/image';
   private requestBaseURL: string = '/requests/active';
   private _offerStartURL: string = '/offer/active';
@@ -22,7 +23,9 @@ export class OfferDataService {
   public requestMapBaseURL: string = '/requests/map';
   public userBaseURL: string = '/users';
 
-  public userUid: string = firebase.auth().currentUser.uid;
+  public get userUid(): string {
+		return firebase.auth().currentUser.uid;
+	}
 
   public photoBaseURL: string = `${this._startImageUrl}/${this.userUid}`;
   public offerBaseURL: string = `${this._offerStartURL}/${this.userUid}`;

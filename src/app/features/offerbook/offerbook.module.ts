@@ -30,13 +30,14 @@ import { OfferListComponent } from './request/offer-list/offer-list.component';
 import { OfferItemComponent } from './request/offer-item/offer-item.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { ButtonWrapComponent } from './request/button-wrap/button-wrap.component';
+import { PhotoPopupComponent } from './offer/photo-popup/photo-popup.component';
 
 
 
 
 
 @NgModule({
-  declarations: [OfferbookComponent, RequestComponent, OfferComponent, RequestPopupComponent, RequestItemComponent, OfferPopupComponent, RequestChangePopupComponent, ActualRequestComponent, OfferListComponent, OfferItemComponent, ButtonWrapComponent],
+  declarations: [OfferbookComponent, RequestComponent, OfferComponent, RequestPopupComponent, RequestItemComponent, OfferPopupComponent, RequestChangePopupComponent, ActualRequestComponent, OfferListComponent, OfferItemComponent, ButtonWrapComponent, PhotoPopupComponent],
   imports: [
     OfbRoutingModule,
     CommonModule,

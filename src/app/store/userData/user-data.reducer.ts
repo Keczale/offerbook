@@ -21,7 +21,7 @@ export const initialState: UserState = {
 	id: null,
 	userName: null, // сделать верификацию на уник
 	email: null,
-	location: 'Вся Беларусь',
+	location: '',
 	userData: {
 		name: null,
 		surname: null,

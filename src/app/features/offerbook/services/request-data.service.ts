@@ -18,10 +18,18 @@ export class RequestDataService {
   private _baseActiveRequestMapURL: string = '/requests/map';
   private _noPhotoUrl: string = '../assets/img/no-photo.jpg';
 
-  public photoBaseURL: string = `${this._baseImageUrl}/${firebase.auth().currentUser.uid}`;
-  public requestBaseURL: string = `${this._baseActiveRequestUrl}/${firebase.auth().currentUser.uid}`;
 
-  public userUid: string = firebase.auth().currentUser.uid;
+  public get userUid(): string {
+		return firebase.auth().currentUser.uid;
+	}
+
+  public get photoBaseURL(): string {
+		return `${this._baseImageUrl}/${this.userUid}`;
+	}
+
+  public get requestBaseURL(): string {
+		return `${this._baseActiveRequestUrl}/${this.userUid}`;
+	}
 
   constructor(
 	private _httpClient: HttpClient,

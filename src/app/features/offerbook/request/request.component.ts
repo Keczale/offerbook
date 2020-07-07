@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, AfterViewChecked } from '@angular/core';
 import { RequestPopupComponent } from './request-popup/request-popup.component';
 import { RequestService } from '../services/request.service';
 import { RequestFacade } from 'src/app/store/request/request.facade';
@@ -13,13 +13,13 @@ import { Request } from 'src/app/models/request.model';
   templateUrl: './request.component.html',
   styleUrls: ['./request.component.scss']
 })
-export class RequestComponent implements OnInit, OnDestroy {
+export class RequestComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   public selectedRequest: Request = null;
 
-  public requestList: Request[] = [];
+  public requestList: Request[];
 
   // just with ngFor matDialog working correctly after page reloading
   public arr: number[] = [1];
@@ -27,24 +27,31 @@ export class RequestComponent implements OnInit, OnDestroy {
   constructor(
 		public requestService: RequestService,
 		public requestFacade: RequestFacade,
+	  private cdRef: ChangeDetectorRef
 
   ) { }
 
   ngOnInit(): void {
-		setTimeout(() => this.requestService.loadActualList(), 0);
+		this.requestService.loadActualList(); //убрал нулувой setTimeout
 		this.requestFacade.requestList$.pipe(takeUntil(this.ngUnsubscribe))
 		.subscribe((requests: Request[]) => {
 			if (Boolean(requests.length)) {
 				this.requestList = requests;
 				this.requestFacade.filteredRequestList$.pipe(take(1))
-		.subscribe((filteredRequests: Request[]) => {
-		if (Boolean(requests.length) && !Boolean(filteredRequests.length)) {
-		this.filterActive();
+					.subscribe((filteredRequests: Request[]) => {
+						if (Boolean(requests.length) && !Boolean(filteredRequests.length)) {
+							this.filterActive();
+							}
+						});
+	 			}
+			else if (Boolean(requests) && !Boolean(requests.length)) {
+				setTimeout(() => this.requestList = [], 1000);
 			}
-		});
-   }
  });
 }
+ngAfterViewChecked(): void {
+  this.cdRef.detectChanges();
+  }
 
   ngOnDestroy(): void {
 		this.ngUnsubscribe.next();

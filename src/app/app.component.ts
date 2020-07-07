@@ -1,19 +1,17 @@
-import { Component, OnInit, AfterContentInit, OnDestroy, ViewChild, ChangeDetectorRef, AfterViewChecked } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, ChangeDetectorRef, AfterViewChecked } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireDatabase } from '@angular/fire/database';
-//import { auth, database } from 'firebase';
 
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { UserState } from './store';
 import { UserDataFacade } from './store/userData/user-data.facade';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { RequestFacade } from './store/request/request.facade';
 import { MatDialog } from '@angular/material/dialog';
 import { PopupLocationComponent } from './app-components/popup-location/popup-location.component';
-import { User } from './models/user.model';
-import { OfferComponent } from './features/offerbook/offer/offer.component';
 import { OfferFacade } from './store/offer/offer.facade';
+import { User } from './models/user.model';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -21,6 +19,9 @@ import { OfferFacade } from './store/offer/offer.facade';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, AfterViewChecked {
+
+  private _ngUnsubscribe: Subject<any> = new Subject();
+
   public title: string = 'offerbook';
   public nameMask: string = 'User';
 
@@ -30,8 +31,7 @@ export class AppComponent implements OnInit, AfterViewChecked {
 
   constructor(
 	  public afAuth: AngularFireAuth,
-	  // private _router: Router,
-	  public userDataFacade: UserDataFacade,
+		public userDataFacade: UserDataFacade,
 	  public requestFacade: RequestFacade,
 	  public offerFacade: OfferFacade,
 	  public db: AngularFireDatabase,
@@ -46,7 +46,23 @@ export class AppComponent implements OnInit, AfterViewChecked {
 
 	ngAfterViewChecked(): void {
 		this.cdRef.detectChanges();
+  	}
+  ngAfterViewInit(): void {
+		this.userDataFacade.currentUser$.pipe(takeUntil(this._ngUnsubscribe))
+		.subscribe((user: User) => {
+			if (Boolean(user.id)) {
+				if (!Boolean(user.location)) {
+					this.dialog.open(PopupLocationComponent );
+				}
+				this._ngUnsubscribe.next();
+				this._ngUnsubscribe.complete();
+			}
+		});
+	}
 
+	ngOnDestroy(): void {
+		this._ngUnsubscribe.next();
+		this._ngUnsubscribe.complete();
 	}
 
   public signOut(): void {
