@@ -10,8 +10,8 @@
     <div class="request__describe flexbox">
         <span class="request__title">{{request.title}}</span>
         <p class="request__category">
-            {{request.category}} |
-            <span *ngIf="request.secondHand"> можно б/у <mat-icon >loop</mat-icon></span>
+            {{request.category}}
+            <span *ngIf="request.secondHand"> | можно б/у <mat-icon >loop</mat-icon></span>
         </p>
         <p>{{request.description}}</p>
     </div>
