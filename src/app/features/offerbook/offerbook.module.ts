@@ -32,8 +32,8 @@ import { OfferListComponent } from './request/offer-list/offer-list.component';
 import { OfferItemComponent } from './request/offer-item/offer-item.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { ButtonWrapComponent } from './request/button-wrap/button-wrap.component';
-import { PhotoPopupComponent } from './photo-popup/photo-popup.component';
-import { NotFoundComponent } from './not-found/not-found.component';
+import { PhotoPopupComponent } from '../components/photo-popup/photo-popup.component';
+import { NotFoundComponent } from '../components/not-found/not-found.component';
 
 @NgModule({
   declarations: [

@@ -7,14 +7,14 @@ import { RequestComponent } from './request/request.component';
 import { OfferComponent } from './offer/offer.component';
 import { OfferbookComponent } from './offerbook.component';
 import { OfferListComponent } from './request/offer-list/offer-list.component';
-import { NotFoundComponent } from './not-found/not-found.component';
+import { NotFoundComponent } from '../components/not-found/not-found.component';
 
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['/login']);
 
 const routes: Routes = [
   {
-		path: '',
-		component: OfferbookComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedToLogin },
+	path: '',
+	component: OfferbookComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedToLogin },
 
   },
   {

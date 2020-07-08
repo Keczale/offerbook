@@ -3,7 +3,7 @@ import { Offer, OfferStatus } from 'src/app/models/offer.model';
 import { RequestService } from '../../services/request.service';
 import { Request } from 'src/app/models/request.model';
 import { MatDialog } from '@angular/material/dialog';
-import { PhotoPopupComponent } from '../../photo-popup/photo-popup.component';
+import { PhotoPopupComponent } from '../../../components/photo-popup/photo-popup.component';
 
 
 @Component({

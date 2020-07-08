@@ -7,7 +7,7 @@ import { UserDataFacade } from 'src/app/store/userData/user-data.facade';
 import { OfferPopupComponent } from '../offer-popup/offer-popup.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Offer, OfferStatus } from 'src/app/models/offer.model';
-import { PhotoPopupComponent } from '../../photo-popup/photo-popup.component';
+import { PhotoPopupComponent } from '../../../components/photo-popup/photo-popup.component';
 
 
 @Component({
