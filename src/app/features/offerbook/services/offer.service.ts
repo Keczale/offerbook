@@ -66,36 +66,42 @@ export class OfferService {
   }
 
   public loadActualList(user: User): void {
-		this._store$.dispatch(offerInProgressAction());
 		if (Boolean(user.sellerLocation) && Boolean(user.sellerCategories)) {
+			this._store$.dispatch(offerInProgressAction());
 			this._offerDataService.loadActualListFromDB(user.sellerLocation, user.sellerCategories, user.sellerResponsedRequests)
 			.then(async(requestList: Request[]) => {
 				if (Boolean(requestList.length)) {
-				await this._offerDataService.loadOwnRequests(user.id)
-				.then((userRequestIdList: string[]) => {
-					return this.requestFilterBySellersRequests(user, requestList, userRequestIdList);
+					await this._offerDataService.loadOwnRequests(user.id)
+					.then((userRequestIdList: string[]) => {
+						return this.requestFilterBySellersRequests(user, requestList, userRequestIdList);
+					})
+					.then((requests: Request[]) => {
+						if (Boolean(user.sellerLastLoadedRequest)) {
+							let count: number = requests.findIndex((request: Request) =>
+								request.id === user.sellerLastLoadedRequest);
+								if (count < 0) {count = 0;
+								}
+								this._store$.dispatch(setNewRequestCounterAction({ count }));
+						}
+						if (Boolean(requests[0]) && user.sellerLastLoadedRequest !== requests[0].id) {
+							this._store$.dispatch(setLastLoadedRequestAction({ requestId: requests[0].id }));
+							this._userFacade.userToDataBase();
+						}
+					this._store$.dispatch(loadActualRequestListFromDBAction({ requests }));
+					})
+					.then(() => this._store$.dispatch(offerInProgressAction()))
+					.catch((error: Error) => {
+						this._store$.dispatch(offerInProgressAction());
+						console.log(error);
+					});
+				}
+				else {this._store$.dispatch(offerInProgressAction());
+				}
 				})
-				.then((requests: Request[]) => {
-					if (Boolean(user.sellerLastLoadedRequest)) {
-						let count: number = requests.findIndex((request: Request) =>
-							request.id === user.sellerLastLoadedRequest);
-							if (count < 0) {count = 0;
-							}
-							this._store$.dispatch(setNewRequestCounterAction({ count }));
-					}
-					if (Boolean(requests[0]) && user.sellerLastLoadedRequest !== requests[0].id) {
-						this._store$.dispatch(setLastLoadedRequestAction({ requestId: requests[0].id }));
-						this._userFacade.userToDataBase();
-					}
-				this._store$.dispatch(loadActualRequestListFromDBAction({ requests }));
-				})
-				.then(() => this._store$.dispatch(offerInProgressAction()))
-				.catch((error: Error) => {console.log(error);
+			.catch((error: Error) => {
 				this._store$.dispatch(offerInProgressAction());
-				});
-			}
-			})
-			.catch((error: Error) => console.log(error));
+				console.log(error);
+			});
 		}
   }
 
@@ -254,6 +260,7 @@ export class OfferService {
 		this._offerFacade.setFilteredRequestList(requests);
 		this._offerFacade.setOfferFilterName(OfferFilterName[1]);
 		});
+		// this.onPageChange(this._initialPaginatorEvent);
   }
   public filterResponsed(): void {
 		this._offerFacade.offerRequestList$.pipe(take(1))
@@ -286,5 +293,14 @@ export class OfferService {
 		this._offerFacade.setOfferFilterName(OfferFilterName[3]);
 		});
   }
+  onPageChange ($event) {
+	  console.log($event);
+	this._offerFacade.filteredRequestList$.pipe(take(1))
+	.subscribe((filtered: Request[]) => {
+		const paginatedRequests: Request[] =  filtered
+		.slice($event.pageIndex * $event.pageSize, $event.pageIndex * $event.pageSize + $event.pageSize);
+		this._offerFacade.setPaginatedRequestList(paginatedRequests);
+	});
+}
 
 }

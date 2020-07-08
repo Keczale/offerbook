@@ -39,3 +39,7 @@ export const setOfferFilterNameAction = createAction(
   '[Offer] Set filter name in Offer',
   props<{ offerFilterName: string }>()
 );
+export const setPaginatedRequestListAction = createAction(
+  '[Offer] Set Paginated requestlist',
+  props<{ paginatedList: Request[] }>()
+);

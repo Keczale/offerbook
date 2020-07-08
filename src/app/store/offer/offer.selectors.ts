@@ -45,3 +45,8 @@ export const offerFilterNameSelector = createSelector(
 	// tslint:disable-next-line: typedef
 	state => state.filterName
 );
+export const paginatedRequestListSelector = createSelector(
+	offerStateSelector,
+	// tslint:disable-next-line: typedef
+	state => state.paginatedRequestList
+);

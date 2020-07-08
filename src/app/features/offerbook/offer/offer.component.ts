@@ -1,11 +1,9 @@
-import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
-// import { OfferPopupComponent } from './offer-popup/offer-popup.component';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { OfferService } from '../services/offer.service';
 import { UserDataFacade } from 'src/app/store/userData/user-data.facade';
 import { User } from 'src/app/models/user.model';
 import { Subscription, Observable, combineLatest, Subject } from 'rxjs';
 import { takeUntil, take } from 'rxjs/operators';
-// import { Store } from '@ngrx/store';
 import { OfferFacade } from 'src/app/store/offer/offer.facade';
 import { Request } from 'src/app/models/request.model';
 import { OfferFilterName } from 'src/app/models/offer.model';
@@ -24,6 +22,10 @@ export class OfferComponent implements OnInit, OnDestroy {
   public currentUser: User;
   public currentUserSubscriber: Subscription;
   public requestList: Request[];
+
+  public filteredRequests: Request[] = [];
+
+  public defaultPaginator: number = 10;
 
   constructor(
 		public offerService: OfferService,
@@ -57,6 +59,12 @@ export class OfferComponent implements OnInit, OnDestroy {
 							});
 						}
 					});
+				}
+		});
+		this.offerFacade.filteredRequestList$.pipe(takeUntil(this.ngUnsubscribe))
+		.subscribe((filteredList: Request[]) => {
+			if (Boolean(filteredList.length)) {
+				this.offerFacade.setPaginatedRequestList(filteredList.slice(0, this.defaultPaginator));
 				}
 		});
   }

@@ -13,6 +13,7 @@ newRequestCount: number;
 openedRequest: Request;
 requestList: Request[];
 filteredRequestList: Request[];
+paginatedRequestList: Request[];
 filterName: string;
 }
 
@@ -23,6 +24,7 @@ export const initialOfferState: OfferState = {
   openedRequest: null,
   requestList: [],
   filteredRequestList: [],
+  paginatedRequestList: [],
   filterName: OfferFilterName[1]
 };
 
@@ -94,7 +96,13 @@ export const _offerReducer = createReducer(
       filterName: offerFilterName
       };
       }),
-    
+      on(ActionsOffer.setPaginatedRequestListAction,
+        (state: OfferState, {paginatedList}) => {
+        return {
+          ...state,
+          paginatedRequestList: paginatedList
+        };
+        }),
 );
 
 export function offerReducer(state, action) {

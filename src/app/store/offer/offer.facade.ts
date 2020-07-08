@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store, select } from '@ngrx/store';
-import { OfferState, offerIsLoadingSelector, filteredRequestListInOfferSelector, offerRequestListSelector, setFiltredRequestListAction, setOfferFilterNameAction, offerFilterNameSelector } from '.';
+import { OfferState, offerIsLoadingSelector, filteredRequestListInOfferSelector, offerRequestListSelector, setFiltredRequestListAction, setOfferFilterNameAction, offerFilterNameSelector, paginatedRequestListSelector, setPaginatedRequestListAction } from '.';
 import { Request } from 'src/app/models/request.model';
 
 @Injectable({
@@ -22,6 +22,9 @@ export class OfferFacade {
   public get offerRequestList$(): Observable<Request[]> {
     return this._store$.pipe(select(offerRequestListSelector));
     }
+  public get paginatedRequestList$(): Observable<Request[]> {
+    return this._store$.pipe(select(paginatedRequestListSelector));
+    }
   public get offerFilterName$(): Observable<string> {
     return this._store$.pipe(select(offerFilterNameSelector));
     }
@@ -31,6 +34,9 @@ export class OfferFacade {
   }
   public setOfferFilterName(offerFilterName: string): void {
     this._store$.dispatch(setOfferFilterNameAction({offerFilterName}));
+  }
+  public setPaginatedRequestList(paginatedList: Request[]): void {
+    this._store$.dispatch(setPaginatedRequestListAction({paginatedList}));
   }
     
 }

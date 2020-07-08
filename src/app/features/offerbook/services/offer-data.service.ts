@@ -131,7 +131,7 @@ public isEmpty (obj: any): boolean {
 									// resolve(actualRequests)
 								}
 								else {
-									this._store$.dispatch(loadInitialStateAction());
+									//this._store$.dispatch(loadInitialStateAction());
 									resolve (actualRequests);
 								}
 							}).then(() => resolve('done'));

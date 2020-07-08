@@ -24,6 +24,8 @@ import { OfferEffects } from '../../store/offer/offer.effects';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatPaginatorModule} from '@angular/material/paginator';
+
 
 import { ActualRequestComponent } from './offer/actual-request/actual-request.component';
 import { OfferListComponent } from './request/offer-list/offer-list.component';
@@ -66,7 +68,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
     HttpClientModule,
     MatCheckboxModule,
     MatButtonToggleModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatPaginatorModule
   ],
   providers: [],
   entryComponents: [OfferPopupComponent, RequestPopupComponent]

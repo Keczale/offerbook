@@ -18,10 +18,17 @@
     (click)="saveRejectedRequests()">
     Сохранить изменения
 </button>
- 
-<app-actual-request *ngFor="let request of offerFacade.filteredRequestList$ | async; let i = index"
-    [request]="request"
-    [index]="i+1"
-    [currentUser]="currentUser"
-    >
- </app-actual-request>
+<div>
+<app-actual-request *ngFor="let request of offerFacade.paginatedRequestList$ | async; let i = index"
+[request]="request"
+[index]="i+1"
+[currentUser]="currentUser">
+</app-actual-request>
+</div>
+
+<mat-paginator [length]="(offerFacade.filteredRequestList$ | async).length"
+              [pageSize]="defaultPaginator"
+              [pageSizeOptions]="[5, 10, 25, 100]"
+              (page)="offerService.onPageChange($event)"
+>
+</mat-paginator>
