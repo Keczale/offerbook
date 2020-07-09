@@ -127,15 +127,16 @@ constructor(
   public signOut(): void {
 	this.loading();
 	this._afAuth.signOut()
+	//.then(() => this._store$.dispatch(userSignOutAction())) 
 	.then(() => {this.loading(); this.logOutError = null;
 	})
+	.then(() => this._router.navigate(['/login']))
 	.catch((error: Error) => {
 		this._store$.dispatch(getLogOutErrorAction({logOutError: error.message}));
 		this.loading();
-	})
-	.then(() => this._router.navigate(['/login']));
-	this._store$.dispatch(userSignOutAction());
+	});
   }
+
   public resetPasswordInit(email: string): Promise<void> {
 	return this._afAuth.sendPasswordResetEmail(
 	email,
