@@ -14,6 +14,7 @@ openedRequest: Request;
 requestList: Request[];
 filteredRequestList: Request[];
 paginatedRequestList: Request[];
+paginatorEvents: object;
 filterName: string;
 }
 
@@ -25,6 +26,7 @@ export const initialOfferState: OfferState = {
   requestList: [],
   filteredRequestList: [],
   paginatedRequestList: [],
+  paginatorEvents: {},
   filterName: OfferFilterName[1]
 };
 
@@ -96,13 +98,23 @@ export const _offerReducer = createReducer(
       filterName: offerFilterName
       };
       }),
-      on(ActionsOffer.setPaginatedRequestListAction,
-        (state: OfferState, {paginatedList}) => {
-        return {
-          ...state,
-          paginatedRequestList: paginatedList
-        };
-        }),
+    on(ActionsOffer.setPaginatedRequestListAction,
+      (state: OfferState, {paginatedList}) => {
+      return {
+        ...state,
+        paginatedRequestList: paginatedList
+      };
+      }),
+    on(ActionsOffer.setPaginatorEventAction,
+      (state: OfferState, {paginatorEvent, filterName}) => {
+      return {
+        ...state,
+        paginatorEvents: {
+          ...state.paginatorEvents,
+          [filterName]: paginatorEvent
+        }
+      };
+      }),
 );
 
 export function offerReducer(state, action) {

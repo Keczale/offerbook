@@ -27,8 +27,9 @@
 </div>
 
 <mat-paginator [length]="(offerFacade.filteredRequestList$ | async).length"
-              [pageSize]="defaultPaginator"
               [pageSizeOptions]="[5, 10, 25, 100]"
               (page)="offerService.onPageChange($event)"
+              [pageIndex]= "offerService.currentEvent.pageIndex"
+              [pageSize]= "offerService.currentEvent.pageSize"
 >
 </mat-paginator>

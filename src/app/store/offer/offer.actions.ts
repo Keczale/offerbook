@@ -43,3 +43,7 @@ export const setPaginatedRequestListAction = createAction(
   '[Offer] Set Paginated requestlist',
   props<{ paginatedList: Request[] }>()
 );
+export const setPaginatorEventAction = createAction(
+  '[Offer] Set Paginator event',
+  props<{ paginatorEvent: object, filterName: string }>()
+);

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { OfferDataService } from './offer-data.service';
 import { UserDataFacade } from 'src/app/store/userData/user-data.facade';
-import { User, SellersResponsedRequests } from 'src/app/models/user.model';
+import { User } from 'src/app/models/user.model';
 import { Request } from 'src/app/models/request.model';
 import { Store, select } from '@ngrx/store';
 import { loadActualRequestListFromDBAction, offerInProgressAction, requestListIsChangingSelector, requestListIsChangingAction, requestListNotChangingAction, setNewRequestCounterAction, sellersNewRequestCountSelector, openedRequestSelector, setRequestToAnswerAction } from 'src/app/store/offer';
@@ -22,7 +22,15 @@ export class OfferService {
   private _PhotoNamePrefficsStart: number = 6;
   private _timeOutForReject: number = 500;
   private _fileNameEndCut: number = 4;
-  public currentUser: User = null;
+	public currentUser: User = null;
+
+	public defaultPaginator: number = 10;
+
+	public defaultPaginatorEvent: object = {
+		pageIndex: 0,
+		pageSize: this.defaultPaginator,
+		previousPageIndex: 0
+			};
 
   constructor(
 	private _offerDataService: OfferDataService,
@@ -237,7 +245,8 @@ export class OfferService {
 		.subscribe((requestList: Request[]) => {
 		this._offerFacade.setFilteredRequestList(requestList);
 		this._offerFacade.setOfferFilterName(OfferFilterName[0]);
-  });
+	});
+	this.applyOnPageChange(OfferFilterName[0]);
   }
 
   public filterActive(): void {
@@ -260,7 +269,8 @@ export class OfferService {
 		this._offerFacade.setFilteredRequestList(requests);
 		this._offerFacade.setOfferFilterName(OfferFilterName[1]);
 		});
-		// this.onPageChange(this._initialPaginatorEvent);
+		setTimeout(() => this.applyOnPageChange(OfferFilterName[1]), 0);
+		
   }
   public filterResponsed(): void {
 		this._offerFacade.offerRequestList$.pipe(take(1))
@@ -278,6 +288,7 @@ export class OfferService {
 		this._offerFacade.setFilteredRequestList(requests);
 		this._offerFacade.setOfferFilterName(OfferFilterName[2]);
 		});
+		this.applyOnPageChange(OfferFilterName[2]);
   }
   public filterRejected(): void {
 		this._userFacade.currentUser$.pipe(take(1))
@@ -292,15 +303,44 @@ export class OfferService {
 		this._offerFacade.setFilteredRequestList(requests);
 		this._offerFacade.setOfferFilterName(OfferFilterName[3]);
 		});
+		this.applyOnPageChange(OfferFilterName[3]);
   }
-  onPageChange ($event) {
-	  console.log($event);
+  public onPageChange ($event: any): void {
 	this._offerFacade.filteredRequestList$.pipe(take(1))
 	.subscribe((filtered: Request[]) => {
 		const paginatedRequests: Request[] =  filtered
 		.slice($event.pageIndex * $event.pageSize, $event.pageIndex * $event.pageSize + $event.pageSize);
 		this._offerFacade.setPaginatedRequestList(paginatedRequests);
 	});
+			this._offerFacade.offerFilterName$.pipe(take(1))
+			.subscribe((name: string) => this._offerFacade.setPaginatorEvent($event, name));
+	}
+
+public get currentEvent(): any {
+	let currentEvent: any;
+	this._offerFacade.offerFilterName$.pipe(take(1))
+	.subscribe((filterName: string) => {
+		this._offerFacade.paginatorEvent$.pipe(take(1))
+		.subscribe((event: any) => {
+			if (!this.isEmpty(Event)){
+				currentEvent = event[filterName];
+			}
+			else {currentEvent = this.defaultPaginatorEvent;
+			}
+		});
+	});
+return currentEvent;
+}
+
+public applyOnPageChange(filterName: string): void {
+	this._offerFacade.paginatorEvent$.pipe(take(1))
+	.subscribe((events: object) => this.onPageChange(events[filterName]));
+}
+
+public setInitialPaginatorEvents(initialEvent: object): void {
+		const realNameFilterLength: number = Object.values(OfferFilterName).length / 2;
+		const filterNameArr: Array <(string | OfferFilterName)> = Object.values(OfferFilterName).slice(0, realNameFilterLength);
+		filterNameArr.map((filterName: string) => this._offerFacade.setPaginatorEvent(initialEvent, filterName));
 }
 
 }

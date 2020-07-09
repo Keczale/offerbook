@@ -63,11 +63,15 @@ export class ActualRequestComponent implements OnInit {
   }
 
   public getBestPrice(): void {
-		if (Boolean(!this.offerService.isEmpty(this.request))){
+		if (Boolean(!this.offerService.isEmpty(this.request))) {
 		const offerList: Offer[] = Object.values(this.request.offers)
 			.sort((a: Offer, b: Offer) => a.price - b.price);
 			this.bestPrice = `Лучшая цена: ${offerList[0].price}`;
 		}
+  }
+
+  public get isRequestRejected(): boolean {
+    return this.currentUser.sellerRejectedRequests.includes(this.request.id);
   }
 
   public getOfferList(): void {

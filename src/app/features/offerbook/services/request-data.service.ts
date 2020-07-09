@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import * as firebase from 'firebase';
-import { Store } from '@ngrx/store';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Request } from 'src/app/models/request.model';
 import { AngularFireDatabase } from '@angular/fire/database';

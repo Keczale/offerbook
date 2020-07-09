@@ -50,3 +50,8 @@ export const paginatedRequestListSelector = createSelector(
 	// tslint:disable-next-line: typedef
 	state => state.paginatedRequestList
 );
+export const paginatorEventsSelector = createSelector(
+	offerStateSelector,
+	// tslint:disable-next-line: typedef
+	state => state.paginatorEvents
+);

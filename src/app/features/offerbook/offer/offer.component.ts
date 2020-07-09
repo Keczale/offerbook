@@ -1,12 +1,12 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, Output, EventEmitter, Input } from '@angular/core';
 import { OfferService } from '../services/offer.service';
 import { UserDataFacade } from 'src/app/store/userData/user-data.facade';
 import { User } from 'src/app/models/user.model';
-import { Subscription, Observable, combineLatest, Subject } from 'rxjs';
+import { Subscription, combineLatest, Subject } from 'rxjs';
 import { takeUntil, take } from 'rxjs/operators';
 import { OfferFacade } from 'src/app/store/offer/offer.facade';
 import { Request } from 'src/app/models/request.model';
-import { OfferFilterName } from 'src/app/models/offer.model';
+import { PageEvent } from '@angular/material/paginator';
 
 
 
@@ -25,7 +25,9 @@ export class OfferComponent implements OnInit, OnDestroy {
 
   public filteredRequests: Request[] = [];
 
-  public defaultPaginator: number = 10;
+  public defaultPaginator: number = this.offerService.defaultPaginator;
+
+  public defaultPaginatorEvent: object = this.offerService.defaultPaginatorEvent;
 
   constructor(
 		public offerService: OfferService,
@@ -35,7 +37,7 @@ export class OfferComponent implements OnInit, OnDestroy {
 		) { }
 
   ngOnInit (): void {
-
+	this.offerService.setInitialPaginatorEvents(this.defaultPaginatorEvent);
 		combineLatest(
 			this.userDataFacade.sellerLocation$,
 			this.userDataFacade.sellerCategory$)
@@ -61,13 +63,11 @@ export class OfferComponent implements OnInit, OnDestroy {
 					});
 				}
 		});
-		this.offerFacade.filteredRequestList$.pipe(takeUntil(this.ngUnsubscribe))
-		.subscribe((filteredList: Request[]) => {
-			if (Boolean(filteredList.length)) {
-				this.offerFacade.setPaginatedRequestList(filteredList.slice(0, this.defaultPaginator));
-				}
-		});
+
   }
+
+@Output()
+page: EventEmitter<PageEvent>
 
   ngOnDestroy(): void {
 		this.ngUnsubscribe.next();
