@@ -71,7 +71,9 @@ export class ActualRequestComponent implements OnInit {
   }
 
   public get isRequestRejected(): boolean {
+    if(this.currentUser.sellerRejectedRequests) {
     return this.currentUser.sellerRejectedRequests.includes(this.request.id);
+  }
   }
 
   public getOfferList(): void {

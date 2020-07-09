@@ -156,8 +156,8 @@ export class OfferService {
 	let photoName: string = '';
 	let file: File = null;
 
-  if (value.requestImage) {
-		file = value.requestImage.files[0];
+  if (value.offerImage) {
+		file = value.offerImage.files[0];
 		fileName = file.name;
 		photoName = `${this.autoKey}${fileName.slice(fileName.length - this._fileNameEndCut, fileName.length) }`;
 	}
@@ -269,7 +269,7 @@ export class OfferService {
 		this._offerFacade.setFilteredRequestList(requests);
 		this._offerFacade.setOfferFilterName(OfferFilterName[1]);
 		});
-		setTimeout(() => this.applyOnPageChange(OfferFilterName[1]), 0);
+		setTimeout(() => this.applyOnPageChange(OfferFilterName[1]));
 		
   }
   public filterResponsed(): void {
@@ -322,7 +322,7 @@ public get currentEvent(): any {
 	.subscribe((filterName: string) => {
 		this._offerFacade.paginatorEvent$.pipe(take(1))
 		.subscribe((event: any) => {
-			if (!this.isEmpty(Event)){
+			if (!this.isEmpty(Event)) {
 				currentEvent = event[filterName];
 			}
 			else {currentEvent = this.defaultPaginatorEvent;
