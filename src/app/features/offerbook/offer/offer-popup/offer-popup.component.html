@@ -45,8 +45,11 @@
     (click)="submitForm()"
     [class.disabled]="offerForm.controls['description'].invalid || 
       offerForm.controls['conditions'].invalid ||
-      offerForm.controls['price'].invalid"
+      offerForm.controls['price'].invalid ||
+      offerForm.controls['offerImage'].invalid"
     [disabled]="offerForm.controls['description'].invalid || 
       offerForm.controls['conditions'].invalid ||
-      offerForm.controls['price'].invalid">Отправить</button>
+      offerForm.controls['price'].invalid ||
+      offerForm.controls['offerImage'].invalid"
+      >Отправить</button>
   </div>

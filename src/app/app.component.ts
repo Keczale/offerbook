@@ -21,6 +21,7 @@ import { takeUntil } from 'rxjs/operators';
 export class AppComponent implements OnInit, AfterViewChecked {
 
   private _ngUnsubscribe: Subject<any> = new Subject();
+  private _ngUnsubscribeForLocation: Subject<any> = new Subject();
 
   public title: string = 'offerbook';
   public nameMask: string = 'User';
@@ -54,14 +55,19 @@ export class AppComponent implements OnInit, AfterViewChecked {
 		this.cdRef.detectChanges();
   	}
   ngAfterViewInit(): void {
-		this.userDataFacade.currentUser$.pipe(takeUntil(this._ngUnsubscribe))
+	console.log('Boolean(user.location')
+
+		this.userDataFacade.currentUser$.pipe(takeUntil(this._ngUnsubscribeForLocation))
 		.subscribe((user: User) => {
+
 			if (Boolean(user.id)) {
+
 				if (!Boolean(user.location)) {
-					this.dialog.open(PopupLocationComponent );
+					console.log(Boolean(user.location))
+					this.dialog.open(PopupLocationComponent);
 				}
-				this._ngUnsubscribe.next();
-				this._ngUnsubscribe.complete();
+				this._ngUnsubscribeForLocation.next();
+				this._ngUnsubscribeForLocation.complete();
 			}
 		});
 	}

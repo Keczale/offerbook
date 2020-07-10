@@ -54,9 +54,11 @@
       [class.disabled]="requestForm.controls['title'].invalid || 
       requestForm.controls['description'].invalid ||
       requestForm.controls['category'].invalid ||
-      requestForm.controls['city'].invalid"
+      requestForm.controls['city'].invalid ||
+      requestForm.controls['requestImage'].invalid"
       [disabled]="requestForm.controls['title'].invalid || 
       requestForm.controls['description'].invalid ||
       requestForm.controls['category'].invalid ||
-      requestForm.controls['city'].invalid">Отправить</button>
+      requestForm.controls['city'].invalid ||
+      requestForm.controls['requestImage'].invalid">Отправить</button>
   </div>

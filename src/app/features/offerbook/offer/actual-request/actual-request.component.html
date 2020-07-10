@@ -11,12 +11,14 @@
         <span class="request__title">{{request.title}}</span>
         <p class="request__category">
             {{request.category}}
-            <span *ngIf="request.secondHand"> | можно б/у <mat-icon >loop</mat-icon></span>
+            <span class="request__secondhand" *ngIf="request.secondHand"> | можно б/у </span>
+            <span class="request__secondhand" *ngIf="!request.secondHand"> | только новый </span>
+            <span *ngIf="request.city"> | {{request.city}} </span>
         </p>
         <p>{{request.description}}</p>
     </div>
     <div class="request__buyer flexbox">
-        <p>{{request.fromUserName ? request.fromUserName : 'без имени'}}</p>
+        <p>от: {{request.fromUserName ? request.fromUserName : 'без имени'}}</p>
         <p>{{request.fromUserRating  ? request.fromUserRating : 'нет оценок'}}</p>
     </div>
     <div class="request__other-offers">

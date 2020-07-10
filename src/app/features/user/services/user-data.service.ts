@@ -57,7 +57,6 @@ constructor(
 	this._store$.dispatch(getCurrentUserAction({id: userData.user.uid, name: userName, email: userData.user.email}));
   }
 
-
   public userToStoreAndBaseLogInGoogle(): void {
 	const user: firebase.User = auth().currentUser;
 	database().ref(`users/${user.uid}`).once('value').then((snap: any) => {
