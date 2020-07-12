@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, AfterViewChecked, HostListener, Input } from '@angular/core';
 import { RequestPopupComponent } from './request-popup/request-popup.component';
 import { RequestService } from '../services/request.service';
 import { RequestFacade } from 'src/app/store/request/request.facade';
@@ -7,6 +7,8 @@ import { Subject } from 'rxjs';
 import { Request } from 'src/app/models/request.model';
 import { UserDataFacade } from 'src/app/store/userData/user-data.facade';
 import { User } from 'src/app/models/user.model';
+import { AppFacade } from 'src/app/store/app/app.facade';
+import { breakpoints } from 'src/app/models/common';
 
 
 
@@ -23,6 +25,9 @@ export class RequestComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   public requestList: Request[];
 
+	@Input()
+  public screenWidth: number;
+
   // just with ngFor matDialog working correctly after page reloading
   public arr: number[] = [1];
 
@@ -30,11 +35,14 @@ export class RequestComponent implements OnInit, OnDestroy, AfterViewChecked {
 		public requestService: RequestService,
 		public requestFacade: RequestFacade,
 		private _userFacade: UserDataFacade,
-	  private cdRef: ChangeDetectorRef
+		private cdRef: ChangeDetectorRef,
+		public appFacade: AppFacade
 
   ) { }
 
   ngOnInit(): void {
+		this.appFacade.screenWidth$.pipe(takeUntil(this.ngUnsubscribe))
+		.subscribe((width: number) => this.screenWidth = width);
 		this._userFacade.currentUser$.pipe(takeUntil(this.ngUnsubscribe))
 		.subscribe((user: User) => {
 			if (user && Boolean(user.id)) {
@@ -84,4 +92,7 @@ ngAfterViewChecked(): void {
 		this.requestService.filterCompleted();
   }
 
+  public  lessThenWidth(width: number): boolean {
+	return width < breakpoints.mobile;
+}
 }

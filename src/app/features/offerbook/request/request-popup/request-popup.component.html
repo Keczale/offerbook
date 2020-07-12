@@ -36,7 +36,7 @@
       <ngx-mat-file-input formControlName="requestImage"
         [accept]="'.png,.jpg,.jpeg'"
        placeholder="Выберите фото" ></ngx-mat-file-input>
-      <mat-icon matSuffix>folder</mat-icon>
+      <mat-icon matSuffix>add_a_photo</mat-icon>
       <mat-error *ngIf="requestForm.get('requestImage').hasError('maxContentSize')">
         Размер файла не должен превышать {{requestForm.get('requestImage')?.getError('maxContentSize').maxSize | byteFormat}}
          (Ваш файл {{requestForm.get('requestImage')?.getError('maxContentSize').actualSize

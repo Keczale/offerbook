@@ -1,12 +1,15 @@
 <div class="wrapper">
   <mat-card class="request-card"
   [class.accepted] = "userRequest.status === requestStatus[1]">
-      <mat-card-header>
+      <div>
+  <mat-card-header>
         <div mat-card-avatar class="request-card__index">{{index}}</div>
-        <mat-card-title>{{userRequest.title}}</mat-card-title>
-        <mat-card-subtitle>{{userRequest.category}}</mat-card-subtitle>
+        <mat-card-title class="request-card__title">{{userRequest.title}}</mat-card-title>
+        <mat-card-subtitle class="request-card__subtitle">{{userRequest.category}}</mat-card-subtitle>
       </mat-card-header>
       <img mat-card-image class="request-card__image" src="{{userRequest.photos[0]}}" alt="{{userRequest.title}}">
+    </div>
+    <div>
       <mat-card-content >
         <p class="request-card__describe">
           {{userRequest.description}}
@@ -25,6 +28,7 @@
 
         </div>
       </mat-card-content>
+    </div>
       <mat-card-actions class="request-card__actions">
         <button class="request-card__btn" mat-button (click)="requestService.deleteRequest(userRequest)">Удалить</button>
         <button class="request-card__btn" mat-button (click)="changeRequest(userRequest)">Изменить</button>

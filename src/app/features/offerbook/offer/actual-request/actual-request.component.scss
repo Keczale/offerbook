@@ -1,3 +1,4 @@
+@import "../../../../ui/styles/variables.scss";
 .wrap{
     margin-bottom: .5rem;
 }
@@ -18,7 +19,7 @@
     }
     
     &__photo{
-        flex: 1 1 20%;
+        flex: 1 0 20%;
         object-fit: contain; 
         max-height: 6rem;
         max-width: 6rem;
@@ -26,7 +27,7 @@
         cursor: pointer;
     }    
     &__describe{
-        flex: 1 1 25%;
+        flex: 1 0 30%;
         padding-left: .4rem;
 
     }
@@ -35,18 +36,25 @@
     }
 
     &__secondhand{
-    font-weight: bold;    
+        font-weight: bold;    
     }
     
     &__buyer{
-    flex: 0 1 15%;
-    padding-left: .4rem;
+    // flex: 1 0 10%;
+        padding-left: .4rem;
 
     }
     &__other-offers{
-        flex: 0 1 15%;
+        // flex: 1 0 15%;
         padding: 0 .3rem;
-
+    }
+    &__buttons{
+        display: flex;
+        flex-direction: column-reverse;
+    }
+    &__button{
+        font-size: 1em;
+        width: 100%;
     }
     &__remove{
         flex: 0 1 10%;
@@ -90,4 +98,27 @@
 }
 .rejected{
     background-color: rgb(236, 134, 143);
+}
+.btnwrapper{
+    font-size: 1em;
+    padding: .2em 0;
+}
+
+@media screen and (max-width: breakpoint(tablet-portrait)) {
+    .request{
+        flex-wrap: wrap;
+        &__button{
+            width: 95%;
+        }
+    }
+    .request__buttons{
+        flex-direction: row;
+        justify-content: space-between;
+        flex: 1 1 100%
+    }
+    .btnwrapper{
+        flex:1 0 50%
+        // display: flex;
+        // justify-content: space-between;
+    }
 }

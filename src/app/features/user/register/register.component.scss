@@ -1,3 +1,5 @@
+@import "../../../ui/styles/variables.scss";
+
 .register-wrap{
     display: flex;
     align-items: center;
@@ -18,7 +20,8 @@
         border-top: 1px solidrgb(192, 192, 192);
     }
     &__loginlink{
-        color: rgb(119, 49, 211);
+        text-decoration: none;
+        color: $link;
     }
     &__btn{
         width:100%;

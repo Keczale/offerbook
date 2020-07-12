@@ -7,7 +7,13 @@
     <mat-button-toggle class="offer__filter" (click) = "offerService.filterRejected()" value="rejected">Отклонённые</mat-button-toggle>
   </mat-button-toggle-group>
   
-  <button mat-raised-button (click)="refreshRequestList()">Обновить</button>
+  <button class="offer__refresh" mat-stroked-button (click)="refreshRequestList()" *ngIf="!lessThenWidth(screenWidth)">
+  Обновить
+  </button>
+  <button class="offer__refresh" mat-stroked-button (click)="refreshRequestList()" *ngIf="lessThenWidth(screenWidth)">
+    <span class="material-icons"> refresh </span>
+  </button>
+
 </div>
 
 <button 

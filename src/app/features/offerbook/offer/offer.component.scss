@@ -1,13 +1,25 @@
+@import "../../../ui/styles/variables.scss";
+
 .save-changes{
     width: 100%
 }
-.offer__navigate{
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+.offer{
 
-    padding-bottom: 1.5rem;
+    &__refresh{
+         font-size: 1em;
+    }
+    &__navigate{
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    
+        padding-bottom: 1.5rem;
+    }
+    &__filter{
+        font-weight: bold;
+    }
 }
-.offer__filter{
-    font-weight: bold;
+@media screen and (max-width: breakpoint(laptop)) {
+
+ 
 }

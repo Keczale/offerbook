@@ -6,9 +6,14 @@
     </mat-button-toggle-group>
 
     <ng-container *ngIf="(requestFacade.requestList$ | async).length ">
-        <app-button-wrap *ngFor="let i of arr">Создать запрос</app-button-wrap>
+        <app-button-wrap *ngFor="let i of arr">
+           <ng-container *ngIf="!lessThenWidth(appFacade.screenWidth$ | async); else createIcon">Создать запрос</ng-container> 
+        </app-button-wrap>
     </ng-container>
 </div>
+<ng-template #createIcon>
+    <span class="material-icons"> add </span>
+</ng-template>
 
 <div class="request__list">
     <app-request-item 

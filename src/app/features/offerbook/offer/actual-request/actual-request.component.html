@@ -25,25 +25,29 @@
         Предложений: {{!offerListForCounter.length ? 'ещё нет' : offerListForCounter.length }}
         {{bestPrice ? bestPrice : ''}}
     </div>
-    <div class="request__remove" *ngIf="!offerToRequest && !isRequestRejected">
+    <div class="request__buttons">
+    <div class="request__remove btnwrapper" *ngIf="!offerToRequest && !isRequestRejected">
         <button 
-            mat-raised-button
+            class="request__button"
+            mat-stroked-button
             title="Дважды кликнуть, чтобы убрать из списка"
             (dblclick)="rejectRequest()">
             Отклонить
         </button>
     </div>
-    <div class="request__remove" *ngIf="offerToRequest && request.status === requestStatusEnum[1]">
+    <div class="request__remove  btnwrapper" *ngIf="offerToRequest && request.status === requestStatusEnum[1]">
         <button 
-            mat-raised-button
+            class="request__button"
+            mat-stroked-button
             title="=Временно недоступно= Дважды кликнуть, чтобы убрать из списка"
             disabled
             (dblclick)="rejectRequest()">
             Убрать
         </button>
     </div>
-    <div class="request__accept">
+    <div class="request__accept btnwrapper">
         <button 
+            class="request__button"
             mat-raised-button
             title="Сделать предложение"
             (click)="openDialog()"
@@ -51,6 +55,7 @@
             Откликнуться
         </button>
         <button 
+            class="request__button"
             mat-button
             title="Сделать предложение"
             *ngIf="offerToRequest && request.status===requestStatusEnum[0] "
@@ -59,7 +64,8 @@
             На рассмотрении
         </button>
         <button 
-            mat-raised-button
+            class="request__button"
+            mat-stroked-button
             title="Сделать предложение"
             (click)="openDialog()"
             disabled
@@ -68,6 +74,7 @@
             {{offerToRequest && offerToRequest.status === offerStatus[1] ? 'Успех!' : 'Отклонено'}}
         </button>
     </div>
+</div>
 </div>
 
 <mat-accordion *ngIf = "offerToRequest">

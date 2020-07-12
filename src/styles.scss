@@ -1,6 +1,41 @@
 /* You can add global styles to this file, and also import other style files */
 @import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import "./app/ui/styles/variables.scss";
 
-html, body { height: 100%; }
+html, body { height: 100%; font-size: 14px;}
 
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+@media screen and (max-width: breakpoint(desktop)) {
+    html {
+        font-size: 120%;
+}
+}
+@media screen and (max-width: breakpoint(laptop)) {
+    html {
+        font-size: 100%;     
+    }
+    .mat-button-toggle-label-content{
+    line-height: 12px;
+    }
+}
+@media screen and (max-width: breakpoint(tablet)) {
+    html {
+        font-size: 90%;
+}
+}
+@media screen and (max-width: breakpoint(tablet-portrait)) {
+    html {
+        font-size: 90%;
+}
+}
+@media screen and (max-width: breakpoint(mobile)) {
+    html {
+        font-size: 90%;
+}
+}
+@media screen and (max-width: breakpoint(mobile-portrait)) {
+    html {
+        font-size: 90%;
+}
+}

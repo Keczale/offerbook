@@ -3,14 +3,21 @@
 }
 
 .request-card {
-    max-width: 14rem;
+    width: 14rem;
 
     &__image {
       object-fit: contain; 
       height: 14rem;
     }
+    &__title{
+      font-size: 1.2em;
+    }
+    &__subtitle{
+      font-size: 1em;
+    }
     &__describe{
       height: 2rem;
+      font-size: 1em;
     }
     &__actions{
       display: flex;

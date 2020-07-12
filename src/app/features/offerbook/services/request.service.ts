@@ -47,8 +47,14 @@ export class RequestService {
 
 	public openDialog(component: any): void {
 		this.dialog.open(component, {
-			// height: '400px',
+			height: 'auto',
 			width: '50%',
+		});
+	}
+	public openMobileDialog(component: any): void {
+		this.dialog.open(component, {
+			height: 'auto',
+			width: '80%',
 		});
 	}
 
