@@ -7,16 +7,43 @@
         justify-content: flex-start;
         flex-wrap: wrap;
     }
-    &__filter{
-        font-weight: bold;
+    &__mobilewrap{
+        position: sticky;
+        top: 6rem;
+        z-index: 10;
+        height: 4rem;
+        overflow: hidden;
+
     }
     &__navigate{
         display: flex;
         justify-content: space-between;
-        flex-wrap: wrap;
+        overflow: hidden;
         padding-bottom: 1.5rem;
-    
+        transition: all linear .6s;
     }
+    &__hidenavigate{
+        visibility: hidden;
+        margin-top: -30%;
+    }
+    &__filter{
+        font-weight: bold;
+    }
+    &__mobilebtn{
+        position: relative;
+        z-index: 10;
+        background-color: rgba(255, 255, 255, 0.7);
+    }
+    &__mobilefilter{
+        transition: all cubic-bezier(0.68,-0.55,0.265,1.55) 1s;
+    }
+    &__filterhidden{
+        // display: none;
+        visibility: hidden;
+        margin-left: -150%;
+
+    }
+
 }
 
 

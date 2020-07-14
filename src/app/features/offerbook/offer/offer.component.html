@@ -59,7 +59,8 @@
   <app-actual-request *ngFor="let request of offerFacade.paginatedRequestList$ | async; let i = index"
   [request]="request"
   [index]="i+1"
-  [currentUser]="currentUser">
+  [currentUser]="currentUser"
+  [screenWidth]="screenWidth">
   </app-actual-request>
   </div>
 

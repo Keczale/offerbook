@@ -45,3 +45,6 @@ export const setEmptyListAction = createAction(
 export const removeEmptyListAction = createAction(
   '[Request] Set list not empty',
 );
+export const filterToggleAction = createAction(
+  '[Request] mobile filter toggle',
+);

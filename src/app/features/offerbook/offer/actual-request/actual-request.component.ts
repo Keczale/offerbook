@@ -8,6 +8,7 @@ import { OfferPopupComponent } from '../offer-popup/offer-popup.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Offer, OfferStatus } from 'src/app/models/offer.model';
 import { PhotoPopupComponent } from '../../../components/photo-popup/photo-popup.component';
+import { breakpoints } from 'src/app/models/common';
 
 
 @Component({
@@ -34,6 +35,9 @@ export class ActualRequestComponent implements OnInit {
 
   @Input()
   public currentUser: User = null;
+
+  @Input()
+  public screenWidth: number = null;
 
   public offerToRequest: Offer = null;
 
@@ -77,7 +81,7 @@ export class ActualRequestComponent implements OnInit {
   }
 
   public getOfferList(): void {
-		if (this.request.offers && !this.offerService.isEmpty(this.request.offers)){
+		if (this.request.offers && !this.offerService.isEmpty(this.request.offers)) {
 		this.offerListForCounter = Object.values(this.request.offers);
 		}
   }
@@ -90,8 +94,18 @@ export class ActualRequestComponent implements OnInit {
 		this.offerService.initCurrentFilter();
   }
 
-  public openDialog() {
-		this.dialog.open(OfferPopupComponent);
+  public openDialog(): void {
+		if (this.screenWidth > breakpoints.mobile) {
+			this.dialog.open(OfferPopupComponent, {
+				height: 'auto',
+				width: '50%',
+			});
+		}
+		else {this.dialog.open(OfferPopupComponent, {
+			height: 'auto',
+			width: '90%',
+		});
+  }
 		this.offerService.setOpenedRequest(this.request);
   }
 

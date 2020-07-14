@@ -31,7 +31,12 @@
     </div>
       <mat-card-actions class="request-card__actions">
         <button class="request-card__btn" mat-button (click)="requestService.deleteRequest(userRequest)">Удалить</button>
-        <button class="request-card__btn" mat-button (click)="changeRequest(userRequest)">Изменить</button>
+        <button class="request-card__btn" 
+          [disabled]="userRequest.status===requestStatus[1]"
+          [class.disabled]="userRequest.status===requestStatus[1]"
+
+        mat-button (click)="changeRequest(userRequest)">Изменить</button>
       </mat-card-actions>
   </mat-card>
 </div>
+

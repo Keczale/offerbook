@@ -4,11 +4,11 @@ import { RequestService } from '../services/request.service';
 import { RequestFacade } from 'src/app/store/request/request.facade';
 import { takeUntil, take } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { Request } from 'src/app/models/request.model';
+import { Request, RequestFilterTitle } from 'src/app/models/request.model';
 import { UserDataFacade } from 'src/app/store/userData/user-data.facade';
 import { User } from 'src/app/models/user.model';
 import { AppFacade } from 'src/app/store/app/app.facade';
-import { breakpoints } from 'src/app/models/common';
+import { breakpoints, Breakpoints } from 'src/app/models/common';
 
 
 
@@ -20,13 +20,18 @@ import { breakpoints } from 'src/app/models/common';
 export class RequestComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   private ngUnsubscribe: Subject<void> = new Subject<void>();
+  private ngUnsubscribeForWindow: Subject<void> = new Subject<void>();
+  private ngUnsubscribeForUser: Subject<void> = new Subject<void>();
 
   public selectedRequest: Request = null;
 
   public requestList: Request[];
+	public requestFilterTitles: any = RequestFilterTitle;
+	public previousScroll: number = null;
+  public scrollDown: boolean = false;
 
-	@Input()
   public screenWidth: number;
+  public breakpoints: Breakpoints = breakpoints;
 
   // just with ngFor matDialog working correctly after page reloading
   public arr: number[] = [1];
@@ -41,14 +46,19 @@ export class RequestComponent implements OnInit, OnDestroy, AfterViewChecked {
   ) { }
 
   ngOnInit(): void {
-		this.appFacade.screenWidth$.pipe(takeUntil(this.ngUnsubscribe))
+		this.appFacade.scrollTop$.pipe(takeUntil(this.ngUnsubscribeForWindow))
+		.subscribe((scrollTop: number) => {
+			scrollTop > this.previousScroll ? this.scrollDown = true : this.scrollDown = false;
+			this.previousScroll = scrollTop;
+		});
+		this.appFacade.screenWidth$.pipe(takeUntil(this.ngUnsubscribeForWindow))
 		.subscribe((width: number) => this.screenWidth = width);
-		this._userFacade.currentUser$.pipe(takeUntil(this.ngUnsubscribe))
+		this._userFacade.currentUser$.pipe(takeUntil(this.ngUnsubscribeForUser))
 		.subscribe((user: User) => {
 			if (user && Boolean(user.id)) {
 				this.requestService.loadActualList(); //убрал нулувой setTimeout
-				this.ngUnsubscribe.next();
-				this.ngUnsubscribe.complete();
+				this.ngUnsubscribeForUser.next();
+				this.ngUnsubscribeForUser.complete();
 			}
 		});
 		this.requestFacade.requestList$.pipe(takeUntil(this.ngUnsubscribe))
@@ -65,8 +75,8 @@ export class RequestComponent implements OnInit, OnDestroy, AfterViewChecked {
 			// else if (Boolean(requests) && !Boolean(requests.length)) {
 			// 	setTimeout(() => this.requestList = [], 2000);
 			// }
- });
-}
+		});
+	}
 ngAfterViewChecked(): void {
   this.cdRef.detectChanges();
   }
@@ -74,6 +84,10 @@ ngAfterViewChecked(): void {
   ngOnDestroy(): void {
 		this.ngUnsubscribe.next();
 		this.ngUnsubscribe.complete();
+		this.ngUnsubscribeForWindow.next();
+		this.ngUnsubscribeForWindow.complete();
+		this.ngUnsubscribeForUser.next();
+		this.ngUnsubscribeForUser.complete();
   }
 
   public openDialog(): void {

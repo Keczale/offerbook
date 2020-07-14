@@ -1,0 +1,92 @@
+@import "../../../../ui/styles/variables.scss";
+.wrapper{
+    margin-bottom: .5rem;
+
+}
+.request{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: .6rem;
+
+    .flexbox{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+    &__index{
+        flex: 0 1 5%;
+        font-weight: 600;
+    }
+    
+    &__photo{
+        flex: 1 0 20%;
+        object-fit: contain; 
+        max-height: 6rem;
+        max-width: 6rem;
+            }    
+    &__describe{
+        flex: 1 0 30%;
+        padding-left: .4rem;
+
+    }
+    &__category{
+        font-style: italic;;
+    }
+
+    &__secondhand{
+        font-weight: bold;    
+    }
+    
+    &__buyer{
+    // flex: 1 0 10%;
+        padding-left: .4rem;
+
+    }
+    &__other-offers{
+        // flex: 1 0 15%;
+        padding: 0 .3rem;
+    }
+    &__buttons{
+        display: flex;
+        justify-content: space-between;
+        flex: 1 1 100%;
+        padding: .3rem;
+    }
+    &__btn{
+        font-size: 1em;
+        width: 100%;
+    }
+    &__info{
+        height: 2.5rem;
+      }
+      &__offers{
+        font-weight: 600;
+        cursor: pointer;
+        border-bottom: 1px dashed grey;;
+      }
+      &__new-offers{
+        font-weight: 600;
+      }
+
+    &__title{
+        font-weight: bold;
+    }
+   
+    .btnwrapper{
+        flex: 1 0 50%
+        // display: flex;
+        // justify-content: space-between;
+    }
+
+}
+
+.accepted{
+    background-color: rgb(126, 212, 126);
+}
+.rejected{
+    background-color: rgb(236, 134, 143);
+}
+
+

@@ -1,29 +1,25 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
-import { Request, RequestStatus } from 'src/app/models/request.model';
+import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { RequestService } from '../../services/request.service';
-import { RequestChangePopupComponent } from '../request-change-popup/request-change-popup.component';
-import { Offer } from 'src/app/models/offer.model';
+import { Request, RequestStatus } from 'src/app/models/request.model';
+
 import { Router } from '@angular/router';
-import { breakpoints, Breakpoints } from 'src/app/models/common';
+import { Offer } from 'src/app/models/offer.model';
+import { RequestChangePopupComponent } from '../request-change-popup/request-change-popup.component';
 
 @Component({
-  selector: 'app-request-item',
-  templateUrl: './request-item.component.html',
-  styleUrls: ['./request-item.component.scss'],
+  selector: 'app-mobile-request-item',
+  templateUrl: './mobile-request-item.component.html',
+  styleUrls: ['./mobile-request-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
-
 })
-export class RequestItemComponent implements OnInit {
-
-  public requestStatus: any = RequestStatus;
+export class MobileRequestItemComponent implements OnInit {
 
   @Input()
   public userRequest: Request;
   @Input()
   public index: number;
 
-  public breakpoints: Breakpoints = breakpoints;
-
+  public requestStatus: any = RequestStatus;
   public offersToRequest: Offer[] = null;
   public bestPrice: number = null;
 
@@ -35,14 +31,13 @@ export class RequestItemComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-		if (!this.isEmpty(this.userRequest.offers)) {
+    if (!this.isEmpty(this.userRequest.offers)) {
 			this.offersToRequest = Object.values(this.userRequest.offers)
 			.sort((a: Offer, b: Offer) => a.price - b.price);
 			this.bestPrice = this.offersToRequest[0].price;
 			this.offersQuantity = this.offersToRequest.length;
 		}
-	}
-	
+  }
   public isEmpty(obj){
 		for(let key in obj){
 			return false;
@@ -51,12 +46,13 @@ export class RequestItemComponent implements OnInit {
 	}
 
   public changeRequest(changedRequest: Request): void {
-		this.requestService.openDialog(RequestChangePopupComponent);
+		this.requestService.openMobileDialog(RequestChangePopupComponent);
 		this.requestService.initChangeRequestAction(changedRequest);
 	}
 
   public openOffers (id: string): void {
 		this._router.navigate(['/myrequests', id]);
   }
+
 
 }

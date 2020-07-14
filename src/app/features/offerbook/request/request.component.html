@@ -1,5 +1,5 @@
 <div class="request__container">
-    <div class="request__navigate">
+    <div class="request__navigate" *ngIf="!lessThenWidth(appFacade.screenWidth$ | async)">
         <mat-button-toggle-group name="requestFilter" aria-label="Filter" [value] ="requestFacade.requestFilterName$ | async">
             <mat-button-toggle value="all" (click) = "filterAll()">Все</mat-button-toggle>
             <mat-button-toggle class="request__filter" (click) = "filterActive()" value="active">Активные</mat-button-toggle>
@@ -8,24 +8,56 @@
 
         <ng-container *ngIf="(requestFacade.requestList$ | async).length ">
             <app-button-wrap *ngFor="let i of arr">
-            <ng-container *ngIf="!lessThenWidth(appFacade.screenWidth$ | async); else createIcon">Создать запрос</ng-container> 
+            Создать запрос 
             </app-button-wrap>
         </ng-container>
     </div>
-    <ng-template #createIcon>
-        <span class="material-icons"> add </span>
-    </ng-template>
+<div class="request__mobilewrap">
+    <div class="request__navigate"
+    [class.request__hidenavigate]="scrollDown && previousScroll > 50"
+    *ngIf="lessThenWidth(appFacade.screenWidth$ | async)">
+        <button mat-stroked-button class="request__mobilebtn">
+            <span class="material-icons" (click)="requestFacade.mobileFilterToggle()">filter_alt</span>
+        </button>
 
-    <div class="request__list">
+        <mat-button-toggle-group name="requestFilter" class="request__mobilefilter" [class.request__filterhidden]="!(requestFacade.filterOpened$ | async)" aria-label="Filter" [value] ="requestFacade.requestFilterName$ | async">
+            <mat-button-toggle value="all" [title]="requestFilterTitles[0]" (click) = "filterAll()">
+                <span class="material-icons">view_week</span>
+            </mat-button-toggle>
+            <mat-button-toggle [title]="requestFilterTitles[1]" class="request__filter" (click) = "filterActive()" value="active">
+                <span class="material-icons">touch_app</span>
+            </mat-button-toggle>
+            <mat-button-toggle [title]="requestFilterTitles[2]" class="request__filter" (click) = "filterCompleted()" value="completed">
+                <span class="material-icons">playlist_add_check</span>
+            </mat-button-toggle>
+        </mat-button-toggle-group>
+
+        <ng-container *ngIf="(requestFacade.requestList$ | async).length ">
+            <app-button-wrap *ngFor="let i of arr">
+                <span class="material-icons"> add </span> 
+            </app-button-wrap>
+        </ng-container>
+    </div>
+</div>
+
+    <div class="request__list" *ngIf="screenWidth > breakpoints.mobile">
         <app-request-item 
             *ngFor="let request of requestFacade.filteredRequestList$ | async; let i = index"
             [index]="i+1"
             [userRequest]="request">
         </app-request-item>
     </div>
+    <div class="request__list" *ngIf="!(screenWidth > breakpoints.mobile)">
+        <app-mobile-request-item 
+            *ngFor="let request of requestFacade.filteredRequestList$ | async; let i = index"
+            [index]="i+1"
+            [userRequest]="request">
+        </app-mobile-request-item>
+    </div>
     <ng-container *ngIf="requestFacade.listIsEmpty$ | async">
         <div class="first-request-button">
             <app-button-wrap *ngFor="let i of arr">Сделай свой первый запрос!</app-button-wrap>
         </div>
     </ng-container>
+    
 </div>

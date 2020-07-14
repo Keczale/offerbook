@@ -56,7 +56,7 @@ export class OfferComponent implements OnInit, OnDestroy {
 	.subscribe((scrollTop: number) => {
 		scrollTop > this.previousScroll ? this.scrollDown = true : this.scrollDown = false;
 		this.previousScroll = scrollTop;
-	})
+	});
 	this.offerService.setInitialPaginatorEvents(this.defaultPaginatorEvent);
 	this._appFacade.screenWidth$.pipe(takeUntil(this.ngUnsubscribe))
 	.subscribe((width: number) => this.screenWidth = width);

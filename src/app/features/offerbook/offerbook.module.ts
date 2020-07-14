@@ -34,6 +34,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { ButtonWrapComponent } from './request/button-wrap/button-wrap.component';
 import { PhotoPopupComponent } from '../components/photo-popup/photo-popup.component';
 import { NotFoundComponent } from '../components/not-found/not-found.component';
+import { MobileRequestItemComponent } from './request/mobile-request-item/mobile-request-item.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { NotFoundComponent } from '../components/not-found/not-found.component';
     OfferItemComponent,
     ButtonWrapComponent,
     PhotoPopupComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    MobileRequestItemComponent
     ],
   imports: [
     OfbRoutingModule,

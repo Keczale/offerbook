@@ -1,0 +1,50 @@
+<div class="wrapper">
+  <mat-card class="request-card"
+  [class.accepted] = "userRequest.status === requestStatus[1]">
+      <div class="request">
+      
+      <div class="request__index">{{index}}</div>
+      <img class="request__photo " src="{{userRequest.photos[0]}}">
+
+      <div class="request__describe flexbox">
+          <span class="request__title">{{userRequest.title}}</span>
+          <p class="request__category">
+              {{userRequest.category}}
+              <span class="request__secondhand" *ngIf="userRequest.secondHand"> | можно б/у </span>
+              <span class="request__secondhand" *ngIf="!userRequest.secondHand"> | только новый </span>
+              <!-- <span *ngIf="request.city"> | {{userRequest.city}} </span> -->
+          </p>
+          <p>{{userRequest.description}}</p>
+      </div>
+      <div class="request__info">
+        <p class="request__offers" (click)="openOffers(userRequest.id)">
+          Предложений <span class="request__offers">{{offersQuantity ? offersQuantity : 'ещё нет'}}</span>
+          <i *ngIf = "userRequest.newOffersToRequest">
+            Новых: <span class="request__new-offers">+{{userRequest.newOffersToRequest}}</span>
+          </i>
+        </p>
+        
+        <p *ngIf = "bestPrice">
+          Лучшая цена: <span class="request-card__best-price">{{bestPrice}}</span>
+        </p>
+      </div>
+
+    <div class="request__buttons">
+      <div class="request__remove btnwrapper">
+        <button class="request__btn" mat-stroked-button (click)="requestService.deleteRequest(userRequest)">Удалить</button>
+        
+      </div>
+      
+      <div class="request__accept btnwrapper">
+        <button class="request-card__btn" 
+        [disabled]="userRequest.status===requestStatus[1]"
+        [class.disabled]="userRequest.status===requestStatus[1]"
+        class="request__btn" mat-stroked-button (click)="changeRequest(userRequest)">
+            Изменить
+        </button>
+      </div>
+    </div>
+  </div>
+
+  </mat-card>
+</div>

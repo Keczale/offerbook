@@ -44,3 +44,8 @@ export const listIsEmptySelector = createSelector(
 	// tslint:disable-next-line: typedef
 	state => state.listIsEmpty
 );
+export const requestFilterOpenedSelector = createSelector(
+	requestStateSelector,
+	// tslint:disable-next-line: typedef
+	state => state.mobileFilterOpened
+);

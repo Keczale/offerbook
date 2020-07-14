@@ -12,6 +12,7 @@ requestList: Request[];
 listIsEmpty: boolean;
 filteredRequestList: Request[];
 filterName: string;
+mobileFilterOpened: boolean;
 }
 
 export const initialStateRequest: RequestState = {
@@ -21,7 +22,9 @@ export const initialStateRequest: RequestState = {
   requestList: [],
   listIsEmpty: false,
   filteredRequestList: [],
-  filterName: RequestFilterName[1]
+  filterName: RequestFilterName[1],
+  mobileFilterOpened: false
+
 };
 
 
@@ -116,6 +119,13 @@ export const _requestReducer = createReducer(
     return {
       ...state,
       listIsEmpty: false,
+    };
+    }),
+  on(ActionsRequest.filterToggleAction,
+    (state: RequestState) => {
+    return {
+      ...state,
+      mobileFilterOpened: !state.mobileFilterOpened,
     };
     }),
 );
