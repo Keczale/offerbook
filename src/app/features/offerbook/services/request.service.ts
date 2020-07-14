@@ -135,6 +135,7 @@ export class RequestService {
 		this._requestDataService.loadActualListFromDB()
 			.then(async (requestMap: object) => {
 				if (!this.isEmpty(requestMap)) {
+					this._requestFacade.removeListIsEmpty();
 					const requestList: Request[] = Object.values(requestMap)
 						.sort((a: Request, b: Request) => a.lastChange - b.lastChange).reverse();
 
@@ -210,7 +211,8 @@ export class RequestService {
 					this._store$.dispatch(requestInProgressAction());
 				}
 				else {
-					this._store$.dispatch(loadInitialStateAction());
+					// this._store$.dispatch(loadInitialStateAction());
+					this._requestFacade.setListIsEmpty();
 					this.initCurrentFilter();
 					this._store$.dispatch(requestInProgressAction());
 				}

@@ -39,3 +39,9 @@ export const setRequestFilterNameAction = createAction(
   '[Request] Set request filter name',
   props<{ requestFilterName: string }>()
 );
+export const setEmptyListAction = createAction(
+  '[Request] Set list as empty',
+);
+export const removeEmptyListAction = createAction(
+  '[Request] Set list not empty',
+);

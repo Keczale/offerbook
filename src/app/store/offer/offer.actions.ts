@@ -47,3 +47,6 @@ export const setPaginatorEventAction = createAction(
   '[Offer] Set Paginator event',
   props<{ paginatorEvent: object, filterName: string }>()
 );
+export const mobailFilterToggleAction = createAction(
+  '[Offer] mobile filter toggle',
+);

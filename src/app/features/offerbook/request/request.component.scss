@@ -1,18 +1,25 @@
-.request__list{
-    display: flex;
-    justify-content: flex-start;
-    flex-wrap: wrap;
+.request{
+    &__container{
+        padding: 0 1em;
+    }
+    &__list{
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+    &__filter{
+        font-weight: bold;
+    }
+    &__navigate{
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        padding-bottom: 1.5rem;
+    
+    }
 }
-.request__filter{
-    font-weight: bold;
-}
-.request__navigate{
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    padding-bottom: 1.5rem;
 
-}
+
 .first-request-button{
     display: flex;
     justify-content: center;

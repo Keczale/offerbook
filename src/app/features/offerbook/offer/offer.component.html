@@ -1,41 +1,72 @@
-<p *ngIf="offerService.SellersRequestCount$ | async as newRequests">Новых запросов: {{newRequests}}</p>
-<div class="offer__navigate">
-  <mat-button-toggle-group name="requestFilter" aria-label="Filter" [value] ="offerFacade.offerFilterName$ | async">
-    <mat-button-toggle value="all" (click) = "offerService.filterAll()">Все</mat-button-toggle>
-    <mat-button-toggle class="offer__filter" (click) = "offerService.filterActive()" value="active">Активные</mat-button-toggle>
-    <mat-button-toggle class="offer__filter" (click) = "offerService.filterResponsed()" value="responsed">В работе</mat-button-toggle>
-    <mat-button-toggle class="offer__filter" (click) = "offerService.filterRejected()" value="rejected">Отклонённые</mat-button-toggle>
-  </mat-button-toggle-group>
+<div class="offer__container">
+  <p *ngIf="offerService.SellersRequestCount$ | async as newRequests">Новых запросов: {{newRequests}}</p>
   
-  <button class="offer__refresh" mat-stroked-button (click)="refreshRequestList()" *ngIf="!lessThenWidth(screenWidth)">
-  Обновить
-  </button>
-  <button class="offer__refresh" mat-stroked-button (click)="refreshRequestList()" *ngIf="lessThenWidth(screenWidth)">
-    <span class="material-icons"> refresh </span>
-  </button>
+  <div class="offer__navigate" *ngIf="!lessThenWidth(screenWidth)">
+    <mat-button-toggle-group name="requestFilter" aria-label="Filter" [value] ="offerFacade.offerFilterName$ | async">
+      <mat-button-toggle value="all" (click) = "offerService.filterAll()">Все</mat-button-toggle>
+      <mat-button-toggle class="offer__filter" (click) = "offerService.filterActive()" value="active">Активные</mat-button-toggle>
+      <mat-button-toggle class="offer__filter" (click) = "offerService.filterResponsed()" value="responsed">В работе</mat-button-toggle>
+      <mat-button-toggle class="offer__filter" (click) = "offerService.filterRejected()" value="rejected">Отклонённые</mat-button-toggle>
+    </mat-button-toggle-group>
+    
+    <button class="offer__refresh" mat-stroked-button (click)="refreshRequestList()" *ngIf="!lessThenWidth(screenWidth)">
+    Обновить
+    </button>
+  </div>
 
+<div class="offer__mobilewrap">
+  <div class="offer__navigate" 
+  [class.offer__hidenavigate]="scrollDown && previousScroll > 50"
+  *ngIf="lessThenWidth(screenWidth)">
+
+    <button mat-stroked-button class="offer__mobilebtn">
+      <span class="material-icons" (click)="offerFacade.mobileFilterToggle()">filter_alt</span>
+    </button>
+    
+    <div class="offer__mobilefilter" [class.offer__filterhidden]="!(offerFacade.mobileFilterOpened$ | async)">
+      <mat-button-toggle-group name="requestFilter" aria-label="Filter" [value] ="offerFacade.offerFilterName$ | async">
+        <mat-button-toggle value="all" [title]="filterTitles[0]" (click) = "offerService.filterAll()">
+          <span class="material-icons">view_week</span>
+        </mat-button-toggle>
+        <mat-button-toggle class="offer__filter" [title]="filterTitles[1]" (click) = "offerService.filterActive()" value="active">
+          <span class="material-icons">touch_app</span>
+        </mat-button-toggle>
+        <mat-button-toggle class="offer__filter" [title]="filterTitles[2]" (click) = "offerService.filterResponsed()" value="responsed">
+          <span class="material-icons">grading</span>
+        </mat-button-toggle>
+        <mat-button-toggle class="offer__filter" [title]="filterTitles[3]" (click) = "offerService.filterRejected()" value="rejected">
+          <span class="material-icons">delete_sweep</span>
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+  
+    <button class="offer__refresh offer__mobilebtn" mat-stroked-button (click)="refreshRequestList()">
+      <span class="material-icons"> refresh </span>
+    </button>
+  </div>
 </div>
 
-<button 
-    mat-button 
-    class="save-changes"
-    title="Сохранить, чтобы не получать эти запросы снова"
-    *ngIf = "offerService.IsRequestListChanging$ | async"
-    (click)="saveRejectedRequests()">
-    Сохранить изменения
-</button>
-<div>
-<app-actual-request *ngFor="let request of offerFacade.paginatedRequestList$ | async; let i = index"
-[request]="request"
-[index]="i+1"
-[currentUser]="currentUser">
-</app-actual-request>
-</div>
 
-<mat-paginator [length]="(offerFacade.filteredRequestList$ | async).length"
-              [pageSizeOptions]="[5, 10, 25, 100]"
-              (page)="offerService.onPageChange($event)"
-              [pageIndex]= "offerService.currentEvent.pageIndex"
-              [pageSize]= "offerService.currentEvent.pageSize"
->
-</mat-paginator>
+  <button 
+      mat-button 
+      class="save-changes"
+      title="Сохранить, чтобы не получать эти запросы снова"
+      *ngIf = "offerService.IsRequestListChanging$ | async"
+      (click)="saveRejectedRequests()">
+      Сохранить изменения
+  </button>
+  <div>
+  <app-actual-request *ngFor="let request of offerFacade.paginatedRequestList$ | async; let i = index"
+  [request]="request"
+  [index]="i+1"
+  [currentUser]="currentUser">
+  </app-actual-request>
+  </div>
+
+  <mat-paginator [length]="(offerFacade.filteredRequestList$ | async).length"
+                [pageSizeOptions]="[5, 10, 25, 100]"
+                (page)="offerService.onPageChange($event)"
+                [pageIndex]= "offerService.currentEvent.pageIndex"
+                [pageSize]= "offerService.currentEvent.pageSize">
+  </mat-paginator>
+</div>

@@ -25,4 +25,5 @@ export class Offer {
 export enum OfferStatus {'opened', 'accepted', 'rejected'}
 
 export enum OfferFilterName {'all', 'active', 'responsed', 'rejected'}
+export enum OfferFilterTitle {'Все', 'Активные', 'В работе', 'Отклонены'}
 

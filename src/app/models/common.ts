@@ -28,3 +28,4 @@ export const breakpoints: Breakpoints = {
 // export const location = {
 // 	Belarus: ['Беларусь', 'Могилёв', 'Минск', 'Брест', 'Гродно', 'Гомель', 'Витебск']
 // }
+export enum MainToggle {'Продать', 'Купить'}

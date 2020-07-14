@@ -62,9 +62,9 @@ export class RequestComponent implements OnInit, OnDestroy, AfterViewChecked {
 							}
 						});
 	 			}
-			else if (Boolean(requests) && !Boolean(requests.length)) {
-				setTimeout(() => this.requestList = [], 2000);
-			}
+			// else if (Boolean(requests) && !Boolean(requests.length)) {
+			// 	setTimeout(() => this.requestList = [], 2000);
+			// }
  });
 }
 ngAfterViewChecked(): void {

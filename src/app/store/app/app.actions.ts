@@ -4,13 +4,8 @@ export const screenWidthAction = createAction(
   '[App] Set screen width',
   props<{ screenWidth: number }>()
 );
-
-export const loadAppsSuccess = createAction(
-  '[App] Load Apps Success',
-  props<{ data: any }>()
+export const scrollTopAction = createAction(
+  '[App] Set scroll top',
+  props<{ scrollTop: number }>()
 );
 
-export const loadAppsFailure = createAction(
-  '[App] Load Apps Failure',
-  props<{ error: any }>()
-);

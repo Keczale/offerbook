@@ -7,10 +7,12 @@ export const appFeatureKey = 'app';
 
 export interface AppState {
 screenWidth: number;
+scrollTop: number;
 }
 
 export const initialState: AppState = {
   screenWidth: null,
+  scrollTop: null,
 };
 
 
@@ -23,6 +25,14 @@ export const _appReducer = createReducer(
 			screenWidth
 		};
 		}),
+	on(ActionsApp.scrollTopAction,
+		(state: AppState, { scrollTop }) => {
+		return {
+			...state,
+			scrollTop
+		};
+		}),
+	
 
 );
 

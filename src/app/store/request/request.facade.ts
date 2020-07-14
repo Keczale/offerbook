@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { RequestState, requestIsLoadingSelector, requestChangeSelector, requestListSelector, isOpenedOfferListSelector, offerListOpenAction, offerListCloseAction, filteredRequestListSelector, setFilteredRequestListAction, requestFilterNameSelector, setRequestFilterNameAction } from '.';
+import { RequestState, requestIsLoadingSelector, requestChangeSelector, requestListSelector, isOpenedOfferListSelector, offerListOpenAction, offerListCloseAction, filteredRequestListSelector, setFilteredRequestListAction, requestFilterNameSelector, setRequestFilterNameAction, listIsEmptySelector, setEmptyListAction, removeEmptyListAction } from '.';
 import { Observable } from 'rxjs';
 import { Request } from 'src/app/models/request.model';
 
@@ -32,6 +32,9 @@ export class RequestFacade {
   public get requestFilterName$(): Observable<string> {
     return this._store$.pipe(select(requestFilterNameSelector));
   }
+  public get listIsEmpty$(): Observable<boolean> {
+    return this._store$.pipe(select(listIsEmptySelector));
+  }
 
   public openOfferList(): void {
     this._store$.dispatch(offerListOpenAction());
@@ -45,6 +48,11 @@ export class RequestFacade {
   public setRequestFilterName(requestFilterName: string): void {
     this._store$.dispatch(setRequestFilterNameAction({requestFilterName}));
   }
-
+  public setListIsEmpty(): void {
+    this._store$.dispatch(setEmptyListAction());
+  }
+  public removeListIsEmpty(): void {
+    this._store$.dispatch(removeEmptyListAction());
+  }
 
 }

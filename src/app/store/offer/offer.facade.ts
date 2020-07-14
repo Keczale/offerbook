@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store, select } from '@ngrx/store';
-import { OfferState, offerIsLoadingSelector, filteredRequestListInOfferSelector, offerRequestListSelector, setFiltredRequestListAction, setOfferFilterNameAction, offerFilterNameSelector, paginatedRequestListSelector, setPaginatedRequestListAction, paginatorEventsSelector, setPaginatorEventAction } from '.';
+import { OfferState, offerIsLoadingSelector, filteredRequestListInOfferSelector, offerRequestListSelector, setFiltredRequestListAction, setOfferFilterNameAction, offerFilterNameSelector, paginatedRequestListSelector, setPaginatedRequestListAction, paginatorEventsSelector, setPaginatorEventAction, mobileFilterOpenedSelector, mobailFilterToggleAction } from '.';
 import { Request } from 'src/app/models/request.model';
 
 @Injectable({
@@ -31,7 +31,10 @@ export class OfferFacade {
   public get offerFilterName$(): Observable<string> {
     return this._store$.pipe(select(offerFilterNameSelector));
     }
-
+  public get mobileFilterOpened$(): Observable<boolean> {
+    return this._store$.pipe(select(mobileFilterOpenedSelector));
+    }
+  
   public setFilteredRequestList(filteredList: Request[]): void {
     this._store$.dispatch(setFiltredRequestListAction({filteredList}));
   }
@@ -43,6 +46,9 @@ export class OfferFacade {
   }
   public setPaginatorEvent(paginatorEvent: object, filterName: string): void {
     this._store$.dispatch(setPaginatorEventAction({paginatorEvent, filterName}));
+  }
+  public mobileFilterToggle(): void {
+    this._store$.dispatch(mobailFilterToggleAction());
   }
     
 }

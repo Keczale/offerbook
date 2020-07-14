@@ -1,21 +1,41 @@
-<main class="container">
-<header class="head">
+<main class="container" [hidden] ="!loadPage">
+<header class="head"
+  [class.head_scroll]="appFacade.scrollTop$ | async">
   <div class="head__logo"><a class="head__logo-link"routerLink="">offerBook</a></div>
   
-  <mat-button-toggle-group class="head__toggle" appearance="legacy" *ngIf="(userDataFacade.userType | async) === 'seller' " name="fontStyle" aria-label="Font Style">
+  <mat-button-toggle-group
+   class="head__toggle"
+   appearance="legacy"
+   *ngIf="(userDataFacade.userType | async) === 'seller' && isGreaterThenMobile(appFacade.screenWidth$ | async)"
+    name="fontStyle" aria-label="Font Style">
     <mat-button-toggle value="buy" routerLink="/myoffers" routerLinkActive="mat-button-toggle-checked">Продать</mat-button-toggle>
     <mat-button-toggle value="sell" routerLink="/myrequests" routerLinkActive="mat-button-toggle-checked">Купить</mat-button-toggle>
   </mat-button-toggle-group>
 
+  <mat-button-toggle-group
+   class="head__toggle"
+   *ngIf="(userDataFacade.userType | async) === 'seller' && !isGreaterThenMobile(appFacade.screenWidth$ | async)"
+    name="fontStyle" aria-label="Font Style">
+    <mat-button-toggle value="buy" routerLink="/myoffers" [title]="mainToggle[0]" routerLinkActive="mat-button-toggle-checked">
+      <span class="material-icons">arrow_upward</span>
+    </mat-button-toggle>
+    <mat-button-toggle value="sell" routerLink="/myrequests" [title]="mainToggle[1]" routerLinkActive="mat-button-toggle-checked">
+      <span class="material-icons">arrow_downward</span>
+    </mat-button-toggle>
+  </mat-button-toggle-group>
 
 
 
   <div *ngIf="afAuth.authState| async as authUser">
-      <button class="head__menubutton"  mat-button [matMenuTriggerFor]="menu">
+      <button class="head__menubutton" *ngIf="isGreaterThenMobile(appFacade.screenWidth$ | async)" mat-button [matMenuTriggerFor]="menu">
         {{userDataFacade.userName | async}}
         <img class="head__photo" [src]="authUser.photoURL ? authUser.photoURL: '../assets/img/smile.jpg'" alt="" title="authUser.displayName">
       </button>
-      <mat-menu #menu="matMenu">
+      <button class="head__menubutton" *ngIf="!isGreaterThenMobile(appFacade.screenWidth$ | async)" mat-button [matMenuTriggerFor]="menu">
+        <span class="material-icons">menu</span>
+      </button>
+
+      <mat-menu #menu="matMenu" xPosition="before">
         <button mat-menu-item (click)="openDialog()">{{userDataFacade.userLocation$ | async}}</button>
         <button mat-menu-item routerLink="/myaccount" >В кабинет</button>
         <button mat-menu-item (click)="signOut()">Выйти</button>
@@ -28,3 +48,6 @@
 
 <router-outlet></router-outlet>
 </main>  
+<div class="preloadbar" *ngIf = "!loadPage">
+<img src="../assets/img/eclipse.svg"></div>
+

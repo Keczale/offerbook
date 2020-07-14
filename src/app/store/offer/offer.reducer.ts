@@ -16,6 +16,7 @@ filteredRequestList: Request[];
 paginatedRequestList: Request[];
 paginatorEvents: object;
 filterName: string;
+mobileFilterOpened: boolean;
 }
 
 export const initialOfferState: OfferState = {
@@ -27,7 +28,9 @@ export const initialOfferState: OfferState = {
   filteredRequestList: [],
   paginatedRequestList: [],
   paginatorEvents: {},
-  filterName: OfferFilterName[1]
+  filterName: OfferFilterName[1],
+  mobileFilterOpened: false,
+
 };
 
 
@@ -113,6 +116,13 @@ export const _offerReducer = createReducer(
           ...state.paginatorEvents,
           [filterName]: paginatorEvent
         }
+      };
+      }),
+    on(ActionsOffer.mobailFilterToggleAction,
+      (state: OfferState ) => {
+      return {
+        ...state,
+        mobileFilterOpened: !state.mobileFilterOpened,
       };
       }),
 );

@@ -20,7 +20,7 @@ export class OfferListComponent implements OnInit {
   private isOpened: boolean = false;
 
   public requestId: string = '';
-  
+
   @Input()
   public offerList: Offer[] = [];
 
@@ -28,59 +28,47 @@ export class OfferListComponent implements OnInit {
 
 
   constructor(
-    private _activatedRoute: ActivatedRoute,
-    private _requestFacade: RequestFacade,
-    private _requestServise: RequestService
+		private _activatedRoute: ActivatedRoute,
+		private _requestFacade: RequestFacade,
+		private _requestServise: RequestService
   ) { }
 
   ngOnInit(): void {
-    this._activatedRoute.params.pipe(takeUntil(this.ngUnsubscribe)).subscribe((params: Params) => {
-      if(Boolean(params)) {
-        this.requestId = params.id;
-      }
-    });
-    this._requestFacade.isOpenedOfferList$.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((isOpened: boolean) => {
-      this.isOpened = isOpened;
-    })
+		this._activatedRoute.params.pipe(takeUntil(this.ngUnsubscribe)).subscribe((params: Params) => {
+			if (Boolean(params)) {
+				this.requestId = params.id;
+				}
+		});
+		this._requestFacade.isOpenedOfferList$.pipe(takeUntil(this.ngUnsubscribe))
+		.subscribe((isOpened: boolean) => {
+			this.isOpened = isOpened;
+		});
 
-    this._requestFacade.requestList$.pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((requestList: Request[]) => {
-      if (!Boolean(requestList.length) || !this.isOpened) {
-        this._requestServise.simpleLoadActualList()
-        // .then((a) => {
-        //   this.currentRequest = requestList.find((request: Request) => request.id === this.requestId);
-        //   console.log(this.currentRequest)
-        //   Object.values(this.currentRequest.offers).map((offer: Offer) => this.offerList.push(offer));
-        //   console.log('aaaaaaaaa')
-        //   this.offerSortPriceFromLow(this.offerList);
-        // })
-        .catch((error: Error) => console.log(error));
-        console.log(requestList);
+		this._requestFacade.requestList$.pipe(takeUntil(this.ngUnsubscribe))
+			.subscribe((requestList: Request[]) => {
+				if (!Boolean(requestList.length) || !this.isOpened) {
+					this._requestServise.simpleLoadActualList()
+					.catch((error: Error) => console.log(error));
+			}
+			else {
+				this.currentRequest = requestList.find((request: Request) => request.id === this.requestId);
+				if (Boolean(this.currentRequest.offers)) {
+					this.offerList = [];
+					Object.values(this.currentRequest.offers).map((offer: Offer) => this.offerList.push(offer));
+					this.offerSortPriceFromLow(this.offerList);
+				}
 
-      }
-      else {
-        this.currentRequest = requestList.find((request: Request) => request.id === this.requestId);
-        if(Boolean(this.currentRequest.offers)) {
-          this.offerList = [];
-          Object.values(this.currentRequest.offers).map((offer: Offer) => this.offerList.push(offer));
-          this.offerSortPriceFromLow(this.offerList);
-          console.log(this.offerList);
-        }
-        
-      }
-    });
-    this._requestFacade.openOfferList();
+			}
+		});
+		this._requestFacade.openOfferList();
   }
   ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
-    this._requestFacade.closeOfferList();
+		this.ngUnsubscribe.next();
+		this.ngUnsubscribe.complete();
+		this._requestFacade.closeOfferList();
 
   }
   public offerSortPriceFromLow(offerList: Offer[]): void {
-    offerList.sort((a: Offer, b: Offer) => a.price - b.price);
+		offerList.sort((a: Offer, b: Offer) => a.price - b.price);
   }
-
-  
 }

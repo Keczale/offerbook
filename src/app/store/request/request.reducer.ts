@@ -9,6 +9,7 @@ isLoading: boolean;
 isOpenedOfferList: boolean;
 changedRequest: Request;
 requestList: Request[];
+listIsEmpty: boolean;
 filteredRequestList: Request[];
 filterName: string;
 }
@@ -17,8 +18,8 @@ export const initialStateRequest: RequestState = {
   isLoading: false,
   changedRequest: null,
   isOpenedOfferList: false,
-
   requestList: [],
+  listIsEmpty: false,
   filteredRequestList: [],
   filterName: RequestFilterName[1]
 };
@@ -101,6 +102,20 @@ export const _requestReducer = createReducer(
     return {
       ...state,
       filterName: requestFilterName
+    };
+    }),
+  on(ActionsRequest.setEmptyListAction,
+    (state: RequestState) => {
+    return {
+      ...state,
+      listIsEmpty: true,
+    };
+    }),
+  on(ActionsRequest.removeEmptyListAction,
+    (state: RequestState) => {
+    return {
+      ...state,
+      listIsEmpty: false,
     };
     }),
 );

@@ -10,13 +10,17 @@ a{
     text-decoration: none;
     color: black;
 }
+.preloadbar{
+    text-align: center;
+    padding-top: 45vh;
+}
 .container{
     width: 80%;
     margin:0 auto;
 
     .head{
         position: sticky;
-        z-index: 10;
+        z-index: 20;
 
         top: 0;
         display: flex;
@@ -25,6 +29,8 @@ a{
         padding: 2rem 0;
 
         background-color: $header-background;
+        transition: all .5s;
+
 
             &__logo{
                 // flex: 1 1 33%;
@@ -45,13 +51,21 @@ a{
             &__photo{
                 width: 1.5em;
                 height: 1.5em;
-            }
+            
+            
     }
     .isLoading{
         padding: .6rem 0;
         text-align: center;
     }
 }
+.head_scroll{
+    padding: 1rem 0;
+    box-shadow: 0 6px 5px -6px rgb(184, 184, 184);
+}
+}
+
+
 
 @media screen and (max-width: breakpoint(desktop)) {
     :host {
@@ -62,14 +76,13 @@ a{
     :host {
         font-size: 100%;
 }
-
 }
 @media screen and (max-width: breakpoint(tablet)) {
     :host {
         font-size: 90%;
 }
     .container{
-        width: 96%;
+        width: 90%;
         .head{
             &__logo{
                 line-height: 30px;
@@ -87,34 +100,33 @@ a{
     :host {
         font-size: 90%;
 }
+
     .head{
         flex-wrap: wrap;
-        &__toggle {
-            // flex: 1 0 1;
-            // order: 1;
-        }
-        &__logo{
-        }
     }
 }
 @media screen and (max-width: breakpoint(mobile)) {
     :host {
         font-size: 90%;
 }
+.container{
+    width: 90%;
+}
+
 }
 @media screen and (max-width: breakpoint(mobile-portrait)) {
     :host {
         font-size: 90%;
 }
     .container{
-        width: 96%;
+        width: 98%;
         .head{
             &__logo{
                 line-height: 30px;
             }
             &__toggle {
                 flex: 1 0 1;
-                order: 1;
+                // order: 1;
             }   
         
         }

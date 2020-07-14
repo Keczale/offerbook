@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, ChangeDetectorRef, Output, EventEmitter }
 import { OfferService } from '../services/offer.service';
 import { UserDataFacade } from 'src/app/store/userData/user-data.facade';
 import { User } from 'src/app/models/user.model';
+import { OfferFilterTitle } from 'src/app/models/offer.model';
 import { Subscription, combineLatest, Subject } from 'rxjs';
 import { takeUntil, take } from 'rxjs/operators';
 import { OfferFacade } from 'src/app/store/offer/offer.facade';
@@ -33,8 +34,13 @@ export class OfferComponent implements OnInit, OnDestroy {
 
   public screenWidth: number;
 
+  public filterTitles: any = OfferFilterTitle;
+
   @Output()
   public page: EventEmitter<PageEvent>;
+
+  public previousScroll: number = null;
+  public scrollDown: boolean = false;
 
   constructor(
 		public offerService: OfferService,
@@ -45,6 +51,12 @@ export class OfferComponent implements OnInit, OnDestroy {
 		) { }
 
   ngOnInit (): void {
+
+	this._appFacade.scrollTop$.pipe(takeUntil(this.ngUnsubscribe))
+	.subscribe((scrollTop: number) => {
+		scrollTop > this.previousScroll ? this.scrollDown = true : this.scrollDown = false;
+		this.previousScroll = scrollTop;
+	})
 	this.offerService.setInitialPaginatorEvents(this.defaultPaginatorEvent);
 	this._appFacade.screenWidth$.pipe(takeUntil(this.ngUnsubscribe))
 	.subscribe((width: number) => this.screenWidth = width);

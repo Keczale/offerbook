@@ -13,3 +13,8 @@ export const screenWidthSelector = createSelector(
 	// tslint:disable-next-line: typedef
 	state => state.screenWidth
 );
+export const scrollTopSelector = createSelector(
+	appStateSelector,
+	// tslint:disable-next-line: typedef
+	state => state.scrollTop
+);

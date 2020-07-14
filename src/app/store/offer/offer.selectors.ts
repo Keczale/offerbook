@@ -55,3 +55,8 @@ export const paginatorEventsSelector = createSelector(
 	// tslint:disable-next-line: typedef
 	state => state.paginatorEvents
 );
+export const mobileFilterOpenedSelector = createSelector(
+	offerStateSelector,
+	// tslint:disable-next-line: typedef
+	state => state.mobileFilterOpened
+);

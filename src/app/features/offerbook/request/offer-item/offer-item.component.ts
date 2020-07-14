@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { Offer, OfferStatus } from 'src/app/models/offer.model';
 import { RequestService } from '../../services/request.service';
 import { Request } from 'src/app/models/request.model';
@@ -9,7 +9,9 @@ import { PhotoPopupComponent } from '../../../components/photo-popup/photo-popup
 @Component({
   selector: 'app-offer-item',
   templateUrl: './offer-item.component.html',
-  styleUrls: ['./offer-item.component.scss']
+  styleUrls: ['./offer-item.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class OfferItemComponent implements OnInit {
 

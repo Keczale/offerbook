@@ -13,6 +13,7 @@ import { OfferFacade } from './store/offer/offer.facade';
 import { User } from './models/user.model';
 import { takeUntil } from 'rxjs/operators';
 import { AppFacade } from './store/app/app.facade';
+import { breakpoints, MainToggle } from './models/common';
 
 @Component({
   selector: 'app-root',
@@ -21,33 +22,45 @@ import { AppFacade } from './store/app/app.facade';
 })
 export class AppComponent implements OnInit, AfterViewChecked {
 
-  private _ngUnsubscribe: Subject<any> = new Subject();
-  private _ngUnsubscribeForLocation: Subject<any> = new Subject();
+	private _loadTimeout: number = 2000;
 
-  public title: string = 'offerbook';
-  public nameMask: string = 'User';
+	private _ngUnsubscribe: Subject<any> = new Subject();
+	private _ngUnsubscribeForLocation: Subject<any> = new Subject();
 
-  public userIsLoading: Observable<boolean> = this.userDataFacade.isLoading;
-  public requestIsLoading: Observable<boolean> = this.requestFacade.isLoading;
-  public offerIsLoading: Observable<boolean> = this.offerFacade.isLoading;
+	public title: string = 'offerbook';
+	public nameMask: string = 'User';
+
+	public userIsLoading: Observable<boolean> = this.userDataFacade.isLoading;
+	public requestIsLoading: Observable<boolean> = this.requestFacade.isLoading;
+	public offerIsLoading: Observable<boolean> = this.offerFacade.isLoading;
+	public loadPage: boolean = false;
+
+	public mainToggle: any = MainToggle;
+
 
   constructor(
-	  public afAuth: AngularFireAuth,
+		public afAuth: AngularFireAuth,
 		public userDataFacade: UserDataFacade,
-	  public requestFacade: RequestFacade,
-	  public offerFacade: OfferFacade,
-	  public db: AngularFireDatabase,
-	  public store$: Store<UserState>,
-	  public dialog: MatDialog,
+		public requestFacade: RequestFacade,
+		public offerFacade: OfferFacade,
+		public db: AngularFireDatabase,
+		public store$: Store<UserState>,
+		public dialog: MatDialog,
 		private cdRef: ChangeDetectorRef,
-		private _appFacade: AppFacade,
+		public appFacade: AppFacade,
 	) {	}
 
 	@HostListener('window:resize', ['$event'])
-  private _onResize(event: any): void {
+	private _onResize(event: any): void {
 		const width: number = event.target.innerWidth;
-		this._appFacade.setScreenWidth(width);
-  }
+		this.appFacade.setScreenWidth(width);
+	}
+	@HostListener('window:scroll')
+	private _onScroll(): void {
+	// const scroll: number = event.target['scrollingElement'].scrollTop;
+	const scroll: number = window.pageYOffset;
+	this.appFacade.setScrollTop(scroll);
+	}
 
 	ngOnInit(): void {
 		this.afAuth.authState.pipe(takeUntil(this._ngUnsubscribe)).subscribe((authUser: firebase.User) => {
@@ -57,7 +70,8 @@ export class AppComponent implements OnInit, AfterViewChecked {
 				this._ngUnsubscribe.complete();
 			}
 		});
-		this._appFacade.setScreenWidth(window.innerWidth);
+		this.appFacade.setScreenWidth(window.innerWidth);
+		setTimeout(() => this.loadPage = true, this._loadTimeout);
 	}
 
 	ngAfterViewChecked(): void {
@@ -88,5 +102,9 @@ export class AppComponent implements OnInit, AfterViewChecked {
 
   public openDialog(): void {
 		this.dialog.open(PopupLocationComponent);
+	}
+
+	public isGreaterThenMobile(param: number): boolean {
+		return param > breakpoints.mobile;
 	}
 }

@@ -30,12 +30,17 @@ export const requestChangeSelector = createSelector(
 	state => state.changedRequest
 );
 export const isOpenedOfferListSelector = createSelector(
-	requestFeatureSelector,
+	requestStateSelector,
 	// tslint:disable-next-line: typedef
 	state => state.isOpenedOfferList
 );
 export const requestFilterNameSelector = createSelector(
-	requestFeatureSelector,
+	requestStateSelector,
 	// tslint:disable-next-line: typedef
 	state => state.filterName
+);
+export const listIsEmptySelector = createSelector(
+	requestStateSelector,
+	// tslint:disable-next-line: typedef
+	state => state.listIsEmpty
 );
