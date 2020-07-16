@@ -60,18 +60,28 @@
             title="Сделать предложение"
             *ngIf="offerToRequest && request.status===requestStatusEnum[0] "
             disabled
-            class="disabled">
+            class="disabled"
+      >
             На рассмотрении
         </button>
         <button 
-            class="request__button"
+            class="request__button request__button_accepted disabled"
             mat-stroked-button
             title="Сделать предложение"
             (click)="openDialog()"
             disabled
-            *ngIf="offerToRequest && request.status===requestStatusEnum[1]"
+            *ngIf="offerToRequest && request.status===requestStatusEnum[1] && offerToRequest.status === offerStatus[1]">
+            Принято!
+        </button>
+        <button 
+            class="request__button request__button_rejected disabled"
+            mat-stroked-button
+            title="Сделать предложение"
+            (click)="openDialog()"
+            disabled
+            *ngIf="offerToRequest && request.status===requestStatusEnum[1] && offerToRequest.status === offerStatus[2]"
             >
-            {{offerToRequest && offerToRequest.status === offerStatus[1] ? 'Успех!' : 'Отклонено'}}
+            Отклонено
         </button>
     </div>
 </div>

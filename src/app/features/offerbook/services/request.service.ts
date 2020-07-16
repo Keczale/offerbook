@@ -33,7 +33,7 @@ export class RequestService {
 		private _snackBar: MatSnackBar,
 		public dialog: MatDialog,
 		private _requestFacade: RequestFacade,
-		private _userFacade: UserDataFacade
+		private _userFacade: UserDataFacade,
 	) { }
 
 	private get autoKey(): string {
@@ -54,6 +54,7 @@ export class RequestService {
 	public openMobileDialog(component: any): void {
 		this.dialog.open(component, {
 			height: 'auto',
+			maxWidth: '90wv',
 			width: '90%',
 		});
 	}

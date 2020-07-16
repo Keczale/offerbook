@@ -9,11 +9,11 @@
 </div>
 <div class="settings" *ngIf="userType==='seller'">
 
-    <h1 class="text">Настройте аккаунт продавца</h1>
+    <h1 class="settings__title">Настройте аккаунт продавца</h1>
     <mat-accordion>
 
         <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
-            <mat-expansion-panel-header>
+            <mat-expansion-panel-header [collapsedHeight]="'5rem'" [expandedHeight]="'5rem'">
                 <mat-panel-title>
                 UID
                 </mat-panel-title>
@@ -30,7 +30,7 @@
             </mat-expansion-panel>
 
         <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
-        <mat-expansion-panel-header>
+        <mat-expansion-panel-header [collapsedHeight]="'5rem'" [expandedHeight]="'5rem'">
             <mat-panel-title>
             Категории
             </mat-panel-title>
@@ -39,9 +39,13 @@
             </mat-panel-description>
         </mat-expansion-panel-header>
             <div class="settings__categories" >
-                <mat-checkbox class="settings__items" *ngFor="let category of selectCategoriesForm; let i = index"
-                [(ngModel)]="category.checked"
-                [checked]="category.checked">{{category.title}}</mat-checkbox>
+                <mat-selection-list #categories (selectionChange)="onCategorySelection($event)">
+                    <mat-list-option class="settings__items" *ngFor="let category of allCategories"
+                    [value] = "category"
+                    [selected]="checkedCategories.includes(category)">
+                            {{category}}
+                    </mat-list-option>
+                </mat-selection-list>
             </div>
         <div>
             <button  class="email-form__login-btn"
@@ -51,15 +55,21 @@
                 OK
             </button>
             <button  class="email-form__login-btn"
-                mat-button type="submit" 
-                (click)="clearsSelectedCategories()"
+                mat-button  
+                (click)="categories.selectAll(); selectAllCategories()"
+                [title]="selectAllTitle">
+                Все
+            </button>
+            <button  class="email-form__login-btn"
+                mat-button
+                (click)="categories.deselectAll(); deselectAllCategories()"
                 [title]="clearTitle">
                 Очистить
             </button>
         </div>
         </mat-expansion-panel>
         <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)" hideToggle>
-            <mat-expansion-panel-header>
+            <mat-expansion-panel-header [collapsedHeight]="'5rem'" [expandedHeight]="'5rem'">
                 <mat-panel-title>
                 Локация
                 </mat-panel-title>
@@ -68,9 +78,13 @@
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <div class="settings__categories" >
-                <mat-checkbox class="settings__items" *ngFor="let city of selectSellersCitiesForm; let i = index"
-                [(ngModel)]="city.checked"
-                [checked]="city.checked">{{city.title}}</mat-checkbox>
+                <mat-selection-list #cities (selectionChange)="onCitySelection($event)">
+                    <mat-list-option class="settings__items" *ngFor="let city of allCities"
+                    [value]="city"
+                    [selected]="checkedSellersCities.includes(city)">
+                    {{city}}
+                    </mat-list-option>
+                </mat-selection-list>
             </div>
 
 
@@ -82,8 +96,14 @@
                     OK
                 </button>
                 <button  class="email-form__login-btn"
+                    mat-button  
+                    (click)="cities.selectAll(); selectAllCities()"
+                    [title]="selectAllTitle">
+                    Все
+                </button>
+                <button  class="email-form__login-btn"
                     mat-button type="submit" 
-                    (click)="clearsSelectedCities()"
+                    (click)="cities.deselectAll(); deselectAllCities()"
                     [title]="clearTitle">
                     Очистить
                 </button>

@@ -102,7 +102,8 @@ export class ActualRequestComponent implements OnInit {
 			});
 		}
 		else {this.dialog.open(OfferPopupComponent, {
-			height: 'auto',
+      height: 'auto',
+      maxWidth: '90wv',
 			width: '90%',
 		});
   }

@@ -38,7 +38,7 @@
     
   </div>
   <div mat-dialog-actions>
-    <button mat-button mat-dialog-close>Отменить</button>
+    <button mat-button mat-dialog-close>Отмена</button>
     <button mat-raised-button
     mat-dialog-close 
     type="submit" 
@@ -50,6 +50,7 @@
     [disabled]="offerForm.controls['description'].invalid || 
       offerForm.controls['conditions'].invalid ||
       offerForm.controls['price'].invalid ||
-      offerForm.controls['offerImage'].invalid"
-      >Отправить</button>
+      offerForm.controls['offerImage'].invalid">
+      Отправить
+    </button>
   </div>

@@ -6,7 +6,7 @@ export const productCategories: string[] = [
 	'home and garden'
 ];
 
-export const userLocation = ['Могилёв', 'Минск', 'Брест', 'Гродно', 'Гомель', 'Витебск'];
+export const userLocation: string[] = ['Могилёв', 'Минск', 'Брест', 'Гродно', 'Гомель', 'Витебск'];
 
 export interface Breakpoints {
 	mobilePortrait: number;

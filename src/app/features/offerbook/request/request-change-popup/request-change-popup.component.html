@@ -45,11 +45,11 @@
   
   </div>
   <div mat-dialog-actions>
-    <button mat-button mat-dialog-close (click)="cancelChanging()">Отменить</button>
+    <button mat-button mat-dialog-close (click)="cancelChanging()">Отмена</button>
     <button mat-raised-button
       mat-dialog-close
       type="submit" 
       (click)="submitForm()"
       [class.disabled]="requestChangeForm.controls['requestImage'].invalid"
-      [disabled]="requestChangeForm.controls['requestImage'].invalid">Принять</button>
+      [disabled]="requestChangeForm.controls['requestImage'].invalid">Ок</button>
   </div>

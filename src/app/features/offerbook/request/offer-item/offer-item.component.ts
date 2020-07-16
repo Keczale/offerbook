@@ -24,6 +24,8 @@ export class OfferItemComponent implements OnInit {
   @Input()
   public index: number;
 
+  public offerStatus = OfferStatus;
+
   public accepted: string = OfferStatus[1];
   public rejected: string = OfferStatus[2];
 

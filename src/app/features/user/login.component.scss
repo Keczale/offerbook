@@ -33,3 +33,12 @@
         }
     }
 }
+@media screen and (max-width: breakpoint(mobile)) {
+
+.login{
+    .login-main{
+        flex-direction: column;
+    }
+}
+
+}

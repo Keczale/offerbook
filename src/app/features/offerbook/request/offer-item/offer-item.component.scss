@@ -1,3 +1,5 @@
+@import "../../../../ui/styles/variables.scss";
+
 .currentoffer{
     display: flex;
     justify-content: space-between;
@@ -29,7 +31,7 @@
         font-weight: bold;
     }  
     &__describe{
-        flex: 1 1 40%;
+        flex: 1 0 40%;
         padding-left: .4rem;
 
     }
@@ -43,9 +45,17 @@
 
     }
 
-    &__accept{
+    &__acceptbtn{
         flex: 0 1 10%;
-
+    }
+    &__acceptbtn_accepted{
+        border: 1px solid $accepted;
+    }
+    &__acceptbtn_rejected{
+        border: 1px solid $rejected;
+    }
+    .disabled{
+        color: $disabled;
     }
 
     &__title{
@@ -55,8 +65,39 @@
 
 }
 .accepted{
-    background-color: rgb(126, 212, 126);
+    border: 1px solid $accepted;
 }
 .rejected{
-    background-color: rgb(236, 134, 143);
+    border: 1px solid $rejected;
+}
+@media screen and (max-width: breakpoint(tablet-portrait)) {
+    .currentoffer{
+        flex-wrap: wrap;
+        &__acceptbtn{
+            flex: 1 0 100%
+        }
+    }
+}
+@media screen and (max-width: breakpoint(mobile)) {
+    .currentoffer{
+        flex-wrap: wrap;
+        &__head{
+            flex: 1 0 50%;
+        }
+        &__describe{
+            flex: 1 0 100%;
+        }
+        &__seller{
+            flex: 1 0 100%;
+        }
+        &__acceptbtn{
+            flex: 1 0 100%
+        }
+        &__acceptbtn_accepted{
+            width: 100%;
+        }
+        &__acceptbtn_disabled{
+            width: 100%;
+        }
+    }
 }

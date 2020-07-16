@@ -1,3 +1,5 @@
+@import "../../../../ui/styles/variables.scss";
+
 .wrapper{
   padding: .3rem;
 }
@@ -50,7 +52,7 @@
 
   }
   .accepted{
-    background-color: rgb(147, 224, 147);
+    border: 1px solid $accepted;
   }
   
 

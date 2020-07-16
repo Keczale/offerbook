@@ -10,6 +10,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    &__title{
+        text-align: center;
+        margin: 1.5rem 0;
+    }
     &__categories{
         padding: 2rem 0;
         
@@ -17,4 +21,8 @@
     &__items{
         display: block;
     }
+    .office__panel-header{
+            height: 4rem;
+        }
+    
 }

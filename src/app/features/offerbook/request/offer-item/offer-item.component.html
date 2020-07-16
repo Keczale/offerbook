@@ -16,26 +16,37 @@
         <p>{{currentOffer.description}}</p>
     </div>
     <div class="currentoffer__seller flexbox">
-        <p>{{currentOffer.fromUserName ? currentOffer.fromUserName : 'нет имени'}}</p>
+        <p>От: {{currentOffer.fromUserName ? currentOffer.fromUserName : 'нет имени'}}</p>
         <p>{{(currentOffer.fromUserRating)  ? currentOffer.fromUserRating : 'нет оценок'}}</p>
     </div>
  
-    <!-- <div class="request__remove">
+    <div class="currentoffer__acceptbtn" >
         <button 
-            mat-raised-button
-            title="Дважды кликнуть, чтобы убрать из списка"
-            (dblclick)="rejectRequest()">
-            Отклонить
-        </button>
-    </div> -->
-    <div class="request__accept">
-        <button 
-            mat-raised-button
-            title="Двойной клик, чтобы принять предложение продавца"
-            (dblclick) = "acceptOffer()"
-            [disabled] = "currentOffer.status !== 'opened'">
-            {{currentOffer.status === 'accepted' ? 'Принято' : 'Принять'}}
-        </button>
+        *ngIf="currentOffer.status === offerStatus[0] "
+        mat-raised-button
+        title="Двойной клик, чтобы принять предложение продавца"
+        (dblclick) = "acceptOffer()">
+        Принять
+    </button>
+    <button 
+        class="currentoffer__acceptbtn_accepted disabled"
+        *ngIf="currentOffer.status === offerStatus[1] "
+        mat-stroked-button
+        title="Двойной клик, чтобы принять предложение продавца"
+        (dblclick) = "acceptOffer()"
+        disabled>
+        Принято!
+    </button>
+    <button 
+        class="currentoffer__acceptbtn_rejected disabled"
+        *ngIf="currentOffer.status === offerStatus[2] "
+        mat-stroked-button
+        title="Двойной клик, чтобы принять предложение продавца"
+        (dblclick) = "acceptOffer()"
+        disabled>
+        Отклонено 
+    </button>
+
     </div>
 
 </mat-card>

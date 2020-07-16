@@ -16,6 +16,7 @@ import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { OfficeComponent } from './office/office.component';
 import { AppRoutingModule } from 'src/app/app-routing.module';
+import {MatListModule} from '@angular/material/list';
 
 
 
@@ -33,7 +34,9 @@ import { AppRoutingModule } from 'src/app/app-routing.module';
 	FormsModule,
 	MatIconModule,
 	MatCheckboxModule,
-	MatExpansionModule
+	MatExpansionModule,
+	MatListModule
+
   ],
   exports: [LoginComponent]
 })
