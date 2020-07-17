@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { UserState, DataIsLoadingSelector, currentUserNameSelector, logOutErrorSelector, userTypeSelector, userLocationSelector, currentUserSelector, setRejectedRequestAction, sellerLocationSelector, sellerCategoriesSelector, setResponsedRequestAction, lastOffersSelector, setLastOfferToRequestsAction } from '.';
+import { UserState, DataIsLoadingSelector, currentUserNameSelector, logOutErrorSelector, userTypeSelector, userLocationSelector, currentUserSelector, setRejectedRequestAction, sellerLocationSelector, sellerCategoriesSelector, setResponsedRequestAction, lastOffersSelector, setLastOfferToRequestsAction, setUserDataFromFormAction, userDataSelector } from '.';
 import { Observable } from 'rxjs';
 import { UserDataService } from 'src/app/features/user/services/user-data.service';
-import { User, LastOffer, SellersResponsedRequests } from 'src/app/models/user.model';
+import { User, LastOffer, SellersResponsedRequests, UserData } from 'src/app/models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -42,6 +42,9 @@ export class UserDataFacade {
   public get lastOffers$(): Observable<object[]> {
     return this._store$.pipe(select(lastOffersSelector));
     }
+  public get userData$(): Observable<UserData> {
+    return this._store$.pipe(select(userDataSelector));
+    }
 
     public setRejectedRequest(id: string): void {
       this._store$.dispatch(setRejectedRequestAction({rejected: id}));
@@ -52,9 +55,12 @@ export class UserDataFacade {
   public setResponsedRequest(responsedRequestId: string, responsedRequestRef: string): void {
     this._store$.dispatch(setResponsedRequestAction({responsedRequestId, responsedRequestRef}));
   }
+  public setUserData(userData: UserData): void {
+    this._store$.dispatch(setUserDataFromFormAction({userData}));
+  }
 
   public userToDataBase(): void {
-    this._userDataService.userToDataBaseReg();
+    this._userDataService.userToDataBase();
   }
 
   public loadCurrentUserFromDB(uid: string): void {

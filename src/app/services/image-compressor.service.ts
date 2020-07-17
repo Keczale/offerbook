@@ -12,6 +12,7 @@ export class ImageCompressorService {
 
   public compress(file: File): Observable<any> {
 
+	console.log(file)
 		let width: number = null; // Для масштабирования относительно ширины
 
 		const reader: FileReader = new FileReader();
@@ -30,7 +31,7 @@ export class ImageCompressorService {
 
 			const elem: HTMLCanvasElement = document.createElement('canvas'); // Use Angular's Renderer2 method
 
-			img.width > this._convertWidth ? width = this._convertWidth : width = img.width;
+			// img.width > this._convertWidth ? width = this._convertWidth : width = img.width;
 
 			const scaleFactor: number = width / img.width;
 

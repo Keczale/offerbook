@@ -3,13 +3,27 @@
     flex-direction: column;
     align-items: center;
 }
+.userdata-form{
+    display: flex;
+    flex-direction: column;
+}
+.usersettings{
+    padding-bottom: 1.5rem;
+    width: 50%;
+}
+
 .text{
     text-align: center;
+}
+.accordion{
+    width: 100%;
 }
 .settings{
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 50%;
+
     &__title{
         text-align: center;
         margin: 1.5rem 0;
@@ -24,5 +38,25 @@
     .office__panel-header{
             height: 4rem;
         }
+    
+}
+@media screen and (max-width: breakpoint(tablet)) {
+
+    .usersettings{
+        width: 80%;
+    }
+    .settings{
+        width: 80%;
+    }
+    
+}
+@media screen and (max-width: breakpoint(mobile)) {
+
+    .usersettings{
+        width: 100%;
+    }
+    .settings{
+        width: 100%;
+    }
     
 }

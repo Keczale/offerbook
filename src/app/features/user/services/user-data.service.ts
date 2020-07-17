@@ -77,10 +77,10 @@ constructor(
 	public setUserLocation(city: string): void{
 		this._store$.dispatch(setUserLocationAction({userLocation: city}));
 		this._store$.dispatch(setSellerLocationAction({sellerCities: [city]}));
-		this.userToDataBaseReg();
+		this.userToDataBase();
 	}
 
-	public userToDataBaseReg(): void {
+	public userToDataBase(): void {
 		this.onUserSubscription = this._store$.pipe(select(currentUserSelector))
 		.subscribe((user: User) => database().ref(`users/${user.id}`).set(user)).unsubscribe();
 	}
@@ -89,7 +89,7 @@ constructor(
 	this.loading();
 	this._afAuth.createUserWithEmailAndPassword(email, password)
 	.then((userData: auth.UserCredential) => this.userToStoreReg(name, userData))
-	.then(() => this.userToDataBaseReg())
+	.then(() => this.userToDataBase())
 	.then(() => this.loading())
 	.then(() => this._router.navigate(['']))
 	.catch((error: Error) => {
@@ -155,11 +155,11 @@ constructor(
 
 	public setUserCategories(sellerCategories: string[]): void {
 		this._store$.dispatch(setSellerCategoriesAction({sellerCategories}));
-		this.userToDataBaseReg();
+		this.userToDataBase();
 	}
 	public setSellerCities(sellerCities: string[]): void {
 		this._store$.dispatch(setSellerLocationAction({sellerCities}));
-		this.userToDataBaseReg();
+		this.userToDataBase();
 	}
 
 }

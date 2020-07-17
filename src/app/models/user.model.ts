@@ -24,9 +24,15 @@ export class User {
 
 export interface UserData {
 	name: string;
-	surname: number;
-	birthDay: string;
+	// surname: number;
+	telephone: string;
+	adress?: string;
 }
+export interface SellerData {
+name: string;
+
+}
+
 export interface LastOffer {
 	request: string;
 	lastOffer: string;

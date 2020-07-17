@@ -47,6 +47,11 @@ export const userLocationSelector = createSelector(
 	// tslint:disable-next-line: typedef
 	state => state.location
 );
+export const userDataSelector = createSelector(
+	currentUserSelector,
+	// tslint:disable-next-line: typedef
+	state => state.userData
+);
 export const lastOffersSelector = createSelector(
 	currentUserSelector,
 	// tslint:disable-next-line: typedef

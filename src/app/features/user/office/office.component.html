@@ -1,3 +1,49 @@
+<div class="usersettings" *ngIf="userType===userTypes[0] || userType===userTypes[1]">
+<mat-accordion >
+    <mat-expansion-panel hideToggle>
+        <mat-expansion-panel-header [collapsedHeight]="'5rem'" [expandedHeight]="'5rem'">
+            <mat-panel-title>
+            Ваши данные
+            </mat-panel-title>
+            <mat-panel-description>
+                Данные для удобной работы с покупателями и продавцами
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <form [formGroup]="userDataForm" (ngSubmit)="submitUserDataForm()" class="userdata-form">
+            <mat-form-field>
+                <mat-label>Введите Имя</mat-label>
+                <input matInput
+                type="text"
+                    placeholder="Имя"
+                    formControlName="name">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Введите номер телефона</mat-label>
+                <input matInput
+                type="text"
+                    placeholder="только цифры"
+                    formControlName="telephone">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Введите адрес</mat-label>
+                <input matInput
+                type="text"
+                    placeholder="для доставки или получения"
+                    formControlName="adress">
+            </mat-form-field>
+            <button  class="office__uid-btn"
+                mat-raised-button 
+                [disabled]="isDisabled"
+                type="submit">
+                OK
+            </button>
+        </form>
+            
+    </mat-expansion-panel>
+</mat-accordion>
+</div>
+
 <div>
     <button class="office__seller-button"
     mat-raised-button
@@ -5,12 +51,13 @@
     matTooltip="Щёлкните дважды, чтобы активировать или убрать режим продавца"
     matTooltipPosition="right"
 
-    (dblclick)="addSeller()">Буду продавать</button>
+    (dblclick)="addSeller()">{{userType===userTypes[0] ? 'Буду продавать' : 'Не буду продавать'}}</button>
 </div>
-<div class="settings" *ngIf="userType==='seller'">
+
+<div class="settings" *ngIf="userType===userTypes[1]">
 
     <h1 class="settings__title">Настройте аккаунт продавца</h1>
-    <mat-accordion>
+    <mat-accordion class="accordion">
 
         <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
             <mat-expansion-panel-header [collapsedHeight]="'5rem'" [expandedHeight]="'5rem'">
@@ -110,4 +157,5 @@
             </div>
             </mat-expansion-panel>
     </mat-accordion>
+    
 </div>

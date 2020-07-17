@@ -22,7 +22,6 @@ export class RequestPopupComponent implements OnInit, OnDestroy {
   public cityList: string[] = userLocation;
   public userCity: string = null;
 
-
   constructor(
 	public requestService: RequestService,
 	public userDataFacade: UserDataFacade,
@@ -48,34 +47,20 @@ export class RequestPopupComponent implements OnInit, OnDestroy {
 
   recursiveCompress = (image: File, index: number, array: any[]) => {
 
-    return this._compressor.compress(image).pipe (
-
-      map(response => {
-        // Код блока после завершения каждого сжатия
-
-        this._compressedImages.push(response);
-
-        return {
-
-          data: response,
-
-          index: index + 1,
-
-          array: array,
-
-        };
-
-      }),
-
-    );
-
+	return this._compressor.compress(image).pipe (
+		map(response => {
+		this._compressedImages.push(response);
+		return {
+		data: response,
+		index: index + 1,
+		array: array,
+		};
+	}),
+	);
   }
-
- 
   // процесс загрузки файла
 
   public toCompress (originalImages: File[]): Promise<File[]> {
-
 	return new Promise ((resolve) => {
 		const data = originalImages;
 		const compress = this.recursiveCompress( data[0], 0, data ).pipe(
@@ -95,7 +80,6 @@ export class RequestPopupComponent implements OnInit, OnDestroy {
 	});
 }
 
-
   public submitForm(): void {
 	this.toCompress(this.requestForm.value.requestImage.files)
 	.then((images: File[]) => {
@@ -107,7 +91,6 @@ export class RequestPopupComponent implements OnInit, OnDestroy {
 		this._compressedImages = [];
 	})
 	.catch((error: Error) => console.log(error))
-
 
   }
 

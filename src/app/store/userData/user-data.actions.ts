@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { User, LastOffer, SellersResponsedRequests } from 'src/app/models/user.model';
+import { User, LastOffer, SellersResponsedRequests, UserData } from 'src/app/models/user.model';
 
 // export enum dataActionType {
 //   loadFromLocalStorage = '[UserData] Activate/disactivate load bar',
@@ -80,4 +80,8 @@ export const setSellerLocationAction = createAction(
 export const setLastOfferToRequestsAction = createAction(
   '[UserData] Set Last Offers To Requests Action',
   props<{ newLastOfferList: LastOffer[]}>()
+);
+export const setUserDataFromFormAction = createAction(
+  '[UserData] set User Data From Form  Action',
+  props<{ userData: UserData}>()
 );

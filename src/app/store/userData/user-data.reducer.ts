@@ -22,11 +22,7 @@ export const initialState: UserState = {
 	userName: null, // сделать верификацию на уник
 	email: null,
 	location: '',
-	userData: {
-		name: null,
-		surname: null,
-		birthDay: null
-	},
+	userData: null,
 	userStatus: null, // registered or guest если гость,
 	userType: 'buyer', // byer seller or universal
 	userRequests: [null], // order id's
@@ -210,6 +206,15 @@ on (ActionsUser.setLastOfferToRequestsAction,
 		currentUser: {
 			...state.currentUser,
 			requestsLastOffer: newLastOfferList}
+	};
+}),
+on (ActionsUser.setUserDataFromFormAction,
+	(state: UserState, {userData}) => {
+	return {
+		...state,
+		currentUser: {
+			...state.currentUser,
+			userData}
 	};
 }),
 );
