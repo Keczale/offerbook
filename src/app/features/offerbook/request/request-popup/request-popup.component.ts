@@ -81,17 +81,20 @@ export class RequestPopupComponent implements OnInit, OnDestroy {
 }
 
   public submitForm(): void {
-	this.toCompress(this.requestForm.value.requestImage.files)
-	.then((images: File[]) => {
-		const formValue: any = this.requestForm.value;
-		if (Boolean(images.length)) {
-			formValue.requestImage.files.splice(0, 1, images[0]);
-		}
-		this.requestService.submitForm(formValue);
-		this._compressedImages = [];
-	})
-	.catch((error: Error) => console.log(error))
-
-  }
+	  if (this.requestForm.value.requestImage && this.requestForm.value.requestImage.files.length) {
+		this.toCompress(this.requestForm.value.requestImage.files)
+		.then((images: File[]) => {
+			const formValue: any = this.requestForm.value;
+			if (Boolean(images.length)) {
+				formValue.requestImage.files.splice(0, 1, images[0]);
+			}
+			this.requestService.submitForm(formValue);
+			this._compressedImages = [];
+		})
+		.catch((error: Error) => console.log(error));
+	  }
+	  else {this.requestService.submitForm(this.requestForm.value);
+	}
+	}
 
 }

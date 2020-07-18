@@ -8,7 +8,7 @@ export class ImageCompressorService {
 
 	private _convertWidth: number = 600;
 
-  constructor() { }
+  constructor() { } 
 
   public compress(file: File): Observable<any> {
 
@@ -25,13 +25,15 @@ export class ImageCompressorService {
 
 			const img: HTMLImageElement = new Image();
 
-			img.src = (ev.target as any).result;
+			// img.src = (ev.target as any).result;
+			img.src = window.URL.createObjectURL(file);
 
 			(img.onload = () => {
-
+				alert(img.width)
+				alert(img.height)
 			const elem: HTMLCanvasElement = document.createElement('canvas'); // Use Angular's Renderer2 method
 
-			// img.width > this._convertWidth ? width = this._convertWidth : width = img.width;
+			img.width > this._convertWidth ? width = this._convertWidth : width = img.width;
 
 			const scaleFactor: number = width / img.width;
 
@@ -41,7 +43,7 @@ export class ImageCompressorService {
 
 			const ctx: CanvasRenderingContext2D = <CanvasRenderingContext2D> elem.getContext('2d');
 
-			ctx.drawImage(img, 0, 0, width, img.height * scaleFactor);
+			ctx.drawImage(img, 0, 0, elem.width, elem.height);
 
 			ctx.canvas.toBlob(
 
@@ -69,6 +71,7 @@ export class ImageCompressorService {
 		}),
 
 		(reader.onerror = (error: ProgressEvent<FileReader>) => observer.error(error));
+
 
 		};
 	});

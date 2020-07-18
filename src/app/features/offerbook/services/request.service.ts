@@ -71,7 +71,7 @@ export class RequestService {
 		let photoName: string = '';
 		let file: File = null;
 
-		if (value.requestImage) {
+		if (value.requestImage && value.requestImage.files.length) {
 			fileName = value.requestImage.files[0].name;
 			photoName = `${this.autoKey}${fileName.slice(fileName.length - this._fileNameEndCut, fileName.length)}`;
 			file = value.requestImage.files[0];
