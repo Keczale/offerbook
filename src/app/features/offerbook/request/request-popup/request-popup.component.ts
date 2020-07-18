@@ -21,6 +21,12 @@ export class RequestPopupComponent implements OnInit, OnDestroy {
   public requestForm: FormGroup;
   public cityList: string[] = userLocation;
   public userCity: string = null;
+  
+//   public upFile: File[] = null;
+// 	public lalala(e){
+// 		console.log(e)
+// 		this.upFile = e;
+// 	}
 
   constructor(
 	public requestService: RequestService,
@@ -38,7 +44,8 @@ export class RequestPopupComponent implements OnInit, OnDestroy {
 	category : new FormControl('', Validators.required),
 	city : new FormControl(this.userCity, Validators.required),
 	secondHand : new FormControl(),
-	requestImage : new FormControl(null, [ FileValidator.maxContentSize(this._imageMaxSize)] ),
+	requestImage : new FormControl(null, [ FileValidator.maxContentSize(this._imageMaxSize)]),
+	requestImage1 : new FormControl(),
 	});
   }
   ngOnDestroy(): void {
@@ -81,12 +88,26 @@ export class RequestPopupComponent implements OnInit, OnDestroy {
 }
 
   public submitForm(): void {
-	  if (this.requestForm.value.requestImage && this.requestForm.value.requestImage.files.length) {
+	  console.log(this.requestForm.value)
+	  if ( this.requestForm.value.requestImage.files && this.requestForm.value.requestImage.files.length) {
+		
+		const img: HTMLImageElement = new Image();
+		const imgUrl: string = URL.createObjectURL(this.requestForm.value.requestImage.files[0]);
+		img.src = imgUrl;
+
+		(img.onload = () => {
+			alert(img.width)
+			alert(img.height)
+		});
+
 		this.toCompress(this.requestForm.value.requestImage.files)
 		.then((images: File[]) => {
 			const formValue: any = this.requestForm.value;
 			if (Boolean(images.length)) {
-				formValue.requestImage.files.splice(0, 1, images[0]);
+				formValue.requestImage = {
+					...formValue.requestImage,
+					files : images
+				}
 			}
 			this.requestService.submitForm(formValue);
 			this._compressedImages = [];
@@ -96,5 +117,7 @@ export class RequestPopupComponent implements OnInit, OnDestroy {
 	  else {this.requestService.submitForm(this.requestForm.value);
 	}
 	}
+
+	
 
 }

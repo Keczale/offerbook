@@ -15,18 +15,19 @@ export class ImageCompressorService {
 	console.log(file)
 		let width: number = null; // Для масштабирования относительно ширины
 
-		const reader: FileReader = new FileReader();
+		// const reader: FileReader = new FileReader();
 
-		reader.readAsDataURL(file);
+		// reader.readAsDataURL(file);
 
 		return Observable.create ((observer: any) => {
 
-		reader.onload = (ev: ProgressEvent<FileReader>) => {
+		// reader.onload = (ev: ProgressEvent<FileReader>) => {
 
 			const img: HTMLImageElement = new Image();
 
 			// img.src = (ev.target as any).result;
-			img.src = window.URL.createObjectURL(file);
+			const imgUrl: string = URL.createObjectURL(file);
+			img.src = imgUrl;
 
 			(img.onload = () => {
 				alert(img.width)
@@ -68,12 +69,12 @@ export class ImageCompressorService {
 
 		);
 
-		}),
+		});
 
-		(reader.onerror = (error: ProgressEvent<FileReader>) => observer.error(error));
+		// (reader.onerror = (error: ProgressEvent<FileReader>) => observer.error(error));
 
 
-		};
-	});
+		// };
+  });
   }
 }
