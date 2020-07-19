@@ -1,6 +1,15 @@
 <h1 mat-dialog-title>Ваша заявка</h1>
 <div mat-dialog-content >
   <form [formGroup]="requestForm" (ngSubmit)="submitForm()" class="request-form">
+    
+    <div class="photos">
+      <img class="photo" #photoImg *ngFor = " let photo of photos64" [src]="photo">
+    </div>
+
+    <div class="photos" hidden>
+      <img class="tech-photo" #photoImg *ngFor = " let photo of photos64" [src]="photo">
+    </div>
+    
     <mat-form-field>
         <mat-label>Введите название</mat-label>
         <input matInput
@@ -35,7 +44,7 @@
 
   
    
-<!-- <input  type="file" name="photo" (change)="lalala($event.target.files)" accept="image/*,image/jpeg" formControlName="requestImage1"> -->
+<!-- <input  type="file" name="photo" (change)="process($event.target.files)" accept="image/*,image/jpeg"> -->
       
       
    
@@ -44,6 +53,7 @@
       <ngx-mat-file-input 
       formControlName="requestImage"
       type="file"
+      (change)="process($event.target.files)"
       [accept]="'.png,.jpg,.jpeg'"
       placeholder="Выберите фото" ></ngx-mat-file-input>
       <mat-icon matSuffix>add_a_photo</mat-icon>
@@ -72,4 +82,7 @@
       requestForm.controls['category'].invalid ||
       requestForm.controls['city'].invalid ||
       requestForm.controls['requestImage'].invalid">Ок</button>
+  </div>
+  <div class="photos">
+    <img class="photo" #photoImg *ngFor = " let photo of photos64" [src]="photo">
   </div>

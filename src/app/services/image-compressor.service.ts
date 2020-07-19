@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ElementRef } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -10,9 +10,9 @@ export class ImageCompressorService {
 
   constructor() { } 
 
-  public compress(file: File): Observable<any> {
+  public compress(image: ElementRef, file: File): Observable<any> {
+	  console.log('compressor')
 
-	console.log(file)
 		let width: number = null; // Для масштабирования относительно ширины
 
 		// const reader: FileReader = new FileReader();
@@ -23,13 +23,10 @@ export class ImageCompressorService {
 
 		// reader.onload = (ev: ProgressEvent<FileReader>) => {
 
-			const img: HTMLImageElement = new Image();
+			const img: HTMLImageElement = image.nativeElement;
 
 			// img.src = (ev.target as any).result;
-			const imgUrl: string = URL.createObjectURL(file);
-			img.src = imgUrl;
-
-			(img.onload = () => {
+			
 				alert(img.width)
 				alert(img.height)
 			const elem: HTMLCanvasElement = document.createElement('canvas'); // Use Angular's Renderer2 method
@@ -69,7 +66,7 @@ export class ImageCompressorService {
 
 		);
 
-		});
+	
 
 		// (reader.onerror = (error: ProgressEvent<FileReader>) => observer.error(error));
 
