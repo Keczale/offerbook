@@ -6,9 +6,9 @@
       <img class="photo" #photoImg *ngFor = " let photo of photos64" [src]="photo">
     </div>
 
-    <div class="photos" hidden>
+    <!-- <div class="photos" hidden>
       <img class="tech-photo" #photoImg *ngFor = " let photo of photos64" [src]="photo">
-    </div>
+    </div> -->
     
     <mat-form-field>
         <mat-label>Введите название</mat-label>
@@ -82,7 +82,4 @@
       requestForm.controls['category'].invalid ||
       requestForm.controls['city'].invalid ||
       requestForm.controls['requestImage'].invalid">Ок</button>
-  </div>
-  <div class="photos">
-    <img class="photo" #photoImg *ngFor = " let photo of photos64" [src]="photo">
   </div>

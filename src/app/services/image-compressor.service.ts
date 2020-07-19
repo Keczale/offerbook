@@ -10,10 +10,11 @@ export class ImageCompressorService {
 
   constructor() { } 
 
-  public compress(image: ElementRef, file: File): Observable<any> {
-	  console.log('compressor')
+  public compress(file: File, image, ima): Observable<any> {
+console.log(ima)
+		let width: number = 600; // Для масштабирования относительно ширины
 
-		let width: number = null; // Для масштабирования относительно ширины
+		
 
 		// const reader: FileReader = new FileReader();
 
@@ -23,15 +24,32 @@ export class ImageCompressorService {
 
 		// reader.onload = (ev: ProgressEvent<FileReader>) => {
 
-			const img: HTMLImageElement = image.nativeElement;
+			// const preImg: HTMLImageElement = new Image();
+			// const preImgUrl: string = window.URL.createObjectURL(file);
+			// preImg.src = preImgUrl;
+			// (preImg.onload = () => {
+			// 	const minSide: number = Math.min(preImg.width, preImg.height, this._convertWidth);
+			// 	width = minSide;
+			// 	alert(`ширина=${width}`)
+			// 	URL.revokeObjectURL(preImgUrl);
+				
+			// const img: HTMLImageElement = document.createElement('img')
+			const img: HTMLImageElement = ima.nativeElement;
 
-			// img.src = (ev.target as any).result;
-			
-				alert(img.width)
-				alert(img.height)
+			// img.width = width;
+			// img.height = width;
+			// img.style.objectFit = 'cover';
+
+			// const imgUrl: string = window.URL.createObjectURL(file);
+			// img.src = image;
+
+			// (img.onload = () => {
+				alert(`ширина=${img.width}`)
+				alert(`dscjnf=${img.height}`)
+				// URL.revokeObjectURL(imgUrl);
 			const elem: HTMLCanvasElement = document.createElement('canvas'); // Use Angular's Renderer2 method
 
-			img.width > this._convertWidth ? width = this._convertWidth : width = img.width;
+			// img.width > this._convertWidth ? width = this._convertWidth : width = img.width;
 
 			const scaleFactor: number = width / img.width;
 
@@ -42,6 +60,7 @@ export class ImageCompressorService {
 			const ctx: CanvasRenderingContext2D = <CanvasRenderingContext2D> elem.getContext('2d');
 
 			ctx.drawImage(img, 0, 0, elem.width, elem.height);
+			console.log('marker')
 
 			ctx.canvas.toBlob(
 
@@ -51,7 +70,7 @@ export class ImageCompressorService {
 
 				new File([blob], file.name, {
 
-				type: 'image/jpeg',
+				type: 'image/png',
 
 				lastModified: Date.now(),
 
@@ -60,7 +79,7 @@ export class ImageCompressorService {
 			);
 			},
 
-		'image/jpeg',
+		'image/png',
 
 		1,
 
@@ -72,6 +91,8 @@ export class ImageCompressorService {
 
 
 		// };
-  });
+//   });
+});
+// });
   }
 }
