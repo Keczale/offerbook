@@ -24,12 +24,12 @@ export class RequestPopupComponent implements OnInit, OnDestroy, AfterViewInit {
   
   public upFile: File[] = null;
 	public photos64: string[] = [];
-	public uploadFiles: File[] =[];
+	public uploadFiles: File[] = [];
 	public photoImgArray = [];
 	
   public process (files: File[]): void {
 		const reader: FileReader = new FileReader();
-		const fileList = [...files]
+		const fileList: File[] = [...files];
 		fileList.map((file: File) => {
 			reader.readAsDataURL(files[0]);
 			reader.onload = (ev: ProgressEvent<FileReader>) => {
@@ -67,7 +67,7 @@ export class RequestPopupComponent implements OnInit, OnDestroy, AfterViewInit {
 		public photosImg: QueryList<any>;
 
 	ngAfterViewInit (): void {
-		this.photosImg.changes.subscribe((images) => {
+		this.photosImg.changes.subscribe((images: HTMLImageElement[]) => {
 			this.photoImgArray = [...images];
 				} );
 	}
@@ -76,9 +76,9 @@ export class RequestPopupComponent implements OnInit, OnDestroy, AfterViewInit {
 	this._citySubscriber.unsubscribe();
   }
 
-  recursiveCompress = (file: File, index: number, array: any[], image) => {
+  recursiveCompress = (image: HTMLImageElement, index: number, array: any[], file: File) => {
 
-	return this._compressor.compress(file, image, this.photoImgArray[0]).pipe (
+	return this._compressor.compress(file, image).pipe (
 		map(response => {
 		this._compressedImages.push(response);
 		return {
@@ -91,15 +91,15 @@ export class RequestPopupComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   // процесс загрузки файла
 
-  public toCompress (files: File[], image): Promise<File[]> {
+  public toCompress (files: File[]): Promise<File[]> {
 	return new Promise ((resolve) => {
 
 		const data = this.photoImgArray;
-		const compress = this.recursiveCompress( files[0], 0, files, image).pipe(
+		const compress = this.recursiveCompress( data[0], 0, data, files[0]).pipe(
 		  expand(res => {
 			return res.index > res.array.length - 1
 			  ? EMPTY
-			  : this.recursiveCompress( files[res.index], res.index, files, image  );
+			  : this.recursiveCompress( data[res.index], res.data, data, files[res.index] );
 		  }),
 		);
 		compress.subscribe(res => {
@@ -115,27 +115,20 @@ export class RequestPopupComponent implements OnInit, OnDestroy, AfterViewInit {
 
 public submitForm(): void {
 	if ( this.requestForm.value.requestImage && this.requestForm.value.requestImage.files && this.requestForm.value.requestImage.files.length) {
-	  this.toCompress(this.uploadFiles, null)	
-	//   const img: HTMLImageElement = new Image();
-	//   const imgUrl: string = URL.createObjectURL(this.requestForm.value.requestImage.files[0]);
-	//   img.src = imgUrl;
-
-	//   (img.onload = () => {
-	// 	  alert(img.width)
-	// 	  alert(img.height)
-	//   });
-	.then(()=>{
-		const formValue: any = this.requestForm.value;
-		if (Boolean(this._compressedImages.length)) {
-			formValue.requestImage = {
-				...formValue.requestImage,
-				files : this._compressedImages
+	  this.toCompress(this.uploadFiles)	
+		.then(() => {
+			const formValue: any = this.requestForm.value;
+			if (Boolean(this._compressedImages.length)) {
+				formValue.requestImage = {
+					...formValue.requestImage,
+					files : this._compressedImages
+				}
+				this.requestService.submitForm(formValue);
+				this._compressedImages = [];
 			}
-			this.requestService.submitForm(formValue);
-			this._compressedImages = [];
-		}
 
-	})
+		})
+		.catch((error: Error) => console.log(error));
 	
 
 	//   this.toCompress(this.requestForm.value.requestImage.files)
@@ -153,7 +146,7 @@ public submitForm(): void {
 	//   .catch((error: Error) => console.log(error));
 	// }
  }
-	else {console.log('ELES'); this.requestService.submitForm(this.requestForm.value);
+	else { this.requestService.submitForm(this.requestForm.value);
   }
  
 //   public submitForm(): void {

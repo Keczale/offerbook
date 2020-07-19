@@ -10,8 +10,7 @@ export class ImageCompressorService {
 
   constructor() { } 
 
-  public compress(file: File, image, ima): Observable<any> {
-console.log(ima)
+  public compress(file: File, image): Observable<any> {
 		let width: number = 600; // Для масштабирования относительно ширины
 
 		
@@ -24,17 +23,17 @@ console.log(ima)
 
 		// reader.onload = (ev: ProgressEvent<FileReader>) => {
 
-			// const preImg: HTMLImageElement = new Image();
-			// const preImgUrl: string = window.URL.createObjectURL(file);
-			// preImg.src = preImgUrl;
-			// (preImg.onload = () => {
-			// 	const minSide: number = Math.min(preImg.width, preImg.height, this._convertWidth);
-			// 	width = minSide;
-			// 	alert(`ширина=${width}`)
-			// 	URL.revokeObjectURL(preImgUrl);
+			const preImg: HTMLImageElement = new Image();
+			const preImgUrl: string = window.URL.createObjectURL(file);
+			preImg.src = preImgUrl;
+			(preImg.onload = () => {
+				const minSide: number = Math.min(preImg.width, preImg.height, this._convertWidth);
+				width = minSide;
+				alert(`ширина=${width}`)
+				URL.revokeObjectURL(preImgUrl);
 				
 			// const img: HTMLImageElement = document.createElement('img')
-			const img: HTMLImageElement = ima.nativeElement;
+			const img: HTMLImageElement = image.nativeElement;
 
 			// img.width = width;
 			// img.height = width;
@@ -60,7 +59,6 @@ console.log(ima)
 			const ctx: CanvasRenderingContext2D = <CanvasRenderingContext2D> elem.getContext('2d');
 
 			ctx.drawImage(img, 0, 0, elem.width, elem.height);
-			console.log('marker')
 
 			ctx.canvas.toBlob(
 
@@ -91,7 +89,7 @@ console.log(ima)
 
 
 		// };
-//   });
+  });
 });
 // });
   }
