@@ -36,8 +36,8 @@ export const initialState: UserState = {
 		requestRef: [null]
 	},
 	sellerLastLoadedRequest: null,
-	userRating: {buyer: null, seller: null}
-
+	buyerRating: [],
+	sellerRating: [],
   }
 };
 

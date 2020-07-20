@@ -8,7 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { RequestFacade } from 'src/app/store/request/request.facade';
 import { Observable } from 'rxjs';
-import { User, LastOffer } from 'src/app/models/user.model';
+import { User, LastOffer, UserRate } from 'src/app/models/user.model';
 import { UserDataFacade } from 'src/app/store/userData/user-data.facade';
 import { take } from 'rxjs/operators';
 import { Offer, OfferStatus } from 'src/app/models/offer.model';
@@ -58,6 +58,12 @@ export class RequestService {
 			width: '90%',
 		});
 	}
+	public getUserRating(user: User): number {
+		if ( user && user.buyerRating && Boolean(user.buyerRating.length)) {
+			return user.buyerRating.reduce((sum: number, currentRate: UserRate) => sum + currentRate.rate, 0);
+		}
+		return null;
+	}
 
 	public submitForm(value: any): void {
 
@@ -87,7 +93,7 @@ export class RequestService {
 					id: requestId,
 					fromUser: currentUser.id,
 					fromUserName: Boolean(currentUser.userName) ? currentUser.userName : null,
-					fromUserRating: !this.isEmpty(currentUser.userRating) ? currentUser.userRating.buyer : null,
+					fromUserRating: this.getUserRating(currentUser),
 					title: value.title,
 					description: value.description,
 					category: value.category,

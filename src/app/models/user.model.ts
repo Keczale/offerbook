@@ -18,7 +18,9 @@ export class User {
 		public sellerRejectedRequests: string[],
 		public sellerResponsedRequests: SellersResponsedRequests,
 		public sellerLastLoadedRequest: string,
-		public userRating: UserRating
+		public buyerRating: UserRate[],
+		public sellerRating: UserRate[]
+
 	) {}
 }
 
@@ -38,7 +40,7 @@ export interface LastOffer {
 	lastOffer: string;
 }
 
-export interface SellersResponsedRequests{
+export interface SellersResponsedRequests {
 	requestId: string[];
 	requestRef: string[];
 }
@@ -48,9 +50,11 @@ interface Location {
 	city: string;
 }
 
-interface UserRating {
-	buyer: number;
-	seller: number;
+export interface UserRate {
+	rate: number;
+	id: string;
+	title: string;
+	comment: string;
 }
 
 export enum UserTypes {'buyer', 'seller'}

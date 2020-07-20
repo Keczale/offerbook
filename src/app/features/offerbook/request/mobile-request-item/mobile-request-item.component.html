@@ -37,10 +37,16 @@
       
       <div class="request__accept btnwrapper">
         <button class="request-card__btn" 
-        [disabled]="userRequest.status===requestStatus[1]"
+        *ngIf = "userRequest.status===requestStatus[0]"
         [class.disabled]="userRequest.status===requestStatus[1]"
         class="request__btn" mat-stroked-button (click)="changeRequest(userRequest)">
             Изменить
+        </button>
+        <button class="request-card__btn" 
+        *ngIf = "userRequest.status===requestStatus[1]"
+        disabled
+        class="request__btn" mat-button >
+        <span class="material-icons done"> done </span>
         </button>
       </div>
     </div>

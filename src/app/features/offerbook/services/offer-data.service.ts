@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import * as firebase from 'firebase';
+// import * as firebase from 'firebase';
+import { auth, database, storage } from 'firebase';
 import { Store } from '@ngrx/store';
 import { Request, RequestStatus } from 'src/app/models/request.model';
 
 import { loadInitialStateAction } from 'src/app/store';
-import { User, SellersResponsedRequests } from 'src/app/models/user.model';
+import { User, SellersResponsedRequests, UserData } from 'src/app/models/user.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Offer } from 'src/app/models/offer.model';
 
@@ -13,7 +14,7 @@ import { Offer } from 'src/app/models/offer.model';
 })
 export class OfferDataService {
 
-	private _uploadTask: firebase.storage.UploadTask;
+	private _uploadTask: storage.UploadTask;
 
 	private _startImageUrl: string = '/image';
   private requestBaseURL: string = '/requests/active';
@@ -24,7 +25,7 @@ export class OfferDataService {
   public userBaseURL: string = '/users';
 
   public get userUid(): string {
-		return firebase.auth().currentUser.uid;
+		return auth().currentUser.uid;
 	}
 
   public photoBaseURL: string = `${this._startImageUrl}/${this.userUid}`;
@@ -42,13 +43,13 @@ export class OfferDataService {
 		sellerLocation.map((city: string) => sellerCategories.map(async (category: string) =>{
 			await new Promise((resolve) => {
 
-						firebase.database().ref(`${this.requestMapBaseURL}/${city}/${category}`).once('value')
+						database().ref(`${this.requestMapBaseURL}/${city}/${category}`).once('value')
 							.then((snap: any) => snap.val())
 							.then((requestMap: string[]) => {
 								if (requestMap) {
 									const actualRequestList: string[] = Object.values(requestMap);
 										actualRequestList.map((adress: string) => {
-										firebase.database().ref(`${this.requestBaseURL}/${adress}`).once('value')
+										database().ref(`${this.requestBaseURL}/${adress}`).once('value')
 											.then((snap: any) => snap.val())
 											.then((request: Request) => {
 												actualRequests.push(request);
@@ -71,7 +72,7 @@ export class OfferDataService {
 	}
 public async loadOwnRequests(userId: string): Promise<string[]> {
 	let requestIdList: string[] = [];
-	await firebase.database().ref(`${this.requestBaseURL}/${userId}`).once('value')
+	await database().ref(`${this.requestBaseURL}/${userId}`).once('value')
 	.then((snap: any) => snap.val())
 	.then( async (requestMap: string[]) => {
 		if (requestMap) {
@@ -95,7 +96,7 @@ public isEmpty (obj: any): boolean {
 	if (sellersResponsed && sellersResponsed.requestRef) {
 	const responsedRefs: string[] = Object.assign([], sellersResponsed.requestRef);
 	responsedRefs.map((ref: string) => {
-		firebase.database().ref(`${this.requestBaseURL}/${ref}`).once('value')
+		database().ref(`${this.requestBaseURL}/${ref}`).once('value')
 		.then((snap: any) => snap.val())
 		.then((request: Request) => {
 			if (request && request.status === RequestStatus[1]) {
@@ -111,7 +112,7 @@ public isEmpty (obj: any): boolean {
 				await Promise.all(sellerCategories.map(async (category: string) => {
 			  await new Promise( (resolve) => {
 
-						firebase.database().ref(`${this.requestMapBaseURL}/${city}/${category}`).once('value')
+						database().ref(`${this.requestMapBaseURL}/${city}/${category}`).once('value')
 							.then((snap: any) => snap.val())
 							.then( async (requestMap: string[]) => {
 								if (requestMap) {
@@ -119,7 +120,7 @@ public isEmpty (obj: any): boolean {
 									const actualRequestRefList: string[] = Object.values(requestMap);
 									await Promise.all(actualRequestRefList.map(async (adress: string) => {
 										await new Promise( (resolved) => {
-										firebase.database().ref(`${this.requestBaseURL}/${adress}`).once('value')
+											database().ref(`${this.requestBaseURL}/${adress}`).once('value')
 											.then((snap: any) => snap.val())
 											.then((request: Request) => {
 												actualRequests = Object.assign([], actualRequests)
@@ -147,7 +148,7 @@ public isEmpty (obj: any): boolean {
 
   public async loadBuyerInfo(uid: string): Promise<User> {
 	let buyer: User = null;
-	await firebase.database().ref(`${this.userBaseURL}/${uid}`).once('value')
+	await database().ref(`${this.userBaseURL}/${uid}`).once('value')
 	.then((snap: any) => snap.val())
 	.then((user: User) => buyer = user)
 	.catch((error: Error) => console.log(error));
@@ -159,19 +160,19 @@ public isEmpty (obj: any): boolean {
 		const uploadFile: File = file;
 		let photoURL: string;
 		if (file) {
-		const storageRef: firebase.storage.Reference = firebase.storage()
+		const storageRef: storage.Reference = storage()
 			.ref(`${this.photoBaseURL}/${fileName}`);
 
 		await new Promise((resolve) => {
 		this._uploadTask =  storageRef.put(uploadFile);
-		this._uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+		this._uploadTask.on(storage.TaskEvent.STATE_CHANGED,
 				() => { },
 				(error: Error) => {this._snackBar.open(`${error}`, '', {
 					duration: 2000,
 				  });
 				},
 				 async () => {
-					photoURL = await firebase.storage().ref(`${this.photoBaseURL}/${fileName}`).getDownloadURL();
+					photoURL = await storage().ref(`${this.photoBaseURL}/${fileName}`).getDownloadURL();
 					resolve('done');
 
 					this._snackBar.open('Готово!', '', {
@@ -186,7 +187,22 @@ public isEmpty (obj: any): boolean {
 }
 
 public sendOfferToDatabase(offer: Offer, requestsUser: string): void {
-	firebase.database().ref(`${this.requestBaseURL}/${requestsUser}/${offer.requestId}/offers`).push(offer);
+	database().ref(`${this.requestBaseURL}/${requestsUser}/${offer.requestId}/offers`).push(offer);
 }
+
+public async getBuyerData(uid: string): Promise<UserData> {
+	let buyerData: UserData = null;
+	await database().ref(`users/${uid}`).once('value')
+	.then((snapshot: database.DataSnapshot) => snapshot.val())
+	.then((user: User) => {
+	if (!this.isEmpty(user)) {
+		 buyerData = user.userData;
+	}
+	else {console.log('there are no such user in DB')
+	}
+	})
+	.catch((error: Error) => console.log(error));
+	return buyerData;
+  }
 
 }

@@ -1,11 +1,19 @@
 <h1 mat-dialog-title>Ваша заявка</h1>
 <div mat-dialog-content >
   <form [formGroup]="requestForm" (ngSubmit)="submitForm()" class="request-form">
-    
-    <div class="photos">
-      <img class="photo" #photoImg *ngFor = " let photo of photos64" [src]="photo">
+    <div class="photoblock"> 
+      <div>
+      <label>
+        <input class="photoblock__setphoto" type="file" name="photo" (change)="process($event.target.files)" formControlName="requestImage" accept="image/*">
+        <mat-icon class="photoblock__photo-icon" matSuffix>add_a_photo</mat-icon>
+      </label>  
     </div>
-
+      <div class="photoblock__photo-wrap">
+        <div class="photoblock__photos" *ngFor = " let photo of photos64">
+          <img class="photoblock__photo" #photoImg  [src]="photo">
+        </div>
+      </div>
+    </div>
     <!-- <div class="photos" hidden>
       <img class="tech-photo" #photoImg *ngFor = " let photo of photos64" [src]="photo">
     </div> -->
@@ -44,11 +52,10 @@
 
   
    
-<!-- <input  type="file" name="photo" (change)="process($event.target.files)" accept="image/*,image/jpeg"> -->
-      
+
       
    
-    <mat-form-field>
+    <!-- <mat-form-field>
       <mat-label>Введите название</mat-label>
       <ngx-mat-file-input 
       formControlName="requestImage"
@@ -62,7 +69,7 @@
          (Ваш файл {{requestForm.get('requestImage')?.getError('maxContentSize').actualSize
         | byteFormat}}).
       </mat-error>
-    </mat-form-field>
+    </mat-form-field> -->
 
   </form>
   </div>

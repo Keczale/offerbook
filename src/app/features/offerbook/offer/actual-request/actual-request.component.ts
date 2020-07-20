@@ -1,8 +1,7 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { Request, RequestStatus } from 'src/app/models/request.model';
 import { OfferService } from '../../services/offer.service';
-import { User } from 'src/app/models/user.model';
-import { OfferDataService } from '../../services/offer-data.service';
+import { User, UserData } from 'src/app/models/user.model';
 import { UserDataFacade } from 'src/app/store/userData/user-data.facade';
 import { OfferPopupComponent } from '../offer-popup/offer-popup.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -28,7 +27,7 @@ export class ActualRequestComponent implements OnInit {
   public index: Request = null;
  
   @Input()
-  public buyer: User = null;
+  public buyer: UserData = null;
 
   @Input()
   public bestPrice: string = null;
@@ -46,10 +45,11 @@ export class ActualRequestComponent implements OnInit {
 
   @Input()
   public isHidden: boolean;
+  
 
   constructor(
 		public offerService: OfferService,
-		private _offerDataService: OfferDataService,
+		// private _offerDataService: OfferDataService,
 		public userFacade: UserDataFacade,
 		public dialog: MatDialog,
   ) { }
@@ -60,7 +60,10 @@ export class ActualRequestComponent implements OnInit {
 		if (this.request && Boolean(this.request.offers)) {
 			const myOfferInArr: Offer[] = Object.values(this.request.offers).filter((offer: Offer) => offer.fromUserId === this.currentUser.id);
 		if (Boolean(myOfferInArr.length)) {
-			this.offerToRequest = Object.values(this.request.offers).filter((offer: Offer) => offer.fromUserId === this.currentUser.id)[0];
+			this.offerToRequest = myOfferInArr[0];
+			if (this.offerToRequest.status === this.offerStatus[1]) {
+				this.getBuyerData();
+				}
 			}
 		}
 	}
@@ -73,18 +76,32 @@ export class ActualRequestComponent implements OnInit {
 			this.bestPrice = `Лучшая цена: ${offerList[0].price}`;
 		}
   }
+  public getBuyerData(): void {
+		this.offerService.getBuyerData(this.request.fromUser)
+		.then((buyerData: UserData) => this.buyer = buyerData);
+
+	}
+	public get buyerName(): string{
+		if (this.buyer && this.buyer.name){
+			return this.buyer.name
+		}
+		else if (this.request && this.request.fromUserName){
+			return this.request.fromUserName
+		}
+	}
+
 
   public get isRequestRejected(): boolean {
-    if(this.currentUser.sellerRejectedRequests) {
-    return this.currentUser.sellerRejectedRequests.includes(this.request.id);
+		if (this.currentUser.sellerRejectedRequests && Boolean(this.currentUser.sellerRejectedRequests.length)) {
+		return this.currentUser.sellerRejectedRequests.includes(this.request.id);
   }
   }
 
-  public getOfferList(): void {
-		if (this.request.offers && !this.offerService.isEmpty(this.request.offers)) {
-		this.offerListForCounter = Object.values(this.request.offers);
-		}
-  }
+  // public getOfferList(): void {
+	// 	if (this.request.offers && !this.offerService.isEmpty(this.request.offers)) {
+	// 	this.offerListForCounter = Object.values(this.request.offers);
+	// 	}
+  // }
 
 
   public rejectRequest(): void {

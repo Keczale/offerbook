@@ -32,10 +32,17 @@
       <mat-card-actions class="request-card__actions">
         <button class="request-card__btn" mat-button (click)="requestService.deleteRequest(userRequest)">Удалить</button>
         <button class="request-card__btn" 
-          [disabled]="userRequest.status===requestStatus[1]"
-          [class.disabled]="userRequest.status===requestStatus[1]"
-
-        mat-button (click)="changeRequest(userRequest)">Изменить</button>
+        *ngIf = "userRequest.status===requestStatus[0]"
+        [class.disabled]="userRequest.status===requestStatus[1]"
+        class="request__btn" mat-stroked-button (click)="changeRequest(userRequest)">
+            Изменить
+        </button>
+        <button class="request-card__btn" 
+        *ngIf = "userRequest.status===requestStatus[1]"
+        disabled
+        class="request__btn" mat-button >
+        <span class="material-icons done"> done </span>
+        </button>
       </mat-card-actions>
   </mat-card>
 </div>

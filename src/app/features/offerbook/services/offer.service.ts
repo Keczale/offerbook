@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { OfferDataService } from './offer-data.service';
 import { UserDataFacade } from 'src/app/store/userData/user-data.facade';
-import { User } from 'src/app/models/user.model';
+import { User, UserData, UserRate } from 'src/app/models/user.model';
 import { Request } from 'src/app/models/request.model';
 import { Store, select } from '@ngrx/store';
 import { loadActualRequestListFromDBAction, offerInProgressAction, requestListIsChangingSelector, requestListIsChangingAction, requestListNotChangingAction, setNewRequestCounterAction, sellersNewRequestCountSelector, openedRequestSelector, setRequestToAnswerAction } from 'src/app/store/offer';
@@ -145,6 +145,12 @@ export class OfferService {
 		return true;
   }
 	}
+	public getSellerRating(user: User): number {
+		if ( user && user.sellerRating && Boolean(user.sellerRating.length)) {
+			return user.sellerRating.reduce((sum: number, currentRate: UserRate) => sum + currentRate.rate, 0);
+		}
+		return null;
+	}
 
   public submitOfferForm (value: any): void {
 
@@ -180,8 +186,7 @@ export class OfferService {
 			requestId: openedRequest.id,
 			fromUserId: UserId,
 			fromUserName: currentUser.userName,
-			fromUserRating: Boolean(currentUser.userRating) && Boolean(currentUser.userRating.seller) ?
-			currentUser.userRating.seller : null,
+			fromUserRating: this.getSellerRating(currentUser),
 			title: openedRequest.title,
 			description: value.description,
 			conditions: value.conditions,
@@ -341,6 +346,11 @@ public setInitialPaginatorEvents(initialEvent: object): void {
 		const realNameFilterLength: number = Object.values(OfferFilterName).length / 2;
 		const filterNameArr: Array <(string | OfferFilterName)> = Object.values(OfferFilterName).slice(0, realNameFilterLength);
 		filterNameArr.map((filterName: string) => this._offerFacade.setPaginatorEvent(initialEvent, filterName));
+}
+
+public getBuyerData(uid: string): Promise<UserData> {
+	return this._offerDataService.getBuyerData(uid)
+	.then((buyerData: UserData) => buyerData);
 }
 
 }

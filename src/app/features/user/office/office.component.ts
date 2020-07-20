@@ -43,7 +43,14 @@ export class OfficeComponent implements OnInit, OnDestroy {
   public selectAllTitle: string = 'Выбрать все';
   public sendCityTitle: string = 'Отправить выбранные города';
 	public step: number = 0;
-	
+	public get userName(): string {
+		if (Boolean (this._userName)) {
+			return this._userName;
+		}
+		else if (Boolean(this._user.userName)) {
+			return this._user.userName;
+		}
+	}
 
 
   constructor (
@@ -56,16 +63,17 @@ export class OfficeComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
   this.userSubscriber = this.userDataService.currentUser$
   .subscribe((user: User) => {
+	this._user = user;
   this.userType = user.userType;
 	this.userId = user.id;
-	if(user.userData){
-		if(user.userData.name){
+	if (user.userData) {
+		if (Boolean (user.userData.name)) {
 			this._userName = user.userData.name;
 		}
-		if(user.userData.adress){
+		if (Boolean (user.userData.adress)) {
 			this._userAdress = user.userData.adress;
 		}
-		if(user.userData.telephone){
+		if (Boolean (user.userData.telephone)) {
 			this._userTelephone = user.userData.telephone;
 		}
 	}
@@ -76,9 +84,9 @@ export class OfficeComponent implements OnInit, OnDestroy {
 		this.checkedSellersCities = user.sellerLocation;
 	}
 	this.userDataForm = this._fb.group({
-		name : [`${this._userName}`],
+		name : [`${this.userName}`],
 		// surname : [''],
-		telephone : [`${this._userTelephone}`, Validators.pattern('[0-9]+')],
+		telephone : [`${this._userTelephone}`, Validators.pattern('[0-9],.+')],
 		adress : [`${this._userAdress}`],
 		// userImage : [null, [ FileValidator.maxContentSize(this._imageMaxSize)] ],
 		});
@@ -96,15 +104,7 @@ export class OfficeComponent implements OnInit, OnDestroy {
 		this.step++;
   }
 
-  // public createCategoryForm(allCat: string[], checkedCat: string[]): void {
-	// 	this.selectCategoriesForm = [];
-	// 	allCat.map((item: any) => {
-  // 	if (checkedCat) {checkedCat.includes(item) ?
-	//   this.selectCategoriesForm.push({title: item, checked: true}) :
-	//   this.selectCategoriesForm.push({title: item, checked: false});
-	//   } else {this.selectCategoriesForm.push({title: item, checked: false});
-  // }});
-  // }
+
 
   public onCategorySelection(event: any): void {
 		this.newSelectedCategories = event.option.selectionList._value;
@@ -113,20 +113,7 @@ export class OfficeComponent implements OnInit, OnDestroy {
 		this.newSelectedCities = event.option.selectionList._value;
   }
 
-  // public clearsSelectedCategories(): void {
-	// 	this.selectCategoriesForm = [];
-	// 	this.categories.map( (item: string) => this.selectCategoriesForm.push({title: item, checked: false}));
-  // }
-
-  // public sendCategories(): void {
-  // 	const arr: string[] = this.selectCategoriesForm.filter((category: any) => category.checked)
-  // 	.map((category: any) => category = category.title);
-	// 	this.userDataService.setUserCategories(arr);
-	// 	this._snackBar.open('Ваши категории сохранены!', '', {
-	// 		duration: 2000,
-	// 	});
-	// 	this.nextStep();
-  // }
+  
   public sendCategories(): void {
 		const arr: string[] = this.newSelectedCategories;
 		if (Boolean(arr.length)) {
@@ -153,19 +140,7 @@ export class OfficeComponent implements OnInit, OnDestroy {
   });
   }
 
-  // public createSellerCitiesForm(allCities: string[], checkedCities: string[]): void {
-	// 	this.selectSellersCitiesForm = [];
-	// 	allCities.map((city: string) => {
-  // 	if (checkedCities) {checkedCities.includes(city) ?
-	//   this.selectSellersCitiesForm.push({title: city, checked: true}) :
-	//   this.selectSellersCitiesForm.push({title: city, checked: false});
-	//   } else {this.selectSellersCitiesForm.push({title: city, checked: false});
-  // }});
-  // }
-  // public clearsSelectedCities(): void {
-	// 	this.selectSellersCitiesForm = [];
-	// 	this.cities.map( (city: string) => this.selectSellersCitiesForm.push({title: city, checked: false}))
-  // }
+  
   public sendSellersCities(): void {
 		const arr: string[] = this.newSelectedCities;
 		if (Boolean(arr.length)) {
@@ -180,15 +155,7 @@ export class OfficeComponent implements OnInit, OnDestroy {
   }
 		this.nextStep();
   }
-  // public sendSellersCities(): void {
-  // 	const cities: string[] = this.selectSellersCitiesForm.filter((city: any) => city.checked)
-  // 	.map((city: any) => city = city.title);
-	// 	this.userDataService.setSellerCities(cities);
-	// 	this._snackBar.open('Настройки локации сохранены!', '', {
-	// 		duration: 2000,
-	// 	});
-	// 	this.nextStep();
-  // }
+
 
   public selectAllCategories(): void {
 		this.newSelectedCategories = this.allCategories;

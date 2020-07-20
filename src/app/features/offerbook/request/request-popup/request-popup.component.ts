@@ -4,9 +4,9 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 import { FileValidator } from 'ngx-material-file-input';
 import { userLocation } from 'src/app/models/common';
 import { UserDataFacade } from 'src/app/store/userData/user-data.facade';
-import { Subscription, EMPTY } from 'rxjs';
+import { Subscription, EMPTY, Subject } from 'rxjs';
 import { ImageCompressorService } from 'src/app/services/image-compressor.service';
-import { map, expand } from 'rxjs/operators';
+import { map, expand, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-request-popup',
@@ -16,38 +16,25 @@ import { map, expand } from 'rxjs/operators';
 export class RequestPopupComponent implements OnInit, OnDestroy, AfterViewInit {
 
 	private _citySubscriber: Subscription;
-  private _imageMaxSize: number = 5000000;
+	private _ngUnsubscribe: Subject<any> = new Subject<any>();
+//   private _imageMaxSize: number = 5000000;
   private _compressedImages: File[] = [];
   public requestForm: FormGroup;
   public cityList: string[] = userLocation;
   public userCity: string = null;
-  
+
   public upFile: File[] = null;
 	public photos64: string[] = [];
 	public uploadFiles: File[] = [];
 	public photoImgArray = [];
-	
-  public process (files: File[]): void {
-		const reader: FileReader = new FileReader();
-		const fileList: File[] = [...files];
-		fileList.map((file: File) => {
-			reader.readAsDataURL(files[0]);
-			reader.onload = (ev: ProgressEvent<FileReader>) => {
-				const imgUrl: string | ArrayBuffer = ev.target.result;
-				// this.toCompress(files, imgUrl)
-				this.uploadFiles = files;
-				this.photos64.push(String(imgUrl)); // можно просто обновлять с одним файлом пока нет мульти фото
-			};
 
-		})
-		
-	}
+  
 
   constructor(
-	public requestService: RequestService,
-	public userDataFacade: UserDataFacade,
-	private _fb: FormBuilder,
-	private _compressor: ImageCompressorService,
+		public requestService: RequestService,
+		public userDataFacade: UserDataFacade,
+		private _fb: FormBuilder,
+		private _compressor: ImageCompressorService,
 	) {   }
 
   ngOnInit(): void {
@@ -58,8 +45,7 @@ export class RequestPopupComponent implements OnInit, OnDestroy, AfterViewInit {
 	category : new FormControl('', Validators.required),
 	city : new FormControl(this.userCity, Validators.required),
 	secondHand : new FormControl(),
-	requestImage : new FormControl(null, [ FileValidator.maxContentSize(this._imageMaxSize)]),
-	requestImage1 : new FormControl(),
+	requestImage : new FormControl(), //null, [ FileValidator.maxContentSize(this._imageMaxSize)]
 	});
 	}
 
@@ -67,14 +53,31 @@ export class RequestPopupComponent implements OnInit, OnDestroy, AfterViewInit {
 		public photosImg: QueryList<any>;
 
 	ngAfterViewInit (): void {
-		this.photosImg.changes.subscribe((images: HTMLImageElement[]) => {
+		this.photosImg.changes.pipe(takeUntil(this._ngUnsubscribe)).subscribe((images: HTMLImageElement[]) => {
 			this.photoImgArray = [...images];
 				} );
 	}
 
   ngOnDestroy(): void {
 	this._citySubscriber.unsubscribe();
+	this._ngUnsubscribe.next();
+	this._ngUnsubscribe.complete();
   }
+
+  public process (files: File[]): void {
+	const reader: FileReader = new FileReader();
+	const fileList: File[] = [...files];
+	fileList.map((file: File) => {
+		reader.readAsDataURL(files[0]);
+		reader.onload = (ev: ProgressEvent<FileReader>) => {
+			const imgUrl: string | ArrayBuffer = ev.target.result;
+			// this.toCompress(files, imgUrl)
+			this.uploadFiles = files;
+			this.photos64 = [(String(imgUrl))]; //отображает только 1 фото
+			// this.photos64.push(String(imgUrl));  для мульти фото
+		};
+	});
+}
 
   recursiveCompress = (image: HTMLImageElement, index: number, array: any[], file: File) => {
 
@@ -114,8 +117,8 @@ export class RequestPopupComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
 public submitForm(): void {
-	if ( this.requestForm.value.requestImage && this.requestForm.value.requestImage.files && this.requestForm.value.requestImage.files.length) {
-	  this.toCompress(this.uploadFiles)	
+	if ( Boolean(this.uploadFiles.length)) {
+	  this.toCompress(this.uploadFiles)
 		.then(() => {
 			const formValue: any = this.requestForm.value;
 			if (Boolean(this._compressedImages.length)) {
@@ -129,22 +132,6 @@ public submitForm(): void {
 
 		})
 		.catch((error: Error) => console.log(error));
-	
-
-	//   this.toCompress(this.requestForm.value.requestImage.files)
-	//   .then((images: File[]) => {
-	// 	  const formValue: any = this.requestForm.value;
-	// 	  if (Boolean(images.length)) {
-	// 		  formValue.requestImage = {
-	// 			  ...formValue.requestImage,
-	// 			  files : images
-	// 		  }
-	// 	  }
-	// 	  this.requestService.submitForm(formValue);
-	// 	  this._compressedImages = [];
-	//   })
-	//   .catch((error: Error) => console.log(error));
-	// }
  }
 	else { this.requestService.submitForm(this.requestForm.value);
   }

@@ -1,6 +1,19 @@
-<h1 mat-dialog-title>Измените нужное вам поле(-я)</h1>
-<div class="request-form" mat-dialog-content [formGroup]="requestChangeForm" (ngSubmit)="submitForm()" class="request-form">
-    <mat-form-field>
+<h1 mat-dialog-title>Измените нужное поле(-я)</h1>
+<form class="request-form" mat-dialog-content [formGroup]="requestChangeForm" (ngSubmit)="submitForm()" >
+  <div class="photoblock"> 
+    <div>
+    <label>
+      <input class="photoblock__setphoto" type="file" name="photo" (change)="process($event.target.files)" formControlName="requestImage" accept="image/*">
+      <mat-icon class="photoblock__photo-icon" matSuffix>add_a_photo</mat-icon>
+    </label>  
+  </div>
+    <div class="photoblock__photo-wrap">
+      <div class="photoblock__photos" *ngFor = " let photo of photos64">
+        <img class="photoblock__photo" #photoImg  [src]="photo">
+      </div>
+    </div>
+  </div>  
+  <mat-form-field>
         <mat-label>Изменить название</mat-label>
         <input matInput
         type="text"
@@ -31,7 +44,7 @@
       </mat-select>
   </mat-form-field>
   <mat-checkbox class="example-margin" formControlName="secondHand">можно б/у</mat-checkbox>
-    <mat-form-field>
+    <!-- <mat-form-field>
       <ngx-mat-file-input formControlName="requestImage"
         [accept]="'.png,.jpg,.jpeg'"
        placeholder="Выбрать другое фото" ></ngx-mat-file-input>
@@ -41,9 +54,9 @@
          (Ваш файл {{requestChangeForm.get('requestImage')?.getError('maxContentSize').actualSize
         | byteFormat}}).
       </mat-error>
-    </mat-form-field>
+    </mat-form-field> -->
   
-  </div>
+  </form>
   <div mat-dialog-actions>
     <button mat-button mat-dialog-close (click)="cancelChanging()">Отмена</button>
     <button mat-raised-button

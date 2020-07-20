@@ -59,7 +59,7 @@
         width: 100%;
     }
     &__info{
-        height: 2.5rem;
+        min-height: 2.5rem;
       }
       &__offers{
         font-weight: 600;
@@ -83,10 +83,12 @@
 }
 
 .accepted{
-    background-color: rgb(126, 212, 126);
-}
+    border: 1px solid $accepted;
+  }
 .rejected{
-    background-color: rgb(236, 134, 143);
-}
+    border: 1px solid $rejected;}
 
-
+.done{
+    color: $accepted;
+    font-weight: bold;
+    }

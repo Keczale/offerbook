@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import * as firebase from 'firebase';
+// import * as firebase from 'firebase';
+import { auth, database, storage } from 'firebase';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Request } from 'src/app/models/request.model';
 import { AngularFireDatabase } from '@angular/fire/database';
@@ -17,7 +18,7 @@ export class RequestDataService {
   private _noPhotoUrl: string = '../assets/img/no-photo.jpg';
 
   public get userUid(): string {
-		return firebase.auth().currentUser.uid;
+		return auth().currentUser.uid;
 	}
 
   public get photoBaseURL(): string {
@@ -41,7 +42,7 @@ export class RequestDataService {
 
   public set downloadPhotoURL(fileName: string) {
 
-	 firebase.storage().ref(`${this.photoBaseURL}/${fileName}`).getDownloadURL().then((url: string) => {
+	 storage().ref(`${this.photoBaseURL}/${fileName}`).getDownloadURL().then((url: string) => {
 		this._downloadPhotoURL = url;
 		})
 		.catch((error: any) =>
@@ -52,19 +53,19 @@ export class RequestDataService {
 	const uploadFile: File = file;
 	let photoURL: string;
 	if (file) {
-	const storageRef: firebase.storage.Reference = firebase.storage()
+	const storageRef: storage.Reference = storage()
 		.ref(`${this.photoBaseURL}/${fileName}`);
 
 	await new Promise((resolve) => {
 	this._uploadTask =  storageRef.put(uploadFile);
-	this._uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+	this._uploadTask.on(storage.TaskEvent.STATE_CHANGED,
 			() => { },
 			(error: Error) => {this._snackBar.open(`${error}`, '', {
 				duration: 2000,
 			  });
 			},
 			 async () => {
-				photoURL = await firebase.storage().ref(`${this.photoBaseURL}/${fileName}`).getDownloadURL();
+				photoURL = await storage().ref(`${this.photoBaseURL}/${fileName}`).getDownloadURL();
 				resolve('done');
 
 				this._snackBar.open('Готово!', '', {
@@ -79,7 +80,7 @@ export class RequestDataService {
   }
 
   public addRequestToMap(city: string, category: string, fromUser: string, id: string): void {
-	firebase.database().ref(`${this._baseActiveRequestMapURL}/${city}/${category}/${id}`)
+	database().ref(`${this._baseActiveRequestMapURL}/${city}/${category}/${id}`)
 	.set(`${fromUser}/${id}`);
   }
   public removeRequestFromMap(userRequest: Request): void {
@@ -89,14 +90,14 @@ export class RequestDataService {
 
   public async sendRequestToDatabase(request: Request): Promise <string> {
 
-	  await firebase.database().ref(`${this.requestBaseURL}/${request.id}`).set(request)
+	  await database().ref(`${this.requestBaseURL}/${request.id}`).set(request)
 	  .catch((error: Error) => console.log(error));
 	return 'done';
   }
 
   public async loadActualListFromDB(): Promise<any> {
 	let requestMap: any = null;
-	await firebase.database().ref(`${this.requestBaseURL}`).once('value')
+	await database().ref(`${this.requestBaseURL}`).once('value')
 	.then((snap: any) => snap.val())
 	.then((map: object) => requestMap = map)
 	.catch((error: Error) => console.log(error));
@@ -104,8 +105,8 @@ export class RequestDataService {
 }
 
   public async deleteImageRequest(fileName: string): Promise<string> {
-	  if (Boolean(fileName) && firebase.storage().ref(`${this.photoBaseURL}/${fileName}`)) {
-		firebase.storage().ref(`${this.photoBaseURL}/${fileName}`).delete()
+	  if (Boolean(fileName) && storage().ref(`${this.photoBaseURL}/${fileName}`)) {
+		storage().ref(`${this.photoBaseURL}/${fileName}`).delete()
 		.catch((error: Error) => console.log(error));
 	  }
 	  return('Фото удалено');

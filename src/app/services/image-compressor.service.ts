@@ -29,7 +29,7 @@ export class ImageCompressorService {
 			(preImg.onload = () => {
 				const minSide: number = Math.min(preImg.width, preImg.height, this._convertWidth);
 				width = minSide;
-				alert(`ширина=${width}`)
+				// alert(`ширина=${width}`)
 				URL.revokeObjectURL(preImgUrl);
 				
 			// const img: HTMLImageElement = document.createElement('img')
@@ -43,8 +43,8 @@ export class ImageCompressorService {
 			// img.src = image;
 
 			// (img.onload = () => {
-				alert(`ширина=${img.width}`)
-				alert(`dscjnf=${img.height}`)
+				// alert(`ширина=${img.width}`)
+				// alert(`dscjnf=${img.height}`)
 				// URL.revokeObjectURL(imgUrl);
 			const elem: HTMLCanvasElement = document.createElement('canvas'); // Use Angular's Renderer2 method
 

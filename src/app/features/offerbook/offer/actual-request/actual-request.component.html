@@ -21,10 +21,17 @@
         <p>от: {{request.fromUserName ? request.fromUserName : 'без имени'}}</p>
         <p>{{request.fromUserRating  ? request.fromUserRating : 'нет оценок'}}</p>
     </div>
-    <div class="request__other-offers">
+    <div class="request__other-offers" *ngIf = "request && request.status === requestStatusEnum[0] && offerToRequest && offerToRequest.status === offerStatus[0]">
         Предложений: {{!offerListForCounter.length ? 'ещё нет' : offerListForCounter.length }}
         {{bestPrice ? bestPrice : ''}}
     </div>
+    <div class="request__other-offers" *ngIf = "request && request.status === requestStatusEnum[1]  && offerToRequest && offerToRequest.status === offerStatus[1]">
+        <p>Контакты:</p>
+        <p>Телефон: {{buyer && buyer.telephone ? buyer.telephone : 'нет мобилы'}}</p>
+        <p>Адрес: {{buyer && buyer.adress ? buyer.adress : 'не указан'}}</p>
+
+    </div>
+
     <div class="request__buttons">
     <div class="request__remove btnwrapper" *ngIf="!offerToRequest && !isRequestRejected">
         <button 
@@ -35,7 +42,7 @@
             Отклонить
         </button>
     </div>
-    <div class="request__remove  btnwrapper" *ngIf="offerToRequest && request.status === requestStatusEnum[1]">
+    <div class="request__remove  btnwrapper" *ngIf="offerToRequest && request && request.status === requestStatusEnum[1]">
         <button 
             class="request__button"
             mat-stroked-button
@@ -60,8 +67,7 @@
             title="Сделать предложение"
             *ngIf="offerToRequest && request.status===requestStatusEnum[0] "
             disabled
-            class="disabled"
-      >
+            class="disabled">
             На рассмотрении
         </button>
         <button 
@@ -70,7 +76,7 @@
             title="Сделать предложение"
             (click)="openDialog()"
             disabled
-            *ngIf="offerToRequest && request.status===requestStatusEnum[1] && offerToRequest.status === offerStatus[1]">
+            *ngIf="offerToRequest && request && request.status===requestStatusEnum[1] && offerToRequest.status === offerStatus[1]">
             Принято!
         </button>
         <button 
