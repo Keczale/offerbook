@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 // import * as firebase from 'firebase';
-import { auth, database, storage } from 'firebase';
+import { auth, database, storage, User } from 'firebase';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Request } from 'src/app/models/request.model';
 import { AngularFireDatabase } from '@angular/fire/database';
@@ -88,11 +88,9 @@ export class RequestDataService {
 	.remove(`${userRequest.id}`);
   }
 
-  public async sendRequestToDatabase(request: Request): Promise <string> {
-
-	  await database().ref(`${this.requestBaseURL}/${request.id}`).set(request)
+  public sendRequestToDatabase(request: Request): Promise <any> {
+	return database().ref(`${this.requestBaseURL}/${request.id}`).set(request)
 	  .catch((error: Error) => console.log(error));
-	return 'done';
   }
 
   public async loadActualListFromDB(): Promise<any> {
@@ -117,4 +115,5 @@ export class RequestDataService {
 	.catch((error: Error) => console.log(error));
 	return ('Карточка удалена :)');
   }
+  
 }

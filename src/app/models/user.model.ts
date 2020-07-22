@@ -59,4 +59,16 @@ export interface UserRate {
 
 export enum UserTypes {'buyer', 'seller'}
 
+export interface RateFromForm {
+	title: number;
+	description: string;
+	icon: string;
+}
 
+export const rateSelection: RateFromForm[] = [
+	{title: 1, description: 'Совсем беда', icon: 'mood_bad'},
+	{title: 2, description: 'Плохо', icon: 'sentiment_very_dissatisfied'},
+	{title: 3, description: 'Так себе', icon: 'sentiment_dissatisfied'},
+	{title: 4, description: 'Хорошо', icon: 'sentiment_satisfied'},
+	{title: 5, description: 'Просто супер!', icon: 'sentiment_very_satisfied'}
+]

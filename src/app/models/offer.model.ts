@@ -1,3 +1,5 @@
+import { UserRate } from './user.model';
+
 export class Offer {
 	constructor(
 		public id: string = '',
@@ -16,13 +18,14 @@ export class Offer {
 		public lastChange: number = null,
 		public secondHand: boolean = false,
 		public status: string = '', // accepted refused - уже без права изменений
-		public comment: string = ''  // коментарий, который можно оставить после покупки - будут у продавца в ленте собираться с указанием сделки
+		public rate: UserRate = null,
+		public rateKey: string = '', // возвращаемый key от firebase.push
 		// public special: string = '', // bonuses
 
 	) {}
 }
 
-export enum OfferStatus {'opened', 'accepted', 'rejected'}
+export enum OfferStatus {'opened', 'accepted', 'rejected', 'rewieved'}
 
 export enum OfferFilterName {'all', 'active', 'responsed', 'rejected'}
 export enum OfferFilterTitle {'Все', 'Активные', 'В работе', 'Отклонены'}

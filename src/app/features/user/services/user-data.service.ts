@@ -7,13 +7,14 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { auth, database } from 'firebase';
-import { User, UserTypes } from 'src/app/models/user.model';
+import { User, UserTypes, UserRate } from 'src/app/models/user.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserDataService {
 
+	private userBaseUrl: string = 'users';
   public users$: Observable<any[]>;
 
   public isLoading$: Observable<boolean> = this._store$.pipe(select(DataIsLoadingSelector));
@@ -40,7 +41,7 @@ constructor(
   }
 
   public loadCurrentUserFromData(uid: any): void {
-	database().ref(`users/${uid}`).once('value')
+	database().ref(`${this.userBaseUrl}/${uid}`).once('value')
 	.then((snapshot: database.DataSnapshot) => snapshot.val())
 	.then((user: User) => {
 	if (user) {this._store$
@@ -59,15 +60,15 @@ constructor(
 
   public userToStoreAndBaseLogInGoogle(): void {
 	const user: firebase.User = auth().currentUser;
-	database().ref(`users/${user.uid}`).once('value').then((snap: any) => {
+	database().ref(`${this.userBaseUrl}/${user.uid}`).once('value').then((snap: any) => {
 		if (snap.val()) {
-		database().ref(`users/${user.uid}/userName`).set(user.displayName);
+		database().ref(`${this.userBaseUrl}/${user.uid}/userName`).set(user.displayName);
 	}
 		else {
 		this._store$.dispatch(getCurrentUserAction({id: user.uid, name: user.displayName, email: user.email}));
 		this._store$.pipe(select(currentUserSelector))
 		.subscribe((currentUser: User) =>
-		database().ref(`users/${user.uid}`).set(currentUser)).
+		database().ref(`${this.userBaseUrl}/${user.uid}`).set(currentUser)).
 		unsubscribe();
 	} }
 	);
@@ -82,7 +83,7 @@ constructor(
 
 	public userToDataBase(): void {
 		this.onUserSubscription = this._store$.pipe(select(currentUserSelector))
-		.subscribe((user: User) => database().ref(`users/${user.id}`).set(user)).unsubscribe();
+		.subscribe((user: User) => database().ref(`${this.userBaseUrl}/${user.id}`).set(user)).unsubscribe();
 	}
 
   public createUser(name: any, email: any, password: any): void {
@@ -145,11 +146,11 @@ constructor(
 	public addSeller(userType: string): void {
 		if (userType === UserTypes[0]) {
 			this._store$.dispatch(addSellerAction());
-			database().ref(`users/${auth().currentUser.uid}/userType`).set(UserTypes[1]);
+			database().ref(`${this.userBaseUrl}/${auth().currentUser.uid}/userType`).set(UserTypes[1]);
 		}
 		else if (userType === UserTypes[1]) {
 			this._store$.dispatch(removeSellerAction());
-			database().ref(`users/${auth().currentUser.uid}/userType`).set(UserTypes[0]);
+			database().ref(`${this.userBaseUrl}/${auth().currentUser.uid}/userType`).set(UserTypes[0]);
 		}
 	}
 
@@ -160,6 +161,11 @@ constructor(
 	public setSellerCities(sellerCities: string[]): void {
 		this._store$.dispatch(setSellerLocationAction({sellerCities}));
 		this.userToDataBase();
+	}
+
+	public sendSellerRateToDatabase(sellerId: string, rate: UserRate, key: string): Promise<any> {
+		return database().ref(`${this.userBaseUrl}/${sellerId}/sellerRating/${key}`).set(rate)
+		.catch((error: Error) => console.log(error));
 	}
 
 }

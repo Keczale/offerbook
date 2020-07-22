@@ -8,7 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { RequestFacade } from 'src/app/store/request/request.facade';
 import { Observable } from 'rxjs';
-import { User, LastOffer, UserRate } from 'src/app/models/user.model';
+import { User, LastOffer, UserRate, RateFromForm } from 'src/app/models/user.model';
 import { UserDataFacade } from 'src/app/store/userData/user-data.facade';
 import { take } from 'rxjs/operators';
 import { Offer, OfferStatus } from 'src/app/models/offer.model';
@@ -60,7 +60,8 @@ export class RequestService {
 	}
 	public getUserRating(user: User): number {
 		if ( user && user.buyerRating && Boolean(user.buyerRating.length)) {
-			return user.buyerRating.reduce((sum: number, currentRate: UserRate) => sum + currentRate.rate, 0);
+			const ratingArray: UserRate[] = Object.values(user.sellerRating);
+			return ratingArray.reduce((sum: number, currentRate: UserRate) => sum + currentRate.rate, 0);
 		}
 		return null;
 	}
@@ -323,7 +324,7 @@ export class RequestService {
 		request = { ...request, status: RequestStatus[1] };
 
 		for (let key in request.offers) {
-			if (Boolean(key)) {
+			if (Boolean(key) && request.offers.hasOwnProperty(key)) {
 				const offer: Offer = request.offers[key];
 
 				offer.id === acceptedOffer.id ?
@@ -385,5 +386,41 @@ export class RequestService {
 				this._requestFacade.setFilteredRequestList(requests);
 				this._requestFacade.setRequestFilterName(RequestFilterName[2]);
 			});
+	}
+	public setRateAndRewievedStatusToOffer (request: Request, sellerId: string, sellerRate: UserRate): Promise <any> {
+		for (let key in request.offers) {
+			if (Boolean(key) && request.offers.hasOwnProperty(key)) {
+				const offer: Offer = request.offers[key];
+
+				if (offer.fromUserId === sellerId) {
+					request = { ...request, offers: { ...request.offers, [key]: { ...request.offers[key], status: OfferStatus[3], rate: sellerRate, rateKey: key} } };
+					this._requestDataService.sendRequestToDatabase(request)
+					.catch((error: Error) => console.log(error));
+					return  Promise.resolve(key);
+				}
+			}
+		}
+	}
+	public submitSellerRateForm (rateValue: any, id: string, title: string, sellerId: string, request: Request): void {
+		this._store$.dispatch(requestInProgressAction());
+		const rate: UserRate = {
+			title,
+			id,
+			rate: rateValue.rate.title,
+			comment: rateValue.comment
+		};
+		this.setRateAndRewievedStatusToOffer (request, sellerId, rate)
+		.then((key: string) => this._userFacade.sendSellerRateToDatabase(sellerId, rate, key))
+		.then(() => {
+			this._snackBar.open('Оценка отправлена! Спасибо!', '', {
+				duration: 2500,
+			});
+			this._store$.dispatch(requestInProgressAction());
+		})
+		.catch((error: Error) => {
+			this._store$.dispatch(requestInProgressAction());
+			console.log(error);
+			});
+
 	}
 }

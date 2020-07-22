@@ -27,9 +27,10 @@
         flex: 1 1 10%;
         
         padding-left: .6rem;
-
-        font-weight: bold;
     }  
+    &__title{
+        font-weight: bold;
+    }
     &__describe{
         flex: 1 0 40%;
         padding-left: .4rem;
@@ -61,8 +62,12 @@
     &__title{
         font-weight: bold;
     }
-    
+   
 
+}
+.rateForm{
+    display: flex;
+    flex-direction: column;
 }
 .accepted{
     border: 1px solid $accepted;

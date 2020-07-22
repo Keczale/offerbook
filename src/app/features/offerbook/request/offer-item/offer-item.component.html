@@ -1,8 +1,8 @@
 <mat-card 
-    class="currentoffer"
-    [class.accepted] = "currentOffer.status === accepted"
-    [ngClass] = "{rejected: currentOffer.status === rejected}">
     
+    [class.accepted] = "currentOffer.status === offerStatus[1] || currentOffer.status === offerStatus[3]"
+    [ngClass] = "{rejected: currentOffer.status === offerStatus[2]}">
+    <div class="currentoffer">
     <div class="currentoffer__index">{{index}}</div>
     <img class="currentoffer__photo " src="{{currentOffer.photos[0]}}" (click)="openPhoto(currentOffer.photos[0])">
 
@@ -30,7 +30,7 @@
     </button>
     <button 
         class="currentoffer__acceptbtn_accepted disabled"
-        *ngIf="currentOffer.status === offerStatus[1] "
+        *ngIf="currentOffer.status === offerStatus[1] || currentOffer.status === offerStatus[3]"
         mat-stroked-button
         title="Двойной клик, чтобы принять предложение продавца"
         (dblclick) = "acceptOffer()"
@@ -48,6 +48,48 @@
     </button>
 
     </div>
+ 
+    </div>
+    <mat-accordion>
+        <mat-expansion-panel
+        (opened)="panelOpenState = true"
+        (closed)="panelOpenState = false"
+        [disabled]="rateIsDisabled || currentOffer.status===offerStatus[3]">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                Ваша оценка 
+                </mat-panel-title>
+                <mat-panel-description>
+                    {{currentOffer.status===offerStatus[3] ? 'Вы уже оставили оценку' : 'Oцените сделку'}}
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+        <form class="rateForm" [formGroup]="sellerRateForm" (ngSubmit)= "submitSellerRateForm()" >
+            <mat-form-field>
+                <mat-label>Оценка</mat-label>
+                    <mat-select formControlName="rate" >
+                        <mat-select-trigger>
+                            {{sellerRateForm.value.rate ? sellerRateForm.value.rate.title : ''}} :
+                            {{sellerRateForm.value.rate ? sellerRateForm.value.rate.description : ''}}
+                            <mat-icon *ngIf = "sellerRateForm.value.rate" aria-hidden="false">{{sellerRateForm.value.rate.icon}}</mat-icon>
+                        </mat-select-trigger>
+                    <mat-option *ngFor="let rate of ratesArr" [value]="rate">
+                    {{rate.title}} : {{rate.description}} <mat-icon aria-hidden="false" aria-label="Example home icon">{{rate.icon}}</mat-icon>
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field >
+                <mat-label>Комментарий</mat-label>
+                <textarea matInput formControlName="comment"></textarea>
+              </mat-form-field>
+              <button 
+              type="submit" 
+              mat-stroked-button>
+              Отправить
+            </button>
+        </form>
+        </mat-expansion-panel>
+    </mat-accordion>
 
 </mat-card>
  

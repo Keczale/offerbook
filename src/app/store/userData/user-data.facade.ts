@@ -3,7 +3,7 @@ import { Store, select } from '@ngrx/store';
 import { UserState, DataIsLoadingSelector, currentUserNameSelector, logOutErrorSelector, userTypeSelector, userLocationSelector, currentUserSelector, setRejectedRequestAction, sellerLocationSelector, sellerCategoriesSelector, setResponsedRequestAction, lastOffersSelector, setLastOfferToRequestsAction, setUserDataFromFormAction, userDataSelector } from '.';
 import { Observable } from 'rxjs';
 import { UserDataService } from 'src/app/features/user/services/user-data.service';
-import { User, LastOffer, SellersResponsedRequests, UserData } from 'src/app/models/user.model';
+import { User, LastOffer, SellersResponsedRequests, UserData, UserRate } from 'src/app/models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -64,10 +64,12 @@ export class UserDataFacade {
   }
 
   public loadCurrentUserFromDB(uid: string): void {
-	this._userDataService.loadCurrentUserFromData(uid);
+	  this._userDataService.loadCurrentUserFromData(uid);
   }
   public userSignOut(): void {
-	this._userDataService.signOut();
-}
-
+	  this._userDataService.signOut();
+  }
+  public sendSellerRateToDatabase(uid: string, rate: UserRate, key: string): Promise<any> {
+	  return this._userDataService.sendSellerRateToDatabase(uid, rate, key);
+  }
 }

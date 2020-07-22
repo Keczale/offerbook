@@ -147,7 +147,8 @@ export class OfferService {
 	}
 	public getSellerRating(user: User): number {
 		if ( user && user.sellerRating && Boolean(user.sellerRating.length)) {
-			return user.sellerRating.reduce((sum: number, currentRate: UserRate) => sum + currentRate.rate, 0);
+			const ratingArray: UserRate[] = Object.values(user.sellerRating);
+			return ratingArray.reduce((sum: number, currentRate: UserRate) => sum + currentRate.rate, 0);
 		}
 		return null;
 	}
