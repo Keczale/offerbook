@@ -91,7 +91,7 @@ ngAfterViewChecked(): void {
   }
 
   public openDialog(): void {
-		this.requestService.openDialog(RequestPopupComponent);
+		this.requestService.openDialog(RequestPopupComponent, null);
   }
 
   public filterAll(): void {

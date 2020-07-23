@@ -51,7 +51,7 @@ export class RequestItemComponent implements OnInit {
 	}
 
   public changeRequest(changedRequest: Request): void {
-		this.requestService.openDialog(RequestChangePopupComponent);
+		this.requestService.openDialog(RequestChangePopupComponent, null);
 		this.requestService.initChangeRequestAction(changedRequest);
 	}
 

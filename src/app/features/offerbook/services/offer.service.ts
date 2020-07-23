@@ -8,7 +8,7 @@ import { loadActualRequestListFromDBAction, offerInProgressAction, requestListIs
 import { Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { setLastLoadedRequestAction, currentUserSelector } from 'src/app/store';
-import { Offer, OfferStatus, OfferFilterName } from 'src/app/models/offer.model';
+import { Offer, OfferStatus, OfferFilterName, RatingInOffer } from 'src/app/models/offer.model';
 import { take } from 'rxjs/operators';
 import { OfferFacade } from 'src/app/store/offer/offer.facade';
 
@@ -145,10 +145,16 @@ export class OfferService {
 		return true;
   }
 	}
-	public getSellerRating(user: User): number {
+	public getSellerRating(user: User): RatingInOffer {
 		if ( user && user.sellerRating && Boolean(user.sellerRating.length)) {
 			const ratingArray: UserRate[] = Object.values(user.sellerRating);
-			return ratingArray.reduce((sum: number, currentRate: UserRate) => sum + currentRate.rate, 0);
+			const averageRating: number = ratingArray.reduce((sum: number, currentRate: UserRate) => sum + currentRate.rate, 0);
+			const sellerComments: string[] = ratingArray.map((item: UserRate) => item.comment);
+			return {
+				rating: averageRating,
+				ratingQuantity: user.sellerRating.length,
+				comments: sellerComments
+			};
 		}
 		return null;
 	}
@@ -174,11 +180,13 @@ export class OfferService {
 		.subscribe((request: Request) => openedRequest = request).unsubscribe();
 
 		let currentUser: User = null;
-		this._userFacade.currentUser$.subscribe((user: User) => currentUser = user);
+		let currentUserId: string = null;
+		this._userFacade.currentUser$.pipe(take(1)).subscribe((user: User) => currentUserId = user.id);
 
 		let offer: Offer = new Offer();
-
-		this._offerDataService.uploadOfferImage(file, photoName)
+		this._userFacade.loadCurrentUserFromDB(currentUserId)
+		.then(() => this._userFacade.currentUser$.pipe(take(1)).subscribe((user: User) => currentUser = user))
+		.then(() => this._offerDataService.uploadOfferImage(file, photoName))
 		.then((downloadPhotoURL: string) => {
 			const dateCreateStamp: number = Date.now();
 			offer = {

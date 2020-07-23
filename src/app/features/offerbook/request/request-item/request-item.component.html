@@ -15,8 +15,10 @@
           {{userRequest.description}}
         </p>
         <div class="request-card__info">
-          <p class="request-card__offers" (click)="openOffers(userRequest.id)">
-            Предложений <span class="request-card__offers">{{offersQuantity ? offersQuantity : 'пока нет'}}</span>
+          <p class="request-card__offers" 
+          [class.request-card__offers_active] ="offersQuantity > 0"
+          (click)="openOffers(userRequest.id)">
+            Предложений: <span class="request-card__offers">{{offersQuantity ? offersQuantity : 'пока нет'}}</span>
             <i *ngIf = "userRequest.newOffersToRequest">
               Новых: <span class="request-card__new-offers">+{{userRequest.newOffersToRequest}}</span>
             </i>

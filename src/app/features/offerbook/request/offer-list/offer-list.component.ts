@@ -6,6 +6,7 @@ import { Offer } from 'src/app/models/offer.model';
 import { RequestFacade } from 'src/app/store/request/request.facade';
 import { Request } from 'src/app/models/request.model';
 import { RequestService } from '../../services/request.service';
+import { AppFacade } from 'src/app/store/app/app.facade';
 
 
 @Component({
@@ -15,36 +16,42 @@ import { RequestService } from '../../services/request.service';
 })
 export class OfferListComponent implements OnInit {
 
-  private ngUnsubscribe: Subject<void> = new Subject<void>();
+  private _ngUnsubscribe: Subject<void> = new Subject<void>();
 
   private isOpened: boolean = false;
 
   public requestId: string = '';
+
 
   @Input()
   public offerList: Offer[] = [];
 
   public currentRequest: Request = null;
 
+  public screenWidth: number = null;
+
 
   constructor(
 		private _activatedRoute: ActivatedRoute,
 		private _requestFacade: RequestFacade,
-		private _requestServise: RequestService
+		private _requestServise: RequestService,
+		private _appFacade: AppFacade,
   ) { }
 
   ngOnInit(): void {
-		this._activatedRoute.params.pipe(takeUntil(this.ngUnsubscribe)).subscribe((params: Params) => {
+	this._appFacade.screenWidth$.pipe(takeUntil(this._ngUnsubscribe))
+	.subscribe((width: number) => this.screenWidth = width);
+		this._activatedRoute.params.pipe(takeUntil(this._ngUnsubscribe)).subscribe((params: Params) => {
 			if (Boolean(params)) {
 				this.requestId = params.id;
 				}
 		});
-		this._requestFacade.isOpenedOfferList$.pipe(takeUntil(this.ngUnsubscribe))
+		this._requestFacade.isOpenedOfferList$.pipe(takeUntil(this._ngUnsubscribe))
 		.subscribe((isOpened: boolean) => {
 			this.isOpened = isOpened;
 		});
 
-		this._requestFacade.requestList$.pipe(takeUntil(this.ngUnsubscribe))
+		this._requestFacade.requestList$.pipe(takeUntil(this._ngUnsubscribe))
 			.subscribe((requestList: Request[]) => {
 				if (!Boolean(requestList.length) || !this.isOpened) {
 					this._requestServise.simpleLoadActualList()
@@ -63,8 +70,8 @@ export class OfferListComponent implements OnInit {
 		this._requestFacade.openOfferList();
   }
   ngOnDestroy(): void {
-		this.ngUnsubscribe.next();
-		this.ngUnsubscribe.complete();
+		this._ngUnsubscribe.next();
+		this._ngUnsubscribe.complete();
 		this._requestFacade.closeOfferList();
 
   }

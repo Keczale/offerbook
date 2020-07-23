@@ -46,7 +46,7 @@ export class MobileRequestItemComponent implements OnInit {
 	}
 
   public changeRequest(changedRequest: Request): void {
-		this.requestService.openMobileDialog(RequestChangePopupComponent);
+		this.requestService.openMobileDialog(RequestChangePopupComponent, null);
 		this.requestService.initChangeRequestAction(changedRequest);
 	}
 

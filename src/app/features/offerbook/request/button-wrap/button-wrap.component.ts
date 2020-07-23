@@ -34,9 +34,9 @@ constructor(
 
   public openDialog(): void {
 		if (this.screenWidth > breakpoints.mobile) {
-			this.requestService.openDialog(RequestPopupComponent);
+			this.requestService.openDialog(RequestPopupComponent, null);
 		}
-		else{this.requestService.openMobileDialog(RequestPopupComponent);
+		else{this.requestService.openMobileDialog(RequestPopupComponent, null);
 		}
   }
 

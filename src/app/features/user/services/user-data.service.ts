@@ -40,8 +40,8 @@ constructor(
 	this._store$.dispatch(inProgressAction());
   }
 
-  public loadCurrentUserFromData(uid: any): void {
-	database().ref(`${this.userBaseUrl}/${uid}`).once('value')
+  public loadCurrentUserFromData(uid: any): Promise<any> {
+	return database().ref(`${this.userBaseUrl}/${uid}`).once('value')
 	.then((snapshot: database.DataSnapshot) => snapshot.val())
 	.then((user: User) => {
 	if (user) {this._store$

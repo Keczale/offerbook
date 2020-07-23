@@ -45,18 +45,39 @@ export class RequestService {
 		return (Date.now()).toString();
 	}
 
-	public openDialog(component: any): void {
-		this.dialog.open(component, {
-			height: 'auto',
-			width: '50%',
-		});
+	public openDialog(component: any, propData: any): void {
+		console.log('bbbbbbbbb')
+		if (propData) {
+			this.dialog.open(component, {
+				height: 'auto',
+				width: '50%',
+				data: propData
+			});
+
+		}
+		else{
+			this.dialog.open(component, {
+				height: 'auto',
+				width: '50%',
+			});
+		}
 	}
-	public openMobileDialog(component: any): void {
-		this.dialog.open(component, {
-			height: 'auto',
-			maxWidth: '90wv',
-			width: '90%',
-		});
+	public openMobileDialog(component: any, propData: any): void {
+		if (propData) {
+			this.dialog.open(component, {
+				height: 'auto',
+				maxWidth: '90wv',
+				width: '90%',
+				data: propData
+			});
+		}
+		else {
+			this.dialog.open(component, {
+				height: 'auto',
+				maxWidth: '90wv',
+				width: '90%',
+			});
+		}
 	}
 	public getUserRating(user: User): number {
 		if ( user && user.buyerRating && Boolean(user.buyerRating.length)) {
@@ -417,6 +438,7 @@ export class RequestService {
 			});
 			this._store$.dispatch(requestInProgressAction());
 		})
+		.then(() => this.simpleLoadActualList())
 		.catch((error: Error) => {
 			this._store$.dispatch(requestInProgressAction());
 			console.log(error);

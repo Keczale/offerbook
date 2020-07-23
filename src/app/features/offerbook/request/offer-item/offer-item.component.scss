@@ -43,7 +43,10 @@
     &__seller{
     flex: 0 1 15%;
     padding-left: .4rem;
-
+    }
+    &__seller_active{
+        color: $link;
+        cursor: pointer;
     }
 
     &__acceptbtn{

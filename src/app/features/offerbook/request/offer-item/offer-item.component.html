@@ -15,9 +15,13 @@
         
         <p>{{currentOffer.description}}</p>
     </div>
-    <div class="currentoffer__seller flexbox">
+    <div class="currentoffer__seller flexbox" (click) = "openComments()">
         <p>От: {{currentOffer.fromUserName ? currentOffer.fromUserName : 'нет имени'}}</p>
-        <p>{{(currentOffer.fromUserRating)  ? currentOffer.fromUserRating : 'нет оценок'}}</p>
+        <p [class.currentoffer__seller_active] = "currentOffer.fromUserRating"
+        >
+            {{currentOffer.fromUserRating?.rating  ? currentOffer.fromUserRating.rating : 'нет оценок'}}
+            {{currentOffer.fromUserRating?.rating  ? currentOffer.fromUserRating.ratingQuantity : ''}}
+        </p>
     </div>
  
     <div class="currentoffer__acceptbtn" >
@@ -50,29 +54,28 @@
     </div>
  
     </div>
-    <mat-accordion>
+    <mat-accordion *ngIf = "currentOffer.status === offerStatus[1] || currentOffer.status === offerStatus[3]">
         <mat-expansion-panel
         (opened)="panelOpenState = true"
-        (closed)="panelOpenState = false"
-        [disabled]="rateIsDisabled || currentOffer.status===offerStatus[3]">
+        (closed)="panelOpenState = false">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                 Ваша оценка 
                 </mat-panel-title>
                 <mat-panel-description>
-                    {{currentOffer.status===offerStatus[3] ? 'Вы уже оставили оценку' : 'Oцените сделку'}}
+                    {{currentOffer.status===offerStatus[3] ? 'Изменить оценку' : 'Oцените сделку'}}
                 </mat-panel-description>
             </mat-expansion-panel-header>
         <form class="rateForm" [formGroup]="sellerRateForm" (ngSubmit)= "submitSellerRateForm()" >
             <mat-form-field>
                 <mat-label>Оценка</mat-label>
-                    <mat-select formControlName="rate" >
+                    <mat-select formControlName="rate">
                         <mat-select-trigger>
-                            {{sellerRateForm.value.rate ? sellerRateForm.value.rate.title : ''}} :
-                            {{sellerRateForm.value.rate ? sellerRateForm.value.rate.description : ''}}
+                            {{sellerRateForm.value?.rate ? sellerRateForm.value.rate.title : ''}} :
+                            {{sellerRateForm.value?.rate ? sellerRateForm.value.rate.description : ''}}
                             <mat-icon *ngIf = "sellerRateForm.value.rate" aria-hidden="false">{{sellerRateForm.value.rate.icon}}</mat-icon>
                         </mat-select-trigger>
-                    <mat-option *ngFor="let rate of ratesArr" [value]="rate">
+                    <mat-option *ngFor="let rate of ratesArr" [value]="rate" >
                     {{rate.title}} : {{rate.description}} <mat-icon aria-hidden="false" aria-label="Example home icon">{{rate.icon}}</mat-icon>
                     </mat-option>
                 </mat-select>
@@ -84,8 +87,10 @@
               </mat-form-field>
               <button 
               type="submit" 
-              mat-stroked-button>
-              Отправить
+              mat-stroked-button
+              [disabled] = "sellerRateForm.value?.rate?.title && initialRate?.title && sellerRateForm.value.rate.title===initialRate.title 
+                && sellerRateForm.value?.comment && sellerRateForm.value.comment===initialComment">
+              {{currentOffer.status===offerStatus[3] ? 'Изменить' : 'Отправить'}}
             </button>
         </form>
         </mat-expansion-panel>

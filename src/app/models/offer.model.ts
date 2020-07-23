@@ -6,7 +6,7 @@ export class Offer {
 		public requestId: string = '',
 		public fromUserId: string = '',
 		public fromUserName: string = '',
-		public fromUserRating: number = null,
+		public fromUserRating: RatingInOffer = null,
 		public title: string = '',
 		public description: string = '',
 		public conditions: string = '',
@@ -29,4 +29,8 @@ export enum OfferStatus {'opened', 'accepted', 'rejected', 'rewieved'}
 
 export enum OfferFilterName {'all', 'active', 'responsed', 'rejected'}
 export enum OfferFilterTitle {'Все', 'Активные', 'В работе', 'Отклонены'}
-
+export interface RatingInOffer {
+	rating: number;
+	ratingQuantity: number;
+	comments: string[];
+}

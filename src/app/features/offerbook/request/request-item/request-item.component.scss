@@ -34,6 +34,9 @@
       font-weight: 600;
       cursor: pointer;
     }
+    &__offers_active{
+      color: $link;
+    }
     &__new-offers{
       font-weight: 600;
     }

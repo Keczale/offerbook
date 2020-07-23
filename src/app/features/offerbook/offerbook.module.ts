@@ -35,6 +35,7 @@ import { ButtonWrapComponent } from './request/button-wrap/button-wrap.component
 import { PhotoPopupComponent } from '../components/photo-popup/photo-popup.component';
 import { NotFoundComponent } from '../components/not-found/not-found.component';
 import { MobileRequestItemComponent } from './request/mobile-request-item/mobile-request-item.component';
+import { CommentsPopupComponent } from './request/comments-popup/comments-popup.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { MobileRequestItemComponent } from './request/mobile-request-item/mobile
     ButtonWrapComponent,
     PhotoPopupComponent,
     NotFoundComponent,
-    MobileRequestItemComponent
+    MobileRequestItemComponent,
+    CommentsPopupComponent
     ],
   imports: [
     OfbRoutingModule,
