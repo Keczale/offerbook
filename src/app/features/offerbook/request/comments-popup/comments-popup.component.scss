@@ -1,3 +1,12 @@
 .comments{
     display: flex;
+    margin-bottom: .5rem;
+
+    &__index{
+        padding-right: .5rem;
+        font-weight: bold;
+    }
+    &__request_title{
+        font-weight: bold;
+    }
 }

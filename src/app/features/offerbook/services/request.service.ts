@@ -427,6 +427,7 @@ export class RequestService {
 		const rate: UserRate = {
 			title,
 			id,
+			date: new Date(),
 			fromUserName: request.fromUserName,
 			rate: rateValue.rate.title,
 			comment: rateValue.comment
