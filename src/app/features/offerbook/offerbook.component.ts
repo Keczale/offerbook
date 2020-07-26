@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { AppFacade } from 'src/app/store/app/app.facade';
 
 @Component({
   selector: 'app-offerbook',
@@ -10,8 +11,12 @@ export class OfferbookComponent implements OnInit {
 
   constructor(
 		public afAuth: AngularFireAuth,
+		private _appFacade: AppFacade
+
   ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+		this._appFacade.setOfferbookModuleOpened();
+	}
 
 }

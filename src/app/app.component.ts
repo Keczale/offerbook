@@ -5,7 +5,7 @@ import { AngularFireDatabase } from '@angular/fire/database';
 import { Store } from '@ngrx/store';
 import { UserState } from './store';
 import { UserDataFacade } from './store/userData/user-data.facade';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, combineLatest } from 'rxjs';
 import { RequestFacade } from './store/request/request.facade';
 import { MatDialog } from '@angular/material/dialog';
 import { PopupLocationComponent } from './app-components/popup-location/popup-location.component';
@@ -13,7 +13,7 @@ import { OfferFacade } from './store/offer/offer.facade';
 import { User } from './models/user.model';
 import { takeUntil } from 'rxjs/operators';
 import { AppFacade } from './store/app/app.facade';
-import { breakpoints, MainToggle } from './models/common';
+import { breakpoints, MainToggle, Modules } from './models/common';
 
 @Component({
   selector: 'app-root',
@@ -22,10 +22,11 @@ import { breakpoints, MainToggle } from './models/common';
 })
 export class AppComponent implements OnInit, AfterViewChecked {
 
-	private _loadTimeout: number = 2000;
+	private _loadTimeout: number = 500;
 
 	private _ngUnsubscribe: Subject<any> = new Subject();
 	private _ngUnsubscribeForLocation: Subject<any> = new Subject();
+	private _ngUnsubscribeForUser: Subject<any> = new Subject();
 
 	public title: string = 'offerbook';
 	public nameMask: string = 'User';
@@ -71,7 +72,45 @@ export class AppComponent implements OnInit, AfterViewChecked {
 			}
 		});
 		this.appFacade.setScreenWidth(window.innerWidth);
-		setTimeout(() => this.loadPage = true, this._loadTimeout);
+		combineLatest(
+			this.userDataFacade.currentUser$,
+			this.appFacade.moduleOpened$)
+			.pipe(takeUntil(this._ngUnsubscribeForUser))
+		.subscribe(([user, isOpened]: [User, string]) => {
+			console.log(0)
+
+			if (isOpened === Modules[1] && user && Boolean(user.id)) {
+				this.loadPage = true;
+				this._ngUnsubscribeForUser.next();
+				this._ngUnsubscribeForUser.complete();
+				console.log(1)
+			}
+			// для страницы логина косяк
+			else if (isOpened === Modules[0]) {	console.log(2)
+
+				setTimeout(() => {
+					this.loadPage = true;
+					this._ngUnsubscribeForUser.next();
+					this._ngUnsubscribeForUser.complete();
+					},
+				 this._loadTimeout);
+			}
+		});
+		// this.userDataFacade.currentUser$.pipe(takeUntil(this._ngUnsubscribeForUser)).subscribe((user: User) => {
+		// 	this.appFacade.moduleOpened$.pipe(take(1)).subscribe((isOpened: string) => {
+		// 		if (isOpened === Modules[1] && user && Boolean(user.id)) {
+		// 			this.loadPage = true;
+		// 			this._ngUnsubscribeForUser.next();
+		// 			this._ngUnsubscribeForUser.complete();
+		// 			console.log(1)
+		// 		}
+		// 		// для страницы логина косяк
+		// 		else if (isOpened === Modules[0]) {					console.log(2)
+
+		// 			setTimeout(() => this.loadPage = true, this._loadTimeout);
+		// 		}
+		// 	});
+		// });
 	}
 
 	ngAfterViewChecked(): void {
@@ -94,6 +133,10 @@ export class AppComponent implements OnInit, AfterViewChecked {
 	ngOnDestroy(): void {
 		this._ngUnsubscribe.next();
 		this._ngUnsubscribe.complete();
+		this._ngUnsubscribeForUser.next();
+		this._ngUnsubscribeForUser.complete();
+		this._ngUnsubscribeForLocation.next();
+		this._ngUnsubscribeForLocation.complete();
 	}
 
   public signOut(): void {

@@ -1,1 +1,10 @@
-<p>comments-popup works!</p>
+<h1> Все отзывы по продавцу:</h1>
+<mat-card class="comments" *ngFor = "let rate of rates; let i = index">
+<p class="comments__index">{{i+1}}</p>
+<div comments__main>
+    <p class="comments__request">Заказ № {{rate.id}}: {{rate.title}} </p>
+    <p class="comments__user">От: {{rate.fromUserName ? rate.fromUserName : 'без имени'}}</p>
+    <p class="comments__comment">{{rate.comment}}</p>
+</div>
+
+</mat-card>

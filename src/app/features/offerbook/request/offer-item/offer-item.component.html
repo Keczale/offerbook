@@ -17,10 +17,12 @@
     </div>
     <div class="currentoffer__seller flexbox" (click) = "openComments()">
         <p>От: {{currentOffer.fromUserName ? currentOffer.fromUserName : 'нет имени'}}</p>
-        <p [class.currentoffer__seller_active] = "currentOffer.fromUserRating"
-        >
-            {{currentOffer.fromUserRating?.rating  ? currentOffer.fromUserRating.rating : 'нет оценок'}}
-            {{currentOffer.fromUserRating?.rating  ? currentOffer.fromUserRating.ratingQuantity : ''}}
+        <p [class.currentoffer__seller_active] = "currentOffer.fromUserRating">
+            {{currentOffer.fromUserRating?.rating  ? 'Средний балл: ' + currentOffer.fromUserRating.rating : 'нет оценок'}}
+            <br />
+            <span class="currentoffer__seller_reviews">
+                 {{currentOffer.fromUserRating?.rating  ? '(голосов: ' + currentOffer.fromUserRating.ratingQuantity + ')' : ''}}
+            </span>
         </p>
     </div>
  

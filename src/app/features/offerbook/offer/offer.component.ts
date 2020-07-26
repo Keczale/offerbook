@@ -51,7 +51,7 @@ export class OfferComponent implements OnInit, OnDestroy {
 		) { }
 
   ngOnInit (): void {
-
+	this._appFacade.setOfferbookModuleOpened();
 	this._appFacade.scrollTop$.pipe(takeUntil(this.ngUnsubscribe))
 	.subscribe((scrollTop: number) => {
 		scrollTop > this.previousScroll ? this.scrollDown = true : this.scrollDown = false;

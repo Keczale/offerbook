@@ -6,7 +6,7 @@ export class Offer {
 		public requestId: string = '',
 		public fromUserId: string = '',
 		public fromUserName: string = '',
-		public fromUserRating: RatingInOffer = null,
+		public fromUserRating: RatingInOffer = null, // общий рейтинг по юзеру
 		public title: string = '',
 		public description: string = '',
 		public conditions: string = '',
@@ -17,7 +17,7 @@ export class Offer {
 		public dateCreating: number = null,
 		public lastChange: number = null,
 		public secondHand: boolean = false,
-		public status: string = '', // accepted refused - уже без права изменений
+		public status: string = '',
 		public rate: UserRate = null,
 		public rateKey: string = '', // возвращаемый key от firebase.push
 		// public special: string = '', // bonuses
@@ -32,5 +32,5 @@ export enum OfferFilterTitle {'Все', 'Активные', 'В работе', '
 export interface RatingInOffer {
 	rating: number;
 	ratingQuantity: number;
-	comments: string[];
+	comments: UserRate[];
 }

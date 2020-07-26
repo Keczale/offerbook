@@ -93,7 +93,7 @@ export class OfferService {
 						}
 						if (Boolean(requests[0]) && user.sellerLastLoadedRequest !== requests[0].id) {
 							this._store$.dispatch(setLastLoadedRequestAction({ requestId: requests[0].id }));
-							this._userFacade.userToDataBase();
+							this._userFacade.sellerLastLoadedRequestToDataBase(requests[0].id);
 						}
 					this._store$.dispatch(loadActualRequestListFromDBAction({ requests }));
 					})
@@ -146,14 +146,14 @@ export class OfferService {
   }
 	}
 	public getSellerRating(user: User): RatingInOffer {
-		if ( user && user.sellerRating && Boolean(user.sellerRating.length)) {
+		if ( user && user.sellerRating && !this.isEmpty(user.sellerRating)) {
 			const ratingArray: UserRate[] = Object.values(user.sellerRating);
-			const averageRating: number = ratingArray.reduce((sum: number, currentRate: UserRate) => sum + currentRate.rate, 0);
+			const averageRating: number = ratingArray.reduce((sum: number, currentRate: UserRate) => sum + currentRate.rate, 0) / ratingArray.length;
 			const sellerComments: string[] = ratingArray.map((item: UserRate) => item.comment);
 			return {
 				rating: averageRating,
-				ratingQuantity: user.sellerRating.length,
-				comments: sellerComments
+				ratingQuantity: ratingArray.length,
+				comments: ratingArray
 			};
 		}
 		return null;
@@ -208,6 +208,7 @@ export class OfferService {
 			lastChange: dateCreateStamp,
 			status: OfferStatus[0],
 			};
+			console.log(this.getSellerRating(currentUser))
 		})
 		.then(() => this._offerDataService.sendOfferToDatabase(offer, openedRequest.fromUser))
 		.then(() => this.setResponsedRequest(openedRequest.id, `${openedRequest.fromUser}/${openedRequest.id}`))

@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { UserRate } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-comments-popup',
@@ -7,7 +9,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CommentsPopupComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public rates: UserRate
+    ) { }
 
   ngOnInit(): void {
   }

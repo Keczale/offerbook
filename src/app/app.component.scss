@@ -1,7 +1,5 @@
 @import "./ui/styles/variables.scss";
 
-
-$font-logo: 'Racing Sans One', cursive;
 :host{
     font-size: 14px;
 }
@@ -42,6 +40,7 @@ a{
             &__logo-link{
                 line-height: 0;
             }
+            
             &__menubutton{
                 // flex: 1 1 33%;
 
@@ -63,6 +62,11 @@ a{
     padding: 1rem 0;
     box-shadow: 0 6px 5px -6px rgb(184, 184, 184);
 }
+}
+.load-logo-link{
+    font-family: $font-logo;;
+    font-weight: 500;
+    color: $prime;
 }
 
 

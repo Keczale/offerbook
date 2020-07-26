@@ -53,6 +53,7 @@ interface Location {
 export interface UserRate {
 	rate: number;
 	id: string;
+	fromUserName?: string;
 	title: string;
 	comment: string;
 }

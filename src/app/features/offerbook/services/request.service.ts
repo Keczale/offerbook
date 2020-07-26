@@ -427,6 +427,7 @@ export class RequestService {
 		const rate: UserRate = {
 			title,
 			id,
+			fromUserName: request.fromUserName,
 			rate: rateValue.rate.title,
 			comment: rateValue.comment
 		};

@@ -18,3 +18,8 @@ export const scrollTopSelector = createSelector(
 	// tslint:disable-next-line: typedef
 	state => state.scrollTop
 );
+export const moduleOpenedSelector = createSelector(
+	appStateSelector,
+	// tslint:disable-next-line: typedef
+	state => state.moduleOpened
+);

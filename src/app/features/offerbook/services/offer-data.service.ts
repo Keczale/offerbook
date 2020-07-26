@@ -156,7 +156,6 @@ public isEmpty (obj: any): boolean {
   }
 
 	public async uploadOfferImage(file: File, fileName: string): Promise<string> {
-		console.log(file, fileName)
 		const uploadFile: File = file;
 		let photoURL: string;
 		if (file) {

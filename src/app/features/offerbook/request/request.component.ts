@@ -41,41 +41,42 @@ export class RequestComponent implements OnInit, OnDestroy, AfterViewChecked {
 		public requestFacade: RequestFacade,
 		private _userFacade: UserDataFacade,
 		private cdRef: ChangeDetectorRef,
-		public appFacade: AppFacade
-
+		public appFacade: AppFacade,
+		private _appFacade: AppFacade
   ) { }
 
   ngOnInit(): void {
-		this.appFacade.scrollTop$.pipe(takeUntil(this.ngUnsubscribeForWindow))
-		.subscribe((scrollTop: number) => {
-			scrollTop > this.previousScroll ? this.scrollDown = true : this.scrollDown = false;
-			this.previousScroll = scrollTop;
-		});
-		this.appFacade.screenWidth$.pipe(takeUntil(this.ngUnsubscribeForWindow))
-		.subscribe((width: number) => this.screenWidth = width);
-		this._userFacade.currentUser$.pipe(takeUntil(this.ngUnsubscribeForUser))
-		.subscribe((user: User) => {
-			if (user && Boolean(user.id)) {
-				this.requestService.loadActualList(); //убрал нулувой setTimeout
-				this.ngUnsubscribeForUser.next();
-				this.ngUnsubscribeForUser.complete();
+	this._appFacade.setOfferbookModuleOpened();
+	this.appFacade.scrollTop$.pipe(takeUntil(this.ngUnsubscribeForWindow))
+	.subscribe((scrollTop: number) => {
+		scrollTop > this.previousScroll ? this.scrollDown = true : this.scrollDown = false;
+		this.previousScroll = scrollTop;
+	});
+	this.appFacade.screenWidth$.pipe(takeUntil(this.ngUnsubscribeForWindow))
+	.subscribe((width: number) => this.screenWidth = width);
+	this._userFacade.currentUser$.pipe(takeUntil(this.ngUnsubscribeForUser))
+	.subscribe((user: User) => {
+		if (user && Boolean(user.id)) {
+			this.requestService.loadActualList(); //убрал нулувой setTimeout
+			this.ngUnsubscribeForUser.next();
+			this.ngUnsubscribeForUser.complete();
+		}
+	});
+	this.requestFacade.requestList$.pipe(takeUntil(this.ngUnsubscribe))
+	.subscribe((requests: Request[]) => {
+		if (Boolean(requests.length)) {
+			this.requestList = requests;
+			this.requestFacade.filteredRequestList$.pipe(take(1))
+				.subscribe((filteredRequests: Request[]) => {
+					if (Boolean(requests.length) && !Boolean(filteredRequests.length)) {
+						this.filterActive();
+						}
+					});
 			}
-		});
-		this.requestFacade.requestList$.pipe(takeUntil(this.ngUnsubscribe))
-		.subscribe((requests: Request[]) => {
-			if (Boolean(requests.length)) {
-				this.requestList = requests;
-				this.requestFacade.filteredRequestList$.pipe(take(1))
-					.subscribe((filteredRequests: Request[]) => {
-						if (Boolean(requests.length) && !Boolean(filteredRequests.length)) {
-							this.filterActive();
-							}
-						});
-	 			}
-			// else if (Boolean(requests) && !Boolean(requests.length)) {
-			// 	setTimeout(() => this.requestList = [], 2000);
-			// }
-		});
+		// else if (Boolean(requests) && !Boolean(requests.length)) {
+		// 	setTimeout(() => this.requestList = [], 2000);
+		// }
+	});
 	}
 ngAfterViewChecked(): void {
   this.cdRef.detectChanges();

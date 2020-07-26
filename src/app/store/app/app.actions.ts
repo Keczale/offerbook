@@ -9,3 +9,9 @@ export const scrollTopAction = createAction(
   props<{ scrollTop: number }>()
 );
 
+export const nowIsLoginModuleAction = createAction(
+  '[App] Login module opened',
+);
+export const nowIsOfferbookModuleAction = createAction(
+  '[App] Offerbook module opened',
+);

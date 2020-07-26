@@ -48,6 +48,10 @@
         color: $link;
         cursor: pointer;
     }
+    &__seller_reviews{
+        color: grey;
+        font-size: .7rem;
+    }
 
     &__acceptbtn{
         flex: 0 1 10%;

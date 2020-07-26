@@ -85,6 +85,10 @@ constructor(
 		this.onUserSubscription = this._store$.pipe(select(currentUserSelector))
 		.subscribe((user: User) => database().ref(`${this.userBaseUrl}/${user.id}`).set(user)).unsubscribe();
 	}
+	public sellerLastLoadedRequestToDataBase(requestId: string): void {
+		this.onUserSubscription = this._store$.pipe(select(currentUserSelector))
+		.subscribe((user: User) => database().ref(`${this.userBaseUrl}/${user.id}/sellerLastLoadedRequest`).set(requestId)).unsubscribe();
+	}
 
   public createUser(name: any, email: any, password: any): void {
 	this.loading();

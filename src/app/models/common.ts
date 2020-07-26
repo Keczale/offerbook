@@ -29,3 +29,4 @@ export const breakpoints: Breakpoints = {
 // 	Belarus: ['Беларусь', 'Могилёв', 'Минск', 'Брест', 'Гродно', 'Гомель', 'Витебск']
 // }
 export enum MainToggle {'Продать', 'Купить'}
+export enum Modules {'Login', 'Offerbook'}

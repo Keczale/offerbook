@@ -62,7 +62,9 @@ export class UserDataFacade {
   public userToDataBase(): void {
     this._userDataService.userToDataBase();
   }
-
+  public sellerLastLoadedRequestToDataBase(requestId: string): void {
+    this._userDataService.sellerLastLoadedRequestToDataBase(requestId);
+  }
   public loadCurrentUserFromDB(uid: string): Promise<any> {
 	  return this._userDataService.loadCurrentUserFromData(uid);
   }
