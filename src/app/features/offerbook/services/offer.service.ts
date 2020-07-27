@@ -208,7 +208,6 @@ export class OfferService {
 			lastChange: dateCreateStamp,
 			status: OfferStatus[0],
 			};
-			console.log(this.getSellerRating(currentUser))
 		})
 		.then(() => this._offerDataService.sendOfferToDatabase(offer, openedRequest.fromUser))
 		.then(() => this.setResponsedRequest(openedRequest.id, `${openedRequest.fromUser}/${openedRequest.id}`))

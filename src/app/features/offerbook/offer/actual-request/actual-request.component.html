@@ -1,6 +1,6 @@
 <mat-card class="wrap"
     *ngIf="!isHidden"
-    [class.accepted]="offerToRequest && offerToRequest.status === offerStatus[1]"
+    [class.accepted]="offerToRequest && (offerToRequest.status === offerStatus[1] || offerToRequest.status === offerStatus[3])"
     [class.rejected]="offerToRequest && offerToRequest.status === offerStatus[2]">
     <div class = "request">
     
@@ -25,9 +25,9 @@
         Предложений: {{!offerListForCounter.length ? 'ещё нет' : offerListForCounter.length }}
         {{bestPrice ? bestPrice : ''}}
     </div>
-    <div class="request__other-offers" *ngIf = "request && request.status === requestStatusEnum[1]  && offerToRequest && offerToRequest.status === offerStatus[1]">
+    <div class="request__other-offers" *ngIf = "offerToRequest && (offerToRequest.status === offerStatus[1] || offerToRequest.status === offerStatus[3])">
         <p>Контакты:</p>
-        <p>Телефон: {{buyer && buyer.telephone ? buyer.telephone : 'нет мобилы'}}</p>
+        <p>Телефон: {{buyer && buyer.telephone ? buyer.telephone : 'нет'}}</p>
         <p>Адрес: {{buyer && buyer.adress ? buyer.adress : 'не указан'}}</p>
 
     </div>
@@ -76,7 +76,7 @@
             title="Сделать предложение"
             (click)="openDialog()"
             disabled
-            *ngIf="offerToRequest && request && request.status===requestStatusEnum[1] && offerToRequest.status === offerStatus[1]">
+            *ngIf="offerToRequest && (offerToRequest.status === offerStatus[1] || offerToRequest.status === offerStatus[3])">
             Принято!
         </button>
         <button 
@@ -85,8 +85,7 @@
             title="Сделать предложение"
             (click)="openDialog()"
             disabled
-            *ngIf="offerToRequest && request.status===requestStatusEnum[1] && offerToRequest.status === offerStatus[2]"
-            >
+            *ngIf="offerToRequest && request.status===requestStatusEnum[1] && offerToRequest.status === offerStatus[2]">
             Отклонено
         </button>
     </div>

@@ -77,16 +77,14 @@ export class AppComponent implements OnInit, AfterViewChecked {
 			this.appFacade.moduleOpened$)
 			.pipe(takeUntil(this._ngUnsubscribeForUser))
 		.subscribe(([user, isOpened]: [User, string]) => {
-			console.log(0)
 
 			if (isOpened === Modules[1] && user && Boolean(user.id)) {
 				this.loadPage = true;
 				this._ngUnsubscribeForUser.next();
 				this._ngUnsubscribeForUser.complete();
-				console.log(1)
 			}
 			// для страницы логина косяк
-			else if (isOpened === Modules[0]) {	console.log(2)
+			else if (isOpened === Modules[0]) {
 
 				setTimeout(() => {
 					this.loadPage = true;

@@ -33,6 +33,10 @@ import { AppComponent } from './app.component';
 import { NotFoundComponent } from './app-components/not-found/not-found.component';
 import { PopupLocationComponent } from './app-components/popup-location/popup-location.component';
 import { appReducer } from './store/app';
+import localeRu from '@angular/common/locales/ru';
+import { registerLocaleData } from '@angular/common';
+
+registerLocaleData(localeRu, 'ru-RU');
 
 @NgModule({
   declarations: [

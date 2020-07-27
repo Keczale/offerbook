@@ -12,6 +12,7 @@ import { User, LastOffer, UserRate, RateFromForm } from 'src/app/models/user.mod
 import { UserDataFacade } from 'src/app/store/userData/user-data.facade';
 import { take } from 'rxjs/operators';
 import { Offer, OfferStatus } from 'src/app/models/offer.model';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
 	providedIn: 'root'
@@ -46,7 +47,6 @@ export class RequestService {
 	}
 
 	public openDialog(component: any, propData: any): void {
-		console.log('bbbbbbbbb')
 		if (propData) {
 			this.dialog.open(component, {
 				height: 'auto',
@@ -295,15 +295,24 @@ export class RequestService {
 			this._requestDataService.deleteImageRequest(changedRequest.photoNames[0]);
 		}
 
-		if (value.category) {
-			if (value.city !== changedRequest.city) {
-				this._requestDataService.addRequestToMap(value.city, value.category, changedRequest.fromUser, changedRequest.id);
-				this._requestDataService.removeRequestFromMap(changedRequest);
-			}
-			else {
-				this._requestDataService.addRequestToMap(changedRequest.city, value.category, changedRequest.fromUser, changedRequest.id);
-				this._requestDataService.removeRequestFromMap(changedRequest);
-			}
+		// if (value.category) {
+		// 	if (value.city !== changedRequest.city) {
+		// 		this._requestDataService.addRequestToMap(value.city, value.category, changedRequest.fromUser, changedRequest.id);
+		// 		this._requestDataService.removeRequestFromMap(changedRequest);
+		// 	}
+		// 	else {
+		// 		this._requestDataService.addRequestToMap(changedRequest.city, value.category, changedRequest.fromUser, changedRequest.id);
+		// 		this._requestDataService.removeRequestFromMap(changedRequest);
+		// 	}
+		// }
+
+		if (value.city !== changedRequest.city) {
+			this._requestDataService.addRequestToMap(value.city, value.category, changedRequest.fromUser, changedRequest.id);
+			this._requestDataService.removeRequestFromMap(changedRequest);
+		}
+		if (value.category !== changedRequest.category && value.city === changedRequest.city) {
+			this._requestDataService.addRequestToMap(value.city, value.category, changedRequest.fromUser, changedRequest.id);
+			this._requestDataService.removeRequestFromMap(changedRequest);
 		}
 
 		this._requestDataService.uploadRequestImage(file, photoName)
@@ -427,11 +436,12 @@ export class RequestService {
 		const rate: UserRate = {
 			title,
 			id,
-			date: new Date(),
+			date: Date.now(),
 			fromUserName: request.fromUserName,
 			rate: rateValue.rate.title,
 			comment: rateValue.comment
 		};
+		console.log(rate)
 		this.setRateAndRewievedStatusToOffer (request, sellerId, rate)
 		.then((key: string) => this._userFacade.sendSellerRateToDatabase(sellerId, rate, key))
 		.then(() => {

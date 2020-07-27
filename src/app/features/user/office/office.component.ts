@@ -86,7 +86,7 @@ export class OfficeComponent implements OnInit, OnDestroy {
 	this.userDataForm = this._fb.group({
 		name : [`${this.userName}`],
 		// surname : [''],
-		telephone : [`${this._userTelephone}`, Validators.pattern('[0-9],.+')],
+		telephone : [`${this._userTelephone}`],
 		adress : [`${this._userAdress}`],
 		// userImage : [null, [ FileValidator.maxContentSize(this._imageMaxSize)] ],
 		});

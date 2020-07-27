@@ -10,7 +10,7 @@ import { UserRate } from 'src/app/models/user.model';
 export class CommentsPopupComponent implements OnInit {
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public rates: UserRate
+    @Inject(MAT_DIALOG_DATA) public rates: UserRate[]
     ) { }
 
   ngOnInit(): void {

@@ -1,10 +1,15 @@
-<h1> Все отзывы по продавцу:</h1>
+<h1 class="title"> Все отзывы по продавцу:</h1>
 <mat-card class="comments" *ngFor = "let rate of rates; let i = index">
 <p class="comments__index">{{i+1}}</p>
 <div comments__main>
-    <p class="comments__request">{{rate.date ? (rate.date | date:'mediumDate') : 'no date'}} Заказ № {{rate.id}}: <span class="comments__request_title"> {{rate.title}} </span> </p>
-    <p class="comments__user">От: {{rate.fromUserName ? rate.fromUserName : 'без имени'}}</p>
-    <p class="comments__comment">{{rate.comment ? 'Комментарий: ' + rate.comment : ''}}</p>
+    <p class="comments__request">
+        <span class="comments__date">{{rate.date ? (rate.date | date:'mediumDate':'UTC +04:00': 'ru-RU') : 'no date'}} </span>
+        <span class="comments__initial">Заказ №</span> {{rate.id}}: <span class="comments__request_title"> {{rate.title}} </span>
+    </p>
+    <p class="comments__user">
+        <span class="comments__initial">От:</span> {{rate.fromUserName ? rate.fromUserName : 'без имени'}}; 
+        <span class="comments__initial"> Оценка:</span> {{rate.rate ? rate.rate : 'нет оценки'}}</p>
+    <p class="comments__comment"><span class="comments__initial">Комментарий: </span>{{rate.comment ? rate.comment : 'нет'}}</p>
 </div>
 
 </mat-card>
